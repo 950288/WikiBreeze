@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Menu from "@/components/Menu.vue";
 import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
 import { routes } from "@/main";
 
 </script>
