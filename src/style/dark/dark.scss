@@ -1,0 +1,15 @@
+@use "sass:map";
+
+@import "./var.scss";
+
+$map: ();
+
+@each $key, $value in $var {
+  $map: map.merge($map, ($key: $value));
+}
+
+@each $key, $value in $map {
+  html.dark {
+    --#{$key}: #{$value};
+  }
+}
