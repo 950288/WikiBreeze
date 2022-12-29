@@ -5,18 +5,12 @@
         <div class="box" v-for="(page, index) in data">
             <h2>{{ index }}</h2>
             <div class="buttons">
-                <button v-for="node in page" class="button is-primary is-outlined"
-                    @click="editnode(index, node)">{{ node }}</button>
+                <button v-for="node in page" class="button is-primary is-outlined" @click="editnode(index, node)">{{
+        node
+}}</button>
                 <!-- <button class="button is-primary is-outlined">About_2</button> -->
             </div>
         </div>
-        <!-- <div class="box">
-            <h2>About</h2>
-            <div class="buttons">
-                <button class="button is-primary is-outlined">About_1</button>
-                <button class="button is-primary is-outlined">About_2</button>
-            </div>
-        </div> -->
         <article v-if="error" class="message is-warning is-large">
             <div class="message-body">
                 <h3>fetch page list error!</h3>
@@ -24,7 +18,7 @@
                 <p>please refresh this page</p>
             </div>
         </article>
-        <progress v-if="!data" class="progress is-large is-info" max="100">60%</progress>
+        <progress v-if="!data && !error" class="progress is-large is-info" max="100">60%</progress>
         <!-- <div>
             {{ data }}<br>
         </div> -->
@@ -33,26 +27,18 @@
 <script setup lang="ts">
 import { useFetch } from "@vueuse/core";
 import { ref, watch } from "vue";
+import { router } from "@/main";
 const getdata = ref(false);
 const geterror = ref(false);
 let { data, error } = useFetch("http://127.0.0.1:8082/list").get().json();
 function editnode(index, node) {
-    let { data, error } = useFetch("http://127.0.0.1:8082/getnode", {
-        method: 'POST',
-        body: JSON.stringify({
-            page: index,
-            node: node
-        }),
-        headers: {
-        'Content-Type': 'application/json'
-    }
-    }).get().json();
-    watch(data, (val) => {
-        console.log(val);
-    });
-    watch(error, (val) => {
-        console.log(val);
-    });
+    router.push({
+            name: "Editor",
+            state: {
+                index: index,
+                node: node,
+            }
+        })
     console.log(data);
 }
 </script>

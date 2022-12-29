@@ -71,25 +71,65 @@ func main() {
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		
 		type Data struct {
-			page  string 	`json:"page"`
-			node string		`json:"node"`
+			Page  string
+			Node string
 		}
 		var data Data
 
 		b := make([]byte, r.ContentLength)
 		r.Body.Read(b)
-		fmt.Println(b)
-		fmt.Println(string(b))
 		err := json.Unmarshal([]byte(string(b)), &data)
-		fmt.Println(err)
-		fmt.Println(data)
-		page := r.URL.Query().Get("page")
-		node := r.URL.Query().Get("node")
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		page := data.Page
+		node := data.Node
 
-		// fmt.Fprintf(w, string(jsonData))
-		fmt.Println("edit ",node," on",page)
+		fmt.Println("editing ",node," on",page)
 
-		fmt.Fprintf(w, "Civilized Language")
+		//read json data and create it if it doesn't exist
+		dir := "./data/"+page+"/"+node+".json"
+		err = os.MkdirAll("./data/"+page, os.ModePerm)
+		if err != nil {
+			fmt.Println("Error creating directory:", err)
+			return
+		}
+		jsonFile, err := os.Open(dir)
+		if err != nil {
+			fmt.Println("File doesn't exist, creating it...")
+			// File doesn't exist, create it
+			jsonFile, err = os.Create(dir)
+			if err != nil {
+				fmt.Println("Error creating file:", err)
+				return
+			}
+			// Write the JSON string to the file
+			jsonString := "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Example Text\"}]}]}"
+			err = ioutil.WriteFile(dir, []byte(jsonString), 0644)
+			if err != nil {
+				fmt.Println("Error writing to file:", err)
+				return
+			}	
+			fmt.Println(dir+" created")
+		}
+		defer jsonFile.Close()
+		byteValue, err := ioutil.ReadAll(jsonFile)
+		if err != nil {
+			fmt.Println("Error reading file:", err)
+			return
+		}
+		// Parse the JSON data
+		var datas map[string]interface{}
+		fmt.Println("reading:\t", string(byteValue))
+		err = json.Unmarshal(byteValue, &datas)
+		if err != nil {
+			fmt.Println("Error parsing JSON:", err)
+			return
+		}
+		fmt.Fprintf(w, string(byteValue))
+
+
 
 	})
 	http.Handle("/", http.FileServer(http.Dir("../dist")))
@@ -97,4 +137,4 @@ func main() {
 
 }
 
-// `<!-- iGEM-ToolBox:WIKI {{name}} start-->`
+// `<!-- iGEMGotool {{name}} start-->`
