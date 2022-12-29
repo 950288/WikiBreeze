@@ -72,7 +72,8 @@ import Image from '@tiptap/extension-image'
 import Link from '@tiptap/extension-link'
 
 import { generateHTML } from '@tiptap/html'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref , defineEmits} from 'vue'
+const emit = defineEmits(['save'])
 const view = ref("click save!")
 const mounted = ref(false);
 Heading.configure({
@@ -116,8 +117,10 @@ onMounted(() => {
   console.log(editor.value.chain().focus().toggleBold())
 })
 function save(){
+  console.log(view.value = editor.value.getJSON())
   console.log(view.value = encodeURI(JSON.stringify(editor.value.getJSON())))
   console.log(view.value = generateHTML(editor.value.getJSON(JSON.parse(decodeURI(view.value))),extensions))
+  emit('save',editor.value.getJSON());
 }
 </script>
 <style scoped lang="scss">

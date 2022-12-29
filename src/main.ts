@@ -17,7 +17,6 @@ export const router = createRouter({
 // import { useColorMode } from "@vueuse/core";
 export const themeMode = useColorMode();
 
-
 const app = createApp(App);
 
 app.use(router);
