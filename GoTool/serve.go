@@ -89,7 +89,7 @@ func main() {
 		// fmt.Fprintf(w, string(jsonData))
 		fmt.Println("edit ",node," on",page)
 
-		fmt.Fprintf(w, "fuck you")
+		fmt.Fprintf(w, "Civilized Language")
 
 	})
 	http.Handle("/", http.FileServer(http.Dir("../dist")))
