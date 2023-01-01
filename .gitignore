@@ -30,3 +30,7 @@ coverage
 *.sw?
 
 GoTool/serve.exe
+GoTool/data
+GoTool/config.json
+
+

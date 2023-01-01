@@ -81,8 +81,11 @@ onMounted(() => {
     }
   });
   watch([router.currentRoute, float], () => {
-    // console.log("watch");
+    console.log("watch");
     back_position();
+    setTimeout(() => {
+      back_position();
+    }, 0);
   });
 });
 
