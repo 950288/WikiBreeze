@@ -1,7 +1,8 @@
 <template>
     <div class="content is-large">
         <br>
-        <tiptap @save="save" />
+        <tiptap v-if="contenetJson" @save="save" :json="contenetJson"/>
+        <progress v-if="!contenetJson" class="progress is-large is-info" max="100">60%</progress>
         <br>
     </div>
 </template>
@@ -10,23 +11,22 @@
 import { useFetch } from "@vueuse/core";
 import Tiptap from '@/components/Tiptap.vue'
 import { ref, watch ,onMounted } from "vue";
-const props = defineProps(['index', 'node'])
+import { requestUrl } from "@/App.vue";
+const contenetJson = ref<JSON>();
 onMounted(() => {
-    console.log(props.index);
-    console.log(props.node);
-    let { data, error } = useFetch("http://127.0.0.1:8082/getnode", {
+    let { data, error } = useFetch(requestUrl.value+"/getnode", {
         method: 'POST',
         body: JSON.stringify({
-            // page: index,
-            // node: node
+            page: history.state.index,
+            node: history.state.node
         }),
         headers: {
             'Content-Type': 'application/json'
         }
     }).get().json();
     watch(data, (val) => {
+        contenetJson.value = val;
         console.log(val);
-
     });
     watch(error, (val) => {
         console.log(val);
@@ -34,11 +34,12 @@ onMounted(() => {
 });
 function save(datas :JSON){
     console.log(datas);
-    let { data, error } = useFetch("http://127.0.0.1:8082/getnode", {
+    let { data, error } = useFetch(requestUrl.value+"/savenode", {
         method: 'POST',
         body: JSON.stringify({
-            // page: index,
-            // node: node
+            page: history.state.index,
+            node: history.state.node,
+            content : datas
         }),
         headers: {
         'Content-Type': 'application/json'

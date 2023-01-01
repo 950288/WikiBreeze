@@ -1,6 +1,6 @@
 <template>
   <div class="main content">
-    <h3>Content1</h3>
+    <h3>You are editing <u>{{ state.index }}</u> on page <u>{{ state.node }}.</u></h3>
     <div class="buttons">
 
     <button class="button is-success" v-if="mounted" @click="editor.chain().focus().toggleHeading({ level: 1 }).run()">
@@ -72,9 +72,16 @@ import Image from '@tiptap/extension-image'
 import Link from '@tiptap/extension-link'
 
 import { generateHTML } from '@tiptap/html'
-import { onMounted, ref , defineEmits} from 'vue'
+import { onMounted, ref , defineEmits } from 'vue'
 const emit = defineEmits(['save'])
 const view = ref("click save!")
+
+const state = ref({
+  index: history.state.index,
+  node: history.state.node})
+
+const props = defineProps(['json'])
+
 const mounted = ref(false);
 Heading.configure({
   levels: [1, 2 , 3],
@@ -105,7 +112,7 @@ const extensions = [
 ]
 const editor: any = useEditor({
   extensions: extensions,
-  content: '<p>Example Text</p>',
+  content: props.json,
   autofocus: true,
   editable: true,
   injectCSS: false,

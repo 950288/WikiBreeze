@@ -5,9 +5,9 @@
         <div class="box" v-for="(page, index) in data">
             <h2>{{ index }}</h2>
             <div class="buttons">
-                <button v-for="node in page" class="button is-primary is-outlined" @click="editnode(index, node)">{{
-        node
-}}</button>
+                <button v-for="node in page" class="button is-primary is-outlined" @click="editnode(index.toString(), node)">
+                    {{node}}
+                </button>
                 <!-- <button class="button is-primary is-outlined">About_2</button> -->
             </div>
         </div>
@@ -28,18 +28,16 @@
 import { useFetch } from "@vueuse/core";
 import { ref, watch } from "vue";
 import { router } from "@/main";
-const getdata = ref(false);
-const geterror = ref(false);
-let { data, error } = useFetch("http://127.0.0.1:8082/list").get().json();
-function editnode(index, node) {
+import { requestUrl } from "@/App.vue";
+let { data, error } = useFetch(requestUrl.value + "/list").get().json();
+function editnode(index: string, node: string) {
     router.push({
-            name: "Editor",
-            state: {
-                index: index,
-                node: node,
-            }
-        })
-    console.log(data);
+        name: "Editor",
+        state: {
+            index: index,
+            node: node,
+        }
+    })
 }
 </script>
 <style lang="scss" scoped>

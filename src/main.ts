@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import routes_list from "@/routes.json";
 import { useColorMode } from "@vueuse/core";
 
@@ -11,7 +11,7 @@ routes_list.routes.forEach((route: { component: any; name: string , path : strin
   });
   export const routes: any = routes_list.routes;
 export const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: routes,
 });
 // import { useColorMode } from "@vueuse/core";

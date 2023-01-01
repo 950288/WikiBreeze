@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import Menu from "@/components/Menu.vue";
-import { RouterLink, RouterView } from "vue-router";
+import { RouterView } from "vue-router";
 import { routes } from "@/main";
-
+</script>
+<script  lang="ts">
+import { ref } from "vue";
+export const requestUrl = ref(process.env.NODE_ENV === 'development' ? "http://127.0.0.1:8080" : window.location.origin);
 </script>
 
 <template>
