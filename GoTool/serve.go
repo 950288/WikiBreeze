@@ -247,7 +247,7 @@ func main() {
 			fmt.Println(err)
 			return
 		}
-		fmt.Printf("saved: %s successful\n", dir)
+		fmt.Printf("saved %s successful\n", dir)
 		fmt.Fprintf(w, "success")
 	})
 
