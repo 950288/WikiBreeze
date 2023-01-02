@@ -80,12 +80,13 @@ graph TB
     user2 --edit--> WebEditor
     user.. --edit--> WebEditor
     subgraph iGEMGoTool server
-        WebEditor(WebEditor) --send HTTP request--> backend(backend)
-        backend --read/write to file system--> pages(your .html files)
+        WebEditor(WebEditor) --track changes--> backend(backend)
+        backend --read/write to file system--> data(local datas)
+        data --incert codes--> pages(your .html files)
     end
 ```
 
-The front-end sends HTTP requests to the back-end to retrieve and update page content. The back-end reads and writes to the file system to access and modify the pages on disk.
+The front-end WebEditor sends HTTP requests to the back-end to retrieve and update page content. The back-end reads and writes to the file system to access and modify the pages on disk.
 
 ## Technology Stack 🛠️
 
