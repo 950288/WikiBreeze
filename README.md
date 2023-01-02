@@ -42,7 +42,8 @@ The working principle of iGEMGoTool can be summarized in the following diagram:
 
 ```mermaid
 graph LR
-    frontend(front-end) --send HTTP request--> backend(back-end)
+    web editor --edit--> content(page content)
+    web editor --send HTTP request--> backend(back-end)
     backend --read/write to file system--> pages(pages on disk)
 ```
 
