@@ -42,11 +42,12 @@ The working principle of iGEMGoTool can be summarized in the following diagram:
 
 ```mermaid
 graph LR
-    editor1 --edit--> WebEditor
-    editor2 --edit--> WebEditor
-    editor.. --edit--> WebEditor 
-    WebEditor --send HTTP request--> backend(back-end)
-    backend --read/write to file system--> pages(pages on disk)
+    editor1 --edit--> WebEditor(font-end)
+    editor2 --edit--> WebEditor(font-end)
+    editor.. --edit--> WebEditor(font-end)
+    subgraph iGEMGoTool server
+        WebEditor(font-end) --send HTTP request--> backend(back-end)
+        backend --read/write to file system--> pages(pages on disk)
 ```
 
 The front-end sends HTTP requests to the back-end to retrieve and update page content. The back-end reads and writes to the file system to access and modify the pages on disk.
