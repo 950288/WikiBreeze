@@ -1,6 +1,8 @@
 # iGEMGoTool 🛠️
 
-iGEMGoTool is a tool that helps iGEM teams easily edit their wikis. It consists of a front-end implemented in Vue 3 and a back-end implemented in Go.
+[![Email](https://img.shields.io/static/v1?label=Email&message=950288s@gmail.com&color=blue)](mailto:950288s@gmail.com)
+
+iGEMGoTool is a Online Web Editor that helps iGEM teams easily edit their wikis. It consists of a front-end implemented in Vue 3 and a back-end implemented in Go.
 
 ## Introduction for Users 🧑‍💼
 
@@ -8,10 +10,42 @@ iGEMGoTool is a user-friendly Online Web Editor that allows iGEM teams to easily
 
 To use iGEMGoTool, follow these steps:
 
-1. Unzip the iGEMGoTool folder and put it into the root directory of your project.
-2. Insert the following special tag into your HTML or other custom file type for each section that you want to edit: `<!-- iGEMGoTool {{name}} start-->`. Replace `{{name}}` with the name of your page.
-3. Double-click the iGEMGoTool executable to run the tool. Then you can see to generated URL in the Console, You can edit you page in the browser through the generated URL, and iGEMGoTool also supports collaborative editing function in the local area network. 
-4. For advanced usage, you can deploy iGEMGoTool to a personal server and open ports for the service. which will break the LAN restrictions.
+1. put the Unziped `iGEMGoTool` folder into the root directory of your project.
+2. Insert the following special tag into your `.html` or other custom file type for each section that you want to edit: `<!-- iGEMGoTool {{name}} start-->`. Replace `{{name}}` with the The custom name for this section.
+``` Example
+<!-- iGEMGotool test1 start-->
+```
+
+3. Double-click the iGEMGoTool executable to run the tool. Then you can see to generated URL in the Console like below. You can edit you page in the browser through the generated URL, and iGEMGoTool also supports collaborative editing function in the local area network. 
+```
+   Server started on port 8080
+    Local:           http://127.0.0.1:8080/
+    Network:         http://192.168.Xx.xx:8080/
+```
+    
+1. For advanced usage, you can deploy iGEMGoTool to a personal server and open ports for the service. which will break the LAN restrictions.
+
+we also provide configuration file, `config.json`, which will be automatically generated upon the first run of the application. It allows the user to customize certain parameters such as the directory containing the pages to be modified, the directory to store the edited pages, the port to be used, the tag to be scanned for insertion, and the file types to be scanned. The default values for these parameters can be seen in the example configuration file below:
+```
+{
+	// Directory containing the page to be modified (e.g. "D:\\github\\web\\src\\pages")
+	"ScanDirectory": "..\\",
+
+	// Directory to store the edited page (e.g. "D:\\github\\web\\src\\iGEMGotoolData")
+	"StoreDirectory": "..\\iGEMGotoolData",
+
+	//Port to be used
+	"Port": 8080,
+
+	//the tag to be scan and incert content (e.g. "iGEMGotool"),
+	//which be automatically converted to <!-- iGEMGotool {{name}} start-->
+	"incert tag":"iGEMGotool",
+
+	
+	//file type to be scan (e.g. [".html",....])
+	"file type":[".html",".vue"]
+}
+```
 
 Note: A page can contain multiple tags and each tag corresponds to a section that can be edited individually.
 
@@ -57,3 +91,4 @@ The front-end sends HTTP requests to the back-end to retrieve and update page co
 
 - Front-end: Vue 3, TypeScript, Vite, tiptap
 - Back-end: Go 
+- Build tool: Vite, go build

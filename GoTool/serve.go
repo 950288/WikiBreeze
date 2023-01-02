@@ -52,7 +52,7 @@ func main() {
 	"incert tag":"iGEMGotool",
 
 	
-	//file type to be scan (e.g. ".html")
+	//file type to be scan (e.g. [".html",....])
 	"file type":[".html",".vue"]
 }`
 			err = ioutil.WriteFile("./config.json", []byte(jsonString), 0644)
