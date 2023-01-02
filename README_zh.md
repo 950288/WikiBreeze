@@ -1,6 +1,6 @@
 # iGEMGoTool （[English](https://github.com/950288/iGEMGoTool/blob/main/README.md)\）本文件上次更新 2023-1-2 21:19:56🛠️
 
-[![Email](https://img.shields.io/static/v1?label=Email&message=950288s@gmail.com&color=blue)](mailto:950288s@gmail.com)
+[![Email](https://img.shields.io/static/v1?label=Email&message=2779307196@qq.com&color=blue)](mailto:2779307196@qq.com)
 
 iGEMGoTool 是一个在线编辑器，可以帮助 iGEM 团队轻松编辑wiki。它由 Vue 3 实现的前端和 Go 实现的后端组成。
 
