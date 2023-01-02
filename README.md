@@ -4,7 +4,7 @@ iGEMGoTool is a tool that helps iGEM teams easily edit their wikis. It consists 
 
 ## Introduction for Users 🧑‍💼
 
-iGEMGoTool is a user-friendly tool that allows iGEM teams to easily edit their wikis. It provides a simple interface for making changes to pages. With iGEMGoTool, wiki editors can focus on creating great content for their wikis without worrying about the technical details of HTML and CSS.
+iGEMGoTool is a user-friendly Online Web Editor that allows iGEM teams to easily edit their wikis. It provides a simple interface for making changes to pages. With iGEMGoTool, wiki editors can focus on creating great content for their wikis without worrying about the technical details of HTML and CSS.
 
 To use iGEMGoTool, follow these steps:
 
@@ -46,7 +46,7 @@ graph TB
     editor2 --edit--> WebEditor(font end)
     editor.. --edit--> WebEditor(font end)
     subgraph iGEMGoTool server
-        WebEditor(font-end) --send HTTP request--> backend(back-end)
+        WebEditor(font end) --send HTTP request--> backend(back-end)
         backend --read/write to file system--> pages(pages on disk)
 ```
 
