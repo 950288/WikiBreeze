@@ -48,6 +48,7 @@ graph TB
     subgraph iGEMGoTool server
         WebEditor(font end) --send HTTP request--> backend(back-end)
         backend --read/write to file system--> pages(pages on disk)
+    end
 ```
 
 The front-end sends HTTP requests to the back-end to retrieve and update page content. The back-end reads and writes to the file system to access and modify the pages on disk.
