@@ -1,4 +1,4 @@
-# iGEMGoTool （[English](https://github.com/950288/iGEMGoTool/blob/main/README.md)\）🛠️
+# iGEMGoTool （[English](https://github.com/950288/iGEMGoTool/blob/main/README.md)\）本文件上次更新 2023-1-2 21:19:56🛠️
 
 [![Email](https://img.shields.io/static/v1?label=Email&message=950288s@gmail.com&color=blue)](mailto:950288s@gmail.com)
 
