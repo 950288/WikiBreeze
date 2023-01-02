@@ -76,12 +76,12 @@ The working principle of iGEMGoTool can be summarized in the following diagram:
 
 ```mermaid
 graph TB
-    editor1 --edit--> WebEditor(font end)
-    editor2 --edit--> WebEditor(font end)
-    editor.. --edit--> WebEditor(font end)
+    user1 --edit--> WebEditor
+    user2 --edit--> WebEditor
+    user.. --edit--> WebEditor
     subgraph iGEMGoTool server
-        WebEditor(font end) --send HTTP request--> backend(back-end)
-        backend --read/write to file system--> pages(pages on disk)
+        WebEditor(WebEditor) --send HTTP request--> backend(backend)
+        backend --read/write to file system--> pages(your .html files)
     end
 ```
 
