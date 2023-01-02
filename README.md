@@ -1,4 +1,4 @@
-# iGEMGoTool 🛠️
+# iGEMGoTool （[简体中文](https://github.com/950288/iGEMGoTool/blob/main/README_zh.md)\）🛠️
 
 [![Email](https://img.shields.io/static/v1?label=Email&message=950288s@gmail.com&color=blue)](mailto:950288s@gmail.com)
 
@@ -23,7 +23,7 @@ To use iGEMGoTool, follow these steps:
     Network:         http://192.168.Xx.xx:8080/
 ```
     
-1. For advanced usage, you can deploy iGEMGoTool to a personal server and open ports for the service. which will break the LAN restrictions.
+4. For advanced usage, you can deploy iGEMGoTool to a personal server and open ports for the service. which will break the LAN restrictions.
 
 we also provide configuration file, `config.json`, which will be automatically generated upon the first run of the application. It allows the user to customize certain parameters such as the directory containing the pages to be modified, the directory to store the edited pages, the port to be used, the tag to be scanned for insertion, and the file types to be scanned. The default values for these parameters can be seen in the example configuration file below:
 ```
