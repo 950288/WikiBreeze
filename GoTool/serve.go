@@ -10,6 +10,7 @@ import (
 	"strings"
 	"encoding/json"
 	"strconv"
+	"net"
 )
 
 // TreeNode represents a node in the tree
@@ -250,21 +251,39 @@ func main() {
 		fmt.Printf("saved %s successful\n", dir)
 		fmt.Fprintf(w, "success")
 	})
-
-	_ , err = os.Stat("./index.html")
-	if err != nil {
-		http.Handle("/", http.FileServer(http.Dir("../dist")))
-	} else {
+	// http.Handle("/", http.FileServer(http.Dir("../dist")))
+	stat , err := os.Stat("./index.html")
+	fmt.Println(stat)
+	if stat != nil {
+		// fmt.Println("Running in production mode")
 		http.Handle("/", http.FileServer(http.Dir("./")))
+	} else {
+		// fmt.Println("Running in development mode")
+		http.Handle("/", http.FileServer(http.Dir("../dist")))
 	}
 	fmt.Println("Server started on port", strconv.Itoa(port))
-	fmt.Println("Local:\t http://127.0.0.1:"+strconv.Itoa(port)+"/")
+	fmt.Println("Local:\t\t http://127.0.0.1:"+strconv.Itoa(port)+"/")
+
+	if ip := getOutboundIP(); ip != nil {
+		fmt.Println("Network:\t http://"+ip.String()+":"+strconv.Itoa(port)+"/")
+	}
 	
 	err = http.ListenAndServe(":"+ strconv.Itoa(port), nil)
+	
 	if err != nil {
 		fmt.Println("Error starting server:", err)
 		return
 	} 
 }
+func getOutboundIP () net.IP {
+	conn, err := net.Dial("udp", "8.8.8.8:80")
+	if err != nil {
+		fmt.Println("Error getting local IP")
+		return nil
+	}
+	defer conn.Close()
+	localAddr := conn.LocalAddr().(*net.UDPAddr)
+	return localAddr.IP
+} 
 
 // `<!-- iGEMGotool {{name}} start-->`
