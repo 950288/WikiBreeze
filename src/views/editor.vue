@@ -18,7 +18,7 @@ onMounted(() => {
         method: 'POST',
         body: JSON.stringify({
             page: history.state.index,
-            node: history.state.node
+            content: history.state.content
         }),
         headers: {
             'Content-Type': 'application/json'
@@ -32,14 +32,15 @@ onMounted(() => {
         console.log(val);
     });
 });
-function save(datas :JSON){
-    console.log(datas);
+function save(contentjson :JSON, contenthtml :string){
+    console.log(contentjson);
     let { data, error } = useFetch(requestUrl.value+"/savenode", {
         method: 'POST',
         body: JSON.stringify({
             page: history.state.index,
-            node: history.state.node,
-            content : datas
+            content: history.state.content,
+            Contentjson : contentjson,
+            Contenthtml : contenthtml
         }),
         headers: {
         'Content-Type': 'application/json'

@@ -13,13 +13,13 @@ import (
 	"net"
 )
 
-// TreeNode represents a node in the tree
+// TreeNode represents a content in the tree
 type TreeNode struct {
 	Subtree []*pages
 }
 type pages struct {
 	name string
-	node []*TreeNode
+	content []*TreeNode
 }
 func main() {
 	scanDir := "..\\"
@@ -152,7 +152,7 @@ func main() {
 		
 		type Data struct {
 			Page  string
-			Node string
+			Content string
 		}
 		var data Data
 
@@ -163,14 +163,11 @@ func main() {
 			fmt.Println(err)
 			return
 		}
-		page := data.Page
-		node := data.Node
 
-		fmt.Println("editing",node,"on",page)
-
+		fmt.Println("editing",data.Content,"on",data.Page)
 		//read json data and create it if it doesn't exist
-		dir := storeDir+"/"+page+"/"+node+".json" 
-		err = os.MkdirAll(storeDir+"/"+page, os.ModePerm)
+		dir := storeDir+"/"+ data.Page +"/"+ data.Content +".json" 
+		err = os.MkdirAll(storeDir+"/"+ data.Page , os.ModePerm)
 		if err != nil {
 			fmt.Println("Error creating directory:", err)
 			return
@@ -217,8 +214,9 @@ func main() {
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		type Data struct {
 			Page  string
-			Node string
-			Content json.RawMessage
+			Content string
+			Contentjson json.RawMessage
+			Contenthtml string
 		}
 		var data Data
 
@@ -229,12 +227,10 @@ func main() {
 			fmt.Println(err)
 			return
 		}
-		page := data.Page
-		node := data.Node
-		content := data.Content
 
+		fmt.Println(data.Contenthtml)
 		//Store json data
-		dir := storeDir+"/"+page+"/"+node+".json" 
+		dir := storeDir+"/"+data.Page+"/"+data.Content+".json" 
 		jsonFile, err := os.Open(dir)
 		if err != nil {
 			fmt.Println("Error saving file:", err)
@@ -243,7 +239,7 @@ func main() {
 		defer jsonFile.Close()
 		fmt.Printf("saving to file %s\n", dir)
 
-		err = ioutil.WriteFile(dir, []byte(string(content)), 0644)
+		err = ioutil.WriteFile(dir, []byte(string(data.Contentjson)), 0644)
 		if err != nil {
 			fmt.Println(err)
 			return

@@ -1,55 +1,132 @@
 <template>
   <div class="main content">
-    <h3>You are editing <u>{{ state.index }}</u> on page <u>{{ state.node }}.</u></h3>
+    <h3>You are editing <u>{{ state.index }}</u> on page <u>{{ state.content }}.</u></h3>
     <div class="buttons">
-
-    <button class="button is-success" v-if="mounted" @click="editor.chain().focus().toggleHeading({ level: 1 }).run()">
-      H1
-    </button>
-    <button class="button is-success" v-if="mounted" @click="editor.chain().focus().toggleHeading({ level: 2 }).run()">
-      H2
-    </button>
-    <button class="button is-success" v-if="mounted" @click="editor.chain().focus().toggleHeading({ level: 3 }).run()">
-      H3
-    </button>
-    <button class="button is-success" v-if="mounted" @click="editor.chain().focus().toggleBold().run()">
-      Bold
-    </button>
-    <button class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleItalic().run()">
-      <em>Italic</em>
-    </button>
-    <button class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleSuperscript().run()">
-      <sup>Sup</sup>
-    </button>
-    <button class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleSubscript().run()">
-      <sub>Sub</sub>
-    </button>
-    <button class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleUnderline().run()">
-      Underline
-    </button>
-    <button class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleBulletList().run()">
-      List
-    </button>
-    <button class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleCode().run()">
-      Code
-    </button>
-    <button class="button is-success " v-if="mounted" @click="editor.chain().focus().setLink({ href: 'https://example.com' }).run()">
-      set Link
-    </button>
-    <button class="button is-success " v-if="mounted" @click="editor.chain().focus().unsetLink().run()">
-      unset Link
-    </button>
-    <button class="button is-success " v-if="mounted" @click="editor.chain().focus().setImage({ src: 'https://example.com/foobar.png' }).run()">
-      image
-    </button>
-    <button class="button is-warning " v-if="mounted" @click="editor.chain().focus().unsetAllMarks().run()">
-      unset
-    </button>
-    <button class="button is-link" @click="save">save</button>
-  </div>
-  <editor-content :editor="editor" class="edit" />
-  <br>
-  <div class="block">click save after edited !</div>
+      <button id="button" class="button is-success" v-if="mounted"
+        @click="editor.chain().focus().toggleHeading({ level: 1 }).run()">
+        H1
+      </button>
+      <button id="button" class="button is-success" v-if="mounted"
+        @click="editor.chain().focus().toggleHeading({ level: 2 }).run()">
+        H2
+      </button>
+      <button id="button" class="button is-success" v-if="mounted"
+        @click="editor.chain().focus().toggleHeading({ level: 3 }).run()">
+        H3
+      </button>
+      <button id="button" class="button is-success" v-if="mounted" @click="editor.chain().focus().toggleBold().run()">
+        Bold
+      </button>
+      <button id="button" class="button is-success " v-if="mounted"
+        @click="editor.chain().focus().toggleItalic().run()">
+        <em>Italic</em>
+      </button>
+      <button id="button" class="button is-success " v-if="mounted"
+        @click="editor.chain().focus().toggleSuperscript().run()">
+        <sup>Sup</sup>
+      </button>
+      <button id="button" class="button is-success " v-if="mounted"
+        @click="editor.chain().focus().toggleSubscript().run()">
+        <sub>Sub</sub>
+      </button>
+      <button id="button" class="button is-success " v-if="mounted"
+        @click="editor.chain().focus().toggleUnderline().run()">
+        <u>Underline</u>
+      </button>
+      <button id="button" class="button is-success " v-if="mounted"
+        @click="editor.chain().focus().toggleStrike().run()">
+        <s>Strike</s>
+      </button>
+      <button id="button" class="button is-success " v-if="mounted"
+        @click="editor.chain().focus().toggleBulletList().run()">
+        List
+      </button>
+      <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleCode().run()">
+        Code
+      </button>
+      <button id="button" class="button is-success " v-if="mounted"
+        @click="editor.chain().focus().setLink({ href: 'https://example.com' }).run()">
+        set Link
+      </button>
+      <button id="button" class="button is-success " v-if="mounted"
+        @click="editor.chain().focus().setHardBreak().run()">
+        hardBreak
+      </button>
+      <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().unsetLink().run()">
+        unset Link
+      </button>
+      <button id="button" class="button is-success " v-if="mounted"
+        @click="editor.chain().focus().setImage({ src: 'https://example.com/foobar.png' }).run()">
+        image
+      </button>
+      <button id="button" class="button is-info Table" v-if="mounted" @click="TableToogle = TableToogle ? false : true">
+        <p>Table</p><img :class="{ imghover: TableToogle }" src="@/assets/angle.svg" />
+      </button>
+      <button id="button" class="button is-info " v-if="mounted && TableToogle"
+        @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()">
+        insertTable
+      </button>
+      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
+        @click="editor.chain().focus().addColumnBefore().run()">
+        addColumnBefore
+      </button>
+      <button id="button" class="button is-info " v-if="mounted && TableToogle"
+        @click="editor.chain().focus().addColumnAfter().run()">
+        addColumnAfter
+      </button>
+      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
+        @click="editor.chain().focus().deleteColumn().run()">
+        deleteColumn
+      </button>
+      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
+        @click="editor.chain().focus().addRowBefore().run()">
+        addRowBefore
+      </button>
+      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
+        @click="editor.chain().focus().addRowAfter().run()">
+        addRowAfter
+      </button>
+      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
+        @click="editor.chain().focus().deleteRow().run()">
+        deleteRow
+      </button>
+      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
+        @click="editor.chain().focus().deleteTable().run()">
+        deleteTable
+      </button>
+      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
+        @click="editor.chain().focus().mergeCells().run()">
+        mergeCells
+      </button>
+      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
+        @click="editor.chain().focus().splitCell().run()">
+        splitCell
+      </button>
+      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
+        @click="editor.chain().focus().toggleHeaderCell().run()">
+        toggleHeaderCell
+      </button>
+      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
+        @click="editor.chain().focus().fixTables().run()">
+        fixTables
+      </button>
+      <button id="button" class="button is-warning " v-if="mounted"
+        @click="editor.chain().focus().undo().run()">
+        undo⬅️
+      </button>
+      <button id="button" class="button is-warning " v-if="mounted"
+        @click="editor.chain().focus().redo().run()">
+        redo➡️
+      </button>
+      <button id="button" class="button is-warning " v-if="mounted"
+        @click="editor.chain().focus().unsetAllMarks().run()">
+        unset
+      </button>
+      <button id="button" class="button is-link" @click="save">save</button>
+    </div>
+    <editor-content :editor="editor" class="edit" />
+    <br>
+    <div class="block">click save after edited !</div>
   </div>
 
 </template>
@@ -70,21 +147,30 @@ import Bulletlist from '@tiptap/extension-bullet-list'
 import Listitem from '@tiptap/extension-list-item'
 import Image from '@tiptap/extension-image'
 import Link from '@tiptap/extension-link'
+import strike from '@tiptap/extension-strike'
+import hardBreak from '@tiptap/extension-hard-break'
+import Table from '@tiptap/extension-table'
+import TableRow from '@tiptap/extension-table-row'
+import TableHeader from '@tiptap/extension-table-header'
+import hardCell from '@tiptap/extension-table-cell'
+import History from '@tiptap/extension-history'
+
 
 import { generateHTML } from '@tiptap/html'
-import { onMounted, ref , defineEmits } from 'vue'
+import { onMounted, ref, defineEmits } from 'vue'
 const emit = defineEmits(['save'])
 const view = ref("click save!")
-
+const TableToogle = ref(false)
 const state = ref({
   index: history.state.index,
-  node: history.state.node})
+  content: history.state.content
+})
 
 const props = defineProps(['json'])
 
 const mounted = ref(false);
 Heading.configure({
-  levels: [1, 2 , 3],
+  levels: [1, 2, 3],
 })
 const CodePre = Code.extend({
   renderHTML({ HTMLAttributes }) {
@@ -93,6 +179,19 @@ const CodePre = Code.extend({
 })
 Link.configure({
   autolink: true,
+})
+const TablePre = Table.extend({
+  addAttributes() {
+    return {
+      class: {
+        default: "table"
+      },
+    }
+  },
+})
+History.configure({
+  depth: 100,
+  newGroupDelay: 500,
 })
 const extensions = [
   Document,
@@ -108,7 +207,14 @@ const extensions = [
   Bulletlist,
   Listitem,
   Image,
-  Link
+  Link,
+  hardBreak,
+  TablePre,
+  TableRow,
+  TableHeader,
+  hardCell,
+  strike,
+  History,
 ]
 const editor: any = useEditor({
   extensions: extensions,
@@ -123,39 +229,74 @@ onMounted(() => {
   console.log(editor.value)
   console.log(editor.value.chain().focus().toggleBold())
 })
-function save(){
+function save() {
   console.log(view.value = editor.value.getJSON())
   console.log(view.value = encodeURI(JSON.stringify(editor.value.getJSON())))
-  console.log(view.value = generateHTML(editor.value.getJSON(JSON.parse(decodeURI(view.value))),extensions))
-  emit('save',editor.value.getJSON());
+  console.log(view.value = generateHTML(editor.value.getJSON(JSON.parse(decodeURI(view.value))), extensions))
+  emit('save', editor.value.getJSON(), editor.value.getHTML());
 }
 </script>
 <style scoped lang="scss">
-.main{
+.main {
   background-color: var(--has-background-lightest-grey);
   padding: 0.3em;
   border-radius: 4px;
   margin: 0 0 0 0;
 }
+
+
+
 .bold {
   font-weight: bold;
 }
-.buttons{
-  margin: 0 0 0 0;
-}
-.buttons{
+
+
+.buttons {
   position: sticky;
   top: 60px;
-  // opacity: 0.6;
-  // background-color: var(--has-background-lightest-grey);
-}
-button {
-  margin: 0 5px 5px 0;
-  display: inline-block;
-  opacity: 0.9;
+  margin: 0 0 0 0;
+
+  #button {
+    margin-right: 0rem;
+    margin: 0 4px 4px 0;
+    display: inline-block;
+    opacity: 0.9;
+    transition: ease 0.2s;
+  }
+
+  #button:hover {
+    transform: scale(1.2);
+  }
+
+  #button.Table {
+    display: flex;
+    flex-direction: row;
+
+    p {
+      padding: 0 0 0 0;
+      margin: 0 0 0 0;
+      line-height: 1.5em;
+      width: auto;
+      display: inline-block;
+      padding-right: 1em;
+    }
+
+    img {
+      height: 1.5em;
+      width: 1.5em;
+      transform: rotate(-90deg);
+      transition: transform 0.5s ease;
+    }
+
+    .imghover {
+      transform: rotate(90deg);
+    }
+  }
 }
 
-button:hover{
+
+
+button:hover {
   opacity: 1;
 }
 
@@ -173,7 +314,7 @@ sub {
 </style>
 <style lang="scss">
 .ProseMirror {
-  padding-left: 0.4em;
+  padding: 0.4em;
   min-height: 25ch;
   outline: auto;
   outline-color: var(--has-border-dark);
@@ -182,6 +323,7 @@ sub {
 
 .ProseMirror-focused {
   outline: auto;
+
   >*+* {
     margin-top: 0.75em;
   }

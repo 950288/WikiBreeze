@@ -5,8 +5,8 @@
         <div class="box" v-for="(page, index) in data">
             <h2>{{ index }}</h2>
             <div class="buttons">
-                <button v-for="node in page" class="button is-primary is-outlined" @click="editnode(index.toString(), node)">
-                    {{node}}
+                <button v-for="content in page" class="button is-primary is-outlined" @click="editcontent(index.toString(), content)">
+                    {{content}}
                 </button>
                 <!-- <button class="button is-primary is-outlined">About_2</button> -->
             </div>
@@ -30,12 +30,12 @@ import { ref, watch } from "vue";
 import { router } from "@/main";
 import { requestUrl } from "@/App.vue";
 let { data, error } = useFetch(requestUrl.value + "/list").get().json();
-function editnode(index: string, node: string) {
+function editcontent(index: string, content: string) {
     router.push({
         name: "Editor",
         state: {
             index: index,
-            node: node,
+            content: content,
         }
     })
 }
