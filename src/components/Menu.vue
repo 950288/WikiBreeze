@@ -139,8 +139,8 @@ function handleMouseLeave(pageindex: number) {
   .ribbon.float {
     height: 40px;
     top: 10px;
-    width: 70%;
-    left: 15%;
+    width: 84%;
+    left: 8%;
     border-radius: 5px;
   }
 }
@@ -150,8 +150,8 @@ function handleMouseLeave(pageindex: number) {
   justify-content: flex-end;
   list-style: none;
   margin: 0;
-  margin-left: 15%;
-  margin-right: 15%;
+  margin-left: 8%;
+  margin-right: 8%;
   padding: 0;
   width: 100%;
 }
