@@ -20,7 +20,7 @@ To use iGEMGoTool, follow these steps:
 
 3. Double-click the iGEMGoTool executable to run the tool. Then you can see to generated URL in the Console like below. You can edit you page in the browser through the generated URL, iGEMGoTool also supports collaborative editing within a LAN (e.g. personal hotspot, campus network, etc.), where team members within the same LAN can access the editing page via the second link.
 ```
-   Server started on port 8080
+Server started on port 8080
     Local:           http://127.0.0.1:8080/
     Network:         http://192.168.Xx.xx:8080/
 ```
