@@ -1,29 +1,32 @@
-# iGEMGoTool （[English](https://github.com/950288/iGEMGoTool/blob/main/README.md)\）本文件上次更新 2023-1-2 21:19:56🛠️
+# iGEMGoTool （[English](https://github.com/950288/iGEMGoTool/blob/main/README.md)🛠️
 
 [![Email](https://img.shields.io/static/v1?label=Email&message=2779307196@qq.com&color=blue)](mailto:2779307196@qq.com)
 
-iGEMGoTool 是一个在线编辑器，可以帮助 iGEM 团队轻松编辑wiki。它由 Vue 3 实现的前端和 Go 实现的后端组成。
+iGEMGoTool 是一款在线协同wiki内容编辑器，能够实现wiki代码编写🧑‍💻与内容填充✍️的完全分离，具有极高的适配性和极简操作性🦾，能够极大提高wiki开发效率🥰。
 
-## 使用说明  🧑‍💼
+## 使用说明 (开发ing) 🧑‍💼
 
-iGEMGoTool 是一个用户友好的在线编辑器，允许 iGEM 团队轻松编辑wiki。它提供了一个简单的界面，用于修改页面。使用 iGEMGoTool，wiki编辑器可以专注于为wiki创建优质内容，而无需担心 HTML 和 CSS 的技术细节。
+iGEMGoTool 是一个用户友好的在线编辑器🧰，允许 iGEM 团队轻松编辑wiki。它提供了一个简单的界面，用于编辑wiki内容页面。并且全团队只需要一人安装，即可实现整个团队的协同编辑。使用 iGEMGoTool，wiki编辑器可以专注于为wiki创建优质内容，而无需担心 HTML 和 CSS 的技术细节。
 
 使用 iGEMGoTool，请按照以下步骤操作：
 
-1. 将解压的 `iGEMGoTool` 文件夹放入项目根目录中。
-2. 在您想要编辑的每个部分的 `.html` 或其他自定义文件类型中插入以下特殊标记： `<!-- iGEMGoTool {{name}} start-->`。将 `{{name}}` 替换为此部分的自定义名称。
-``` Example
-<!-- iGEMGotool test1 start-->
+1. 下载最新版的`iGEMGoTool`压缩包，将解压的 `iGEMGoTool` 文件夹放入你的wiki项目根目录中。
+2. 在您想要编辑的每 `.html` 文件或其他自定义文件类型中插入以下特殊标记： `<!-- iGEMGoTool {{name}} start-->`。将 `{{name}}` 替换为一个任意的自定义名称。(注意: 一个页面可以包含多个标记，每个标记所对应的部分可被单独编辑。)
+```
+<div>
+    <!-- iGEMGotool test1 start-->
+</div>
 ```
 
-3. 双击 iGEMGoTool 可执行文件运行工具。然后你可以在控制台中看到生成的 URL，如下所示。您可以通过生成的 URL 在浏览器中编辑页面，iGEMGoTool 还支持局域网内的协作编辑功能。
+
+1. 双击 iGEMGoTool 可执行文件运行工具。然后你可以在控制台中看到生成的 URL，如下所示。您可以通过生成的 URL 在浏览器中进行wiki编辑，iGEMGoTool 还支持局域网(如个人热点、校园网等)内的协作编辑功能，同一局域网内的团队成员可通过第二链接访问编辑页面。
 ```
    Server started on port 8080
     Local:           http://127.0.0.1:8080/
     Network:         http://192.168.Xx.xx:8080/
 ```
     
-4. 对于更高级的用法，您可以将 iGEMGoTool 部署到个人服务器并打开服务端口，这将打破局域网的局限。
+1. 对于进阶用法，您可以将 iGEMGoTool 部署到个人服务器并开启相应服务端口，这将破除局域网的局限。
 
 我们还提供了配置文件 config.json，该文件在应用程序首次运行时会自动生成。它允许用户自定义某些参数，如包含要修改的页面的目录、用于存储编辑的页面的目录、要使用的端口、要扫描的插入标记以及要扫描的文件类型。下面的示例配置文件显示了这些参数的默认值：
 ```
@@ -49,26 +52,26 @@ iGEMGoTool 是一个用户友好的在线编辑器，允许 iGEM 团队轻松编
 
 Note: 一个页面可以包含多个标记，每个标记对应可单独编辑的一个部分。
 
-## 开发人员指南 🧑‍💻
+## 构建指南 🧑‍💻
 
-以下内容适用于希望改进工具或自己编译工具的开发人员，但如果您只是想使用工具，则不需要进一步阅读！
+以下内容适用于希望对该工具进行改进开发人员，但如果您只是想进行基本的使用，则不需要进一步阅读！
 
-iGEMGoTool 使用包括 Vue 3 和 Go 的现代技术栈开发。前端使用 Vue 3 实现，并使用 Vite 构建工具构建。后端使用 Go 实现，为前端提供 RESTful API 以进行交互。
+iGEMGoTool 使用包括 Vue 3 和 Go 的技术栈开发。前端使用 Vue 3 和 Typescript 实现，并使用 Vite 构建工具构建。后端使用 Go 实现，为前端提供 RESTful API 以进行交互。
 
 要为 iGEMGoTool 设置开发环境，您需要在系统上安装 [Node.js](https://nodejs.org/) 和 [Go](https://golang.org/)。然后，按照以下步骤操作：
 
-1. 克隆此存储库并导航到根目录。
+1. 克隆此仓库并进入根目录。
 2. 运行 `npm install` 以安装前端所需的依赖项。
 
-要开始前端的开发，运行 `npm run dev`。
-要为生产环境构建前端，运行 `npm run build-web`。
+要进行前端的开发，运行 `npm run dev`。
+要进行前端构建，运行 `npm run build-web`。
 
 所有后端代码都位于 `GoTool` 目录下。
-要开始后端的开发，运行 go run GoTool/serve.go。
-要构建后端，运行 npm run build-go。
+要进行后端的开发，运行 `go run GoTool/serve.go`。
+要进行后端构建，运行 `npm run build-go`。
 
-为生产环境构建前端和后端，运行 npm run build-all。
-编译生成的目标程序位于 dist 文件夹中。
+为生产环境构建前端和后端，运行 `npm run build-all`。
+编译生成的目标程序位于 `dist` 文件夹中。
 
 
 ## 工作原理 📝
