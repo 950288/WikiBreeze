@@ -2,30 +2,32 @@
 
 [![Email](https://img.shields.io/static/v1?label=Email&message=950288s@gmail.com&color=blue)](mailto:950288s@gmail.com)
 
-iGEMGoTool is a Online Web Editor that helps iGEM teams easily edit their wikis. It consists of a front-end implemented in Vue 3 and a back-end implemented in Go.
+iGEMGoTool is an online collaborative wiki content editor that enables complete separation of wiki code writing🧑‍💻 and content filling ✍️ with high adaptability and extremely concise operability 🦾, which can greatly improve wiki development efficiency 🥰.
 
-## Introduction for Users 🧑‍💼
+## Introduction for Users (developing)🧑‍💼
 
-iGEMGoTool is a user-friendly Online Web Editor that allows iGEM teams to easily edit their wikis. It provides a simple interface for making changes to pages. With iGEMGoTool, wiki editors can focus on creating great content for their wikis without worrying about the technical details of HTML and CSS.
+iGEMGoTool is a user-friendly online editor 🧰 that allows iGEM teams to easily edit wikis. it provides a simple interface for editing wiki content pages. And only one person from the whole team needs to install it to enable collaborative editing for the whole team. With iGEMGoTool, wiki content editors can focus on quality content without having to think about the technical details of HTML and CSS.
 
 To use iGEMGoTool, follow these steps:
 
-1. put the Unziped `iGEMGoTool` folder into the root directory of your project.
-2. Insert the following special tag into your `.html` or other custom file type for each section that you want to edit: `<!-- iGEMGoTool {{name}} start-->`. Replace `{{name}}` with the The custom name for this section.
-``` Example
-<!-- iGEMGotool test1 start-->
+1. Download the latest version of the `iGEMGoTool` zip archive, put the Unziped `iGEMGoTool` folder into the root directory of your project.
+2. Insert the following special tag into your `.html` file or other custom file type for each section that you want to edit: `<!-- iGEMGoTool {{name}} start-->`. Replace `{{name}}` with the The custom name for this section.(Note: A page can contain multiple tags and each tag corresponds to a section that can be edited individually.)
+```
+<div>
+    <!-- iGEMGotool test1 start-->
+</div>
 ```
 
-3. Double-click the iGEMGoTool executable to run the tool. Then you can see to generated URL in the Console like below. You can edit you page in the browser through the generated URL, and iGEMGoTool also supports collaborative editing function in the local area network. 
+3. Double-click the iGEMGoTool executable to run the tool. Then you can see to generated URL in the Console like below. You can edit you page in the browser through the generated URL, iGEMGoTool also supports collaborative editing within a LAN (e.g. personal hotspot, campus network, etc.), where team members within the same LAN can access the editing page via the second link.
 ```
    Server started on port 8080
     Local:           http://127.0.0.1:8080/
     Network:         http://192.168.Xx.xx:8080/
 ```
     
-4. For advanced usage, you can deploy iGEMGoTool to a personal server and open ports for the service. which will break the LAN restrictions.
+4. For advanced usage, you can deploy iGEMGoTool to a personal server and open ports for the service without worrying about LAN restrictions
 
-we also provide configuration file, `config.json`, which will be automatically generated upon the first run of the application. It allows the user to customize certain parameters such as the directory containing the pages to be modified, the directory to store the edited pages, the port to be used, the tag to be scanned for insertion, and the file types to be scanned. The default values for these parameters can be seen in the example configuration file below:
+we also provide configuration file, `config.json`, which will be automatically generated upon the first run of the application. It allows the user to customize certain parameters such as the directory containing the pages to be modified, the directory to store the edited pages data, the port to be used, the tag to be scanned for insertion, and the file types to be scanned. The default values for these parameters can be seen in the example configuration file below:
 ```
 {
 	// Directory containing the page to be modified (e.g. "D:\\github\\web\\src\\pages")
@@ -47,13 +49,13 @@ we also provide configuration file, `config.json`, which will be automatically g
 }
 ```
 
-Note: A page can contain multiple tags and each tag corresponds to a section that can be edited individually.
 
-## Introduction for Developers 🧑‍💻
 
-The following is intended for developers who want to improve the tool or compile it by themselves, but if you just want to use the tool, it is not necessary to read further！
+## Project Building Guide 🧑‍💻
 
-iGEMGoTool is developed using a modern stack that includes Vue 3 and Go. The front-end is implemented using Vue 3 and is built using the Vite build tool. The back-end is implemented using Go and provides a RESTful API for the front-end to interact with.
+The following is for developers wishing to make improvements to the tool, but if you just want to do basic usage, no further reading is required!
+
+iGEMGoTool is developed using a modern stack that includes Vue 3 and Go. The front-end is implemented using Vue 3 and Typescript, and it is built using the Vite build tool. The back-end is implemented using Go and provides a RESTful API for the front-end to interact with.
 
 To set up the development environment for iGEMGoTool, you will need to have [Node.js](https://nodejs.org/) and [Go](https://golang.org/) installed on your system. Then, follow these steps:
 
@@ -86,7 +88,7 @@ graph TB
     end
 ```
 
-The front-end WebEditor sends HTTP requests to the back-end to retrieve and update page content. The back-end reads and writes to the file system to access and modify the pages on disk.
+The front-end WebEditor sends HTTP requests to the back-end to retrieve and update the edited content. The backend reads and writes automatically generated data files in real time and synchronizes the changes to the wiki code.
 
 ## Technology Stack 🛠️
 
