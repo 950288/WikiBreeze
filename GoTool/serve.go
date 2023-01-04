@@ -26,6 +26,7 @@ func main() {
 	storeDir := "..\\iGEMGotoolData"
 	reConfig := regexp.MustCompile(`<!--\s*iGEMGotool\s*(?P<name>\S+)\s*start-->`)
 	fileTypes := []string{".html",".vue"}
+	tagName := "iGEMGotool"
 	port := 8080
 
 	configFile, err := os.Open("./config.json")
@@ -89,6 +90,7 @@ func main() {
 		scanDir = configData.ScanDirectory
 		storeDir = configData.StoreDirectory
 		fileTypes = configData.FileTypes
+		tagName = configData.InsertTag
 		port = int(configData.Port)
 		reConfig = regexp.MustCompile(`<!--\s*`+ configData.InsertTag+`\s*(?P<name>\S+)\s*start-->`)
 		fmt.Println("read config.json successful !")
@@ -254,7 +256,39 @@ func main() {
 			return
 		}
 		//incert html data to 
+		fmt.Println(data.Contenthtml)
 		fmt.Println(dirs[data.Page + "?" + data.Content])
+		fmt.Println(tagName)
+		// Open the file using the path stored in the dirs map
+		file, err := os.Open(dirs[data.Page+"?"+data.Content])
+		if err != nil {
+			fmt.Println("Error opening file:", err)
+			return
+		}
+		defer file.Close()
+
+		// Read the file contents
+		b, err = ioutil.ReadAll(file)
+		if err != nil {
+			fmt.Println("Error reading file:", err)
+			return
+		}
+
+		// Use regular expressions to find the start and end tags
+		startTag := regexp.MustCompile(`<!--\s*` + tagName +`\s*` + data.Content + `\s*start-->`)
+		endTag := regexp.MustCompile(`<!--\s*` + tagName +`\s*` + data.Content+ `\s*end-->`)
+		// Replace the contents between the tags with data.Contenthtml
+		pattern  := startTag.FindIndex(b)
+		tagBefore := string(b[0:pattern[1]])
+		pattern = endTag.FindIndex(b)
+		tagAfter := string(b[pattern[0]:])
+		newContents := []byte(tagBefore + data.Contenthtml + tagAfter)
+		// Write the modified contents back to the file
+		err = ioutil.WriteFile(dirs[data.Page+"?"+data.Content], newContents, 0644)
+		if err != nil {
+			fmt.Println("Error writing to file:", err)
+			return
+		}
 		fmt.Printf("saved %s successful\n", dir)
 		fmt.Fprintf(w, "success")
 	})
