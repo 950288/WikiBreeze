@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build-all": "run-p type-check build-only && go build -o .\\dist\\ .\\GoTool\\serve.go",
-    "build-go": "go build -o .\\dist\\ .\\GoTool\\serve.go",
+    "build-all": "run-p type-check build-only && go build -o .\\dist\\ -ldflags=\"-w -s\" .\\GoTool\\serve.go",
+    "build-go": "go build -o .\\dist\\ -ldflags=\"-w -s\" .\\GoTool\\serve.go",
     "build-web": "run-p type-check build-only",
     "preview": "vite preview",
     "test:unit": "vitest --environment jsdom --root src/",
