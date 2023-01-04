@@ -86,20 +86,18 @@ func main() {
 			fmt.Println("Error parsing JSON:", err)
 			return
 		}
-		
 		scanDir = configData.ScanDirectory
 		storeDir = configData.StoreDirectory
 		fileTypes = configData.FileTypes
 		port = int(configData.Port)
 		reConfig = regexp.MustCompile(`<!--\s*`+ configData.InsertTag+`\s*(?P<name>\S+)\s*start-->`)
-
 		fmt.Println("read config.json successful !")
-
-
 	}
 
-	// Create map to store data
-	data := make(map[string][]string)
+	// Create map to store dataMap
+	dataMap := make(map[string][]string)
+	// Create map to store directory for each content
+	dirs := make(map[string]string)
 	//scan specified type of files in the directory
 	filepath.Walk(scanDir, func(path string, info os.FileInfo, err error) error {
 		// fileTypes = fileTypes.([]interface{})
@@ -115,12 +113,23 @@ func main() {
 				// Store file "incert tag name" values in map
 				fileName := strings.TrimSuffix(filepath.Base(path), fileType)
 				nameValues := make([]string, len(matches))
-
+				
 				if len(matches) > 0 {
 					for i , match := range matches {
 						nameValues[i] = match[1]
+						dirs[fileName+"?"+match[1]] = path
 					}
-					data[fileName] = nameValues
+					// Check if the fileName is already in the dataMap
+					uniqueName := fileName
+					for i := 1; ; i++ {
+						if _, ok := dataMap[uniqueName]; !ok {
+							// Unique fileName found, break the loop
+							break
+						}
+						// Append a number to the fileName and check again
+						uniqueName = fileName + strconv.Itoa(i)
+					}
+					dataMap[uniqueName] = nameValues
 				}
 
 			}
@@ -129,7 +138,7 @@ func main() {
 	})
 
 	// Serialize map to JSON string
-	jsonData, err := json.MarshalIndent(data, "", "    ")
+	jsonData, err := json.MarshalIndent(dataMap, "", "    ")
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -150,24 +159,24 @@ func main() {
 		w.Header().Set("Access-Control-Allow-Methods", "GET")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		
-		type Data struct {
+		type DataMap struct {
 			Page  string
 			Content string
 		}
-		var data Data
+		var dataMap DataMap
 
 		b := make([]byte, r.ContentLength)
 		r.Body.Read(b)
-		err := json.Unmarshal([]byte(string(b)), &data)
+		err := json.Unmarshal([]byte(string(b)), &dataMap)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 
-		fmt.Println("editing",data.Content,"on",data.Page)
+		fmt.Println("editing",dataMap.Content,"on",dataMap.Page)
 		//read json data and create it if it doesn't exist
-		dir := storeDir+"/"+ data.Page +"/"+ data.Content +".json" 
-		err = os.MkdirAll(storeDir+"/"+ data.Page , os.ModePerm)
+		dir := storeDir+"/"+ dataMap.Page +"/"+ dataMap.Content +".json" 
+		err = os.MkdirAll(storeDir+"/"+ dataMap.Page , os.ModePerm)
 		if err != nil {
 			fmt.Println("Error creating directory:", err)
 			return
@@ -228,7 +237,7 @@ func main() {
 			return
 		}
 
-		fmt.Println(data.Contenthtml)
+		// fmt.Println(data.Contenthtml)
 		//Store json data
 		dir := storeDir+"/"+data.Page+"/"+data.Content+".json" 
 		jsonFile, err := os.Open(dir)
@@ -244,6 +253,8 @@ func main() {
 			fmt.Println(err)
 			return
 		}
+		//incert html data to 
+		fmt.Println(dirs[data.Page + "?" + data.Content])
 		fmt.Printf("saved %s successful\n", dir)
 		fmt.Fprintf(w, "success")
 	})
