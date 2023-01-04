@@ -44,6 +44,12 @@
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleCode().run()">
         Code
       </button>
+      <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleCodeBlock().run()">
+        CodeBlock
+      </button>
+      <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().exitCode().run()">
+        ExitCode
+      </button>
       <button id="button" class="button is-success " v-if="mounted"
         @click="editor.chain().focus().setLink({ href: 'https://example.com' }).run()">
         set Link
@@ -139,6 +145,7 @@ import Italic from '@tiptap/extension-italic'
 import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
 import Code from '@tiptap/extension-code'
+import CodeBlock from '@tiptap/extension-code-block'
 import Text from '@tiptap/extension-text'
 import Bold from '@tiptap/extension-bold'
 import Underline from '@tiptap/extension-underline'
@@ -173,9 +180,9 @@ Heading.configure({
   levels: [1, 2, 3],
 })
 const CodePre = Code.extend({
-  renderHTML({ HTMLAttributes }) {
-    return ['pre', HTMLAttributes, 0]
-  },
+  // renderHTML({ HTMLAttributes }) {
+  //   // return ['pre', HTMLAttributes, 0]
+  // },
 })
 Link.configure({
   autolink: true,
@@ -202,6 +209,7 @@ const extensions = [
   Subscript,
   Superscript,
   CodePre,
+  CodeBlock,
   Underline,
   Heading,
   Bulletlist,
@@ -262,6 +270,7 @@ function save() {
     display: inline-block;
     opacity: 0.9;
     transition: ease 0.2s;
+
   }
 
   #button:hover {
@@ -319,6 +328,7 @@ sub {
   outline: auto;
   outline-color: var(--has-border-dark);
   outline-style: dashed;
+  // height: calc(100% + 50px);
 }
 
 .ProseMirror-focused {
