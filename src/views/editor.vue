@@ -1,8 +1,8 @@
 <template>
     <div class="content is-large">
         <br>
-        <tiptap v-if="contenetJson" @save="save" :json="contenetJson"/>
-        <progress v-if="!contenetJson" class="progress is-large is-info" max="100">60%</progress>
+        <tiptap v-if="contenetJson && renderConfigJson" @save="save" :contenetjson="contenetJson" :renderConfigJson="renderConfigJson"/>
+        <progress v-if="!(contenetJson && renderConfigJson)" class="progress is-large is-info" max="100">60%</progress>
         <br>
     </div>
 </template>
@@ -13,8 +13,9 @@ import Tiptap from '@/components/Tiptap.vue'
 import { ref, watch ,onMounted } from "vue";
 import { requestUrl } from "@/App.vue";
 const contenetJson = ref<JSON>();
+const renderConfigJson = ref<JSON>();
 onMounted(() => {
-    let { data, error } = useFetch(requestUrl.value+"/getnode", {
+    let { data , error: getnodeError } = useFetch(requestUrl.value+"/getnode", {
         method: 'POST',
         body: JSON.stringify({
             page: history.state.index,
@@ -28,7 +29,24 @@ onMounted(() => {
         contenetJson.value = val;
         console.log(val);
     });
-    watch(error, (val) => {
+    watch(getnodeError, (val) => {
+        console.log(val);
+    });
+    let { data: renderData , error: getRenderDataError} = useFetch(requestUrl.value+"/getRenderconfig", {
+        method: 'POST',
+        body: JSON.stringify({
+            page: history.state.index,
+            content: history.state.content
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).get().json();
+    watch(renderData, (val) => {
+        renderConfigJson.value = val;
+        console.log(val);
+    });
+    watch(getRenderDataError, (val) => {
         console.log(val);
     });
 });
