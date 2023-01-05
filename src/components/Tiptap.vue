@@ -44,7 +44,8 @@
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleCode().run()">
         Code
       </button>
-      <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleCodeBlock().run()">
+      <button id="button" class="button is-success " v-if="mounted"
+        @click="editor.chain().focus().toggleCodeBlock().run()">
         CodeBlock
       </button>
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().exitCode().run()">
@@ -116,12 +117,10 @@
         @click="editor.chain().focus().fixTables().run()">
         fixTables
       </button>
-      <button id="button" class="button is-warning " v-if="mounted"
-        @click="editor.chain().focus().undo().run()">
+      <button id="button" class="button is-warning " v-if="mounted" @click="editor.chain().focus().undo().run()">
         undo⬅️
       </button>
-      <button id="button" class="button is-warning " v-if="mounted"
-        @click="editor.chain().focus().redo().run()">
+      <button id="button" class="button is-warning " v-if="mounted" @click="editor.chain().focus().redo().run()">
         redo➡️
       </button>
       <button id="button" class="button is-warning " v-if="mounted"
@@ -138,6 +137,7 @@
 </template>
   
 <script setup lang="ts">
+import { mergeAttributes, Node } from '@tiptap/core'
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
@@ -173,7 +173,7 @@ const state = ref({
   content: history.state.content
 })
 
-const props = defineProps(['json'])
+const props = defineProps(['contenetjson' , "renderConfigJson"])
 
 const mounted = ref(false);
 Heading.configure({
@@ -196,13 +196,25 @@ const TablePre = Table.extend({
     }
   },
 })
+const Paragraphs = Paragraph.extend({
+  renderHTML({ HTMLAttributes }) {
+    return ['p', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
+  },
+  addAttributes() {
+    return {
+      // class: {
+      //   default: "paragraph"
+      // },
+    }
+  },
+})
 History.configure({
   depth: 100,
   newGroupDelay: 500,
 })
 const extensions = [
   Document,
-  Paragraph,
+  Paragraphs,
   Text,
   Bold,
   Italic,
@@ -224,9 +236,28 @@ const extensions = [
   strike,
   History,
 ]
+let extensions_costum: any = extensions.slice();
+let costum = props.renderConfigJson;
+console.log(extensions_costum)
+extensions_costum.forEach((extension: any, index: number) => {
+  if (costum[extension.name]) {
+    if (costum[extension.name].tag || costum[extension.name].HTMLAttributes) {
+      extension = extension.extend({
+        addAttributes() {
+          return costum[extension.name].HTMLAttributes
+        },
+        renderHTML({ HTMLAttributes } : any) {
+          return [costum[extension.name].tag, mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
+        },
+      })
+    }
+    extensions_costum[index] = extension
+  }
+})
+console.log(extensions_costum)
 const editor: any = useEditor({
   extensions: extensions,
-  content: props.json,
+  content: props.contenetjson,
   autofocus: true,
   editable: true,
   injectCSS: false,
@@ -239,8 +270,9 @@ onMounted(() => {
 })
 function save() {
   console.log(view.value = editor.value.getJSON())
-  console.log(view.value = encodeURI(JSON.stringify(editor.value.getJSON())))
-  console.log(view.value = generateHTML(editor.value.getJSON(JSON.parse(decodeURI(view.value))), extensions))
+  // console.log(view.value = encodeURI(JSON.stringify(editor.value.getJSON())))
+  console.log(generateHTML(editor.value.getJSON(view.value), extensions))
+  console.log(generateHTML(editor.value.getJSON(view.value), extensions_costum))
   emit('save', editor.value.getJSON(), editor.value.getHTML());
 }
 </script>

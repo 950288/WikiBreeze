@@ -27,6 +27,7 @@ func main() {
 	reConfig := regexp.MustCompile(`<!--\s*iGEMGotool\s*(?P<name>\S+)\s*start-->`)
 	fileTypes := []string{".html",".vue"}
 	tagName := "iGEMGotool"
+	renderConfigByte := []byte{}
 	var port int
 	configFile, err := os.Open("./config.json")
 	if err != nil {
@@ -111,7 +112,25 @@ func main() {
 		reConfig = regexp.MustCompile(`<!--\s*`+ configData.InsertTag+`\s*(?P<name>\S+)\s*start-->`)
 		fmt.Println("read config.json successful !")
 	}
+	
+	renderConfig, err := os.Open("./renderConfig.json")
+	if err != nil {	
+		renderConfigByte = []byte("{}")
+		//create renderConfig.json if it doesn't exist
+		renderConfig, err = os.Create("./renderConfig.json")
+		if err != nil {
+			printErr("Error creating renderConfig.json" + err.Error())
+		}
+	} else {
+		fmt.Println("read renderConfig.json successful !")
+		renderConfigByte, err = ioutil.ReadAll(renderConfig)
+		if err != nil {
+			printErr("Error reading file:"+ err.Error())
+			return
+		}
+		fmt.Println(string(renderConfigByte))
 
+	}
 	// Create map to store dataMap
 	dataMap := make(map[string][]string)
 	// Create map to store directory for each content
@@ -308,6 +327,13 @@ func main() {
 		}
 		printSuccess("saved " + dir + " successfully")
 		fmt.Fprintf(w, "success")
+	})
+	http.HandleFunc("/getRenderconfig", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println()
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		fmt.Fprintf(w, string(renderConfigByte))
 	})
 	//check if running in production mode
 	stat , err := os.Stat("./index.html")
