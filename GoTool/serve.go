@@ -27,14 +27,13 @@ func main() {
 	reConfig := regexp.MustCompile(`<!--\s*iGEMGotool\s*(?P<name>\S+)\s*start-->`)
 	fileTypes := []string{".html",".vue"}
 	tagName := "iGEMGotool"
-	port := 8080
-
+	var port int
 	configFile, err := os.Open("./config.json")
 	if err != nil {
 		//create config.json if it doesn't exist
 		configFile, err = os.Create("./config.json")
 		if err != nil {
-			fmt.Println("Error creating config.json", err)
+			printErr("Error creating config.json" + err.Error())
 		} else {
 			// Write the JSON string to the file
 			jsonString := 
@@ -45,8 +44,8 @@ func main() {
 	// Directory to store the edited page (e.g. "D:\\github\\web\\src\\iGEMGotoolData")
 	"StoreDirectory": "..\\iGEMGotoolData",
 
-	//Port to be used
-	"Port": 8080,
+	//Port to be used (e.g. "8080" or "auto")
+	"Port": auto,
 
 	//the tag to be scan and incert content (e.g. "iGEMGotool"),
 	//which be automatically converted to <!-- iGEMGotool {{name}} start-->
@@ -58,7 +57,7 @@ func main() {
 }`
 			err = ioutil.WriteFile("./config.json", []byte(jsonString), 0644)
 			if err != nil {
-				fmt.Println("Error writing to file:", err)
+				printErr("Error writing to file:" + err.Error())
 				return
 			}	
 			fmt.Println("created config.json")
@@ -67,7 +66,7 @@ func main() {
 	} else {
 		configByteValue, err := ioutil.ReadAll(configFile)
 		if err != nil {
-			fmt.Println("Error reading file:", err)
+			printErr("Error reading file:"+ err.Error())
 			return
 		}
 		// Parse config.json
@@ -76,7 +75,7 @@ func main() {
 		type config struct {
 			ScanDirectory string `json:"ScanDirectory"`
 			StoreDirectory string `json:"StoreDirectory"`
-			Port int `json:"Port"`
+			Port string `json:"Port"`
 			InsertTag string `json:"incert tag"`
 			FileTypes []string `json:"file type"`
 		}
@@ -84,14 +83,31 @@ func main() {
 		// fmt.Println("Parseing:\t", configJsonString)
 		err = json.Unmarshal([]byte(configJsonString), &configData)
 		if err != nil {
-			fmt.Println("Error parsing JSON:", err)
+			printErr("Error parsing JSON:"+ err.Error())
 			return
 		}
 		scanDir = configData.ScanDirectory
 		storeDir = configData.StoreDirectory
 		fileTypes = configData.FileTypes
 		tagName = configData.InsertTag
-		port = int(configData.Port)
+		if configData.Port != "auto" {
+			port, err = strconv.Atoi(configData.Port)
+			if err != nil {
+				printErr("Error parsing port:"+ err.Error())
+				return
+			}
+		} else {
+			// scan available port
+			for i  := 8080; ; i++ {
+				listener, err := net.Listen("tcp", ":"+strconv.Itoa(i))
+				if err != nil {
+					continue
+				}
+				port = listener.Addr().(*net.TCPAddr).Port
+				break
+			}
+		}
+		// port = int(configData.Port)
 		reConfig = regexp.MustCompile(`<!--\s*`+ configData.InsertTag+`\s*(?P<name>\S+)\s*start-->`)
 		fmt.Println("read config.json successful !")
 	}
@@ -171,7 +187,7 @@ func main() {
 		r.Body.Read(b)
 		err := json.Unmarshal([]byte(string(b)), &dataMap)
 		if err != nil {
-			fmt.Println(err)
+			printErr(err.Error())
 			return
 		}
 
@@ -180,7 +196,7 @@ func main() {
 		dir := storeDir+"/"+ dataMap.Page +"/"+ dataMap.Content +".json" 
 		err = os.MkdirAll(storeDir+"/"+ dataMap.Page , os.ModePerm)
 		if err != nil {
-			fmt.Println("Error creating directory:", err)
+			printErr("Error creating directory:"+ err.Error())
 			return
 		}
 		//read or create json file
@@ -190,14 +206,14 @@ func main() {
 			// File doesn't exist, create it
 			jsonFile, err = os.Create(dir)
 			if err != nil {
-				fmt.Println("Error creating file:", err)
+				printErr("Error creating file:"+ err.Error())
 				return
 			}
 			// Write the JSON string to the file
 			jsonString := "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Example Text\"}]}]}"
 			err = ioutil.WriteFile(dir, []byte(jsonString), 0644)
 			if err != nil {
-				fmt.Println("Error writing to file:", err)
+				printErr("Error writing to file:"+ err.Error())
 				return
 			}	
 			fmt.Println(dir+" created")
@@ -205,18 +221,19 @@ func main() {
 		defer jsonFile.Close()
 		byteValue, err := ioutil.ReadAll(jsonFile)
 		if err != nil {
-			fmt.Println("Error reading file:", err)
+			printErr("Error reading file:"+ err.Error())
 			return
 		}
 		// Parse the JSON data
 		var datas map[string]interface{}
-		fmt.Printf("reading from file %s\n", dir)
 		err = json.Unmarshal(byteValue, &datas)
 		if err != nil {
-			fmt.Println("Error parsing JSON:", err)
+			printErr("Error parsing JSON:"+ err.Error())
 			return
 		}
 		fmt.Fprintf(w, string(byteValue))
+		printSuccess("read from file "+dir+" successful")
+
 	})
 	http.HandleFunc("/savenode", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println()
@@ -230,21 +247,21 @@ func main() {
 			Contenthtml string
 		}
 		var data Data
-
+		//read json data
 		b := make([]byte, r.ContentLength)
 		r.Body.Read(b)
 		err := json.Unmarshal([]byte(string(b)), &data)
 		if err != nil {
-			fmt.Println(err)
+			printErr(err.Error())
 			return
 		}
+		fmt.Printf("saving to file %s\n")
 
-		// fmt.Println(data.Contenthtml)
 		//Store json data
 		dir := storeDir+"/"+data.Page+"/"+data.Content+".json" 
 		jsonFile, err := os.Open(dir)
 		if err != nil {
-			fmt.Println("Error saving file:", err)
+			printErr("Error saving file:"+ err.Error())
 			return
 		}
 		defer jsonFile.Close()
@@ -255,41 +272,41 @@ func main() {
 			fmt.Println(err)
 			return
 		}
-		//incert html data to 
-		fmt.Println(data.Contenthtml)
-		fmt.Println(dirs[data.Page + "?" + data.Content])
-		fmt.Println(tagName)
+		//incert html data to html file
 		// Open the file using the path stored in the dirs map
 		file, err := os.Open(dirs[data.Page+"?"+data.Content])
 		if err != nil {
-			fmt.Println("Error opening file:", err)
+			printErr("Error opening file:"+ err.Error())
 			return
 		}
 		defer file.Close()
-
 		// Read the file contents
 		b, err = ioutil.ReadAll(file)
 		if err != nil {
-			fmt.Println("Error reading file:", err)
+			printErr("Error reading file:"+ err.Error())
 			return
 		}
-
 		// Use regular expressions to find the start and end tags
 		startTag := regexp.MustCompile(`<!--\s*` + tagName +`\s*` + data.Content + `\s*start-->`)
 		endTag := regexp.MustCompile(`<!--\s*` + tagName +`\s*` + data.Content+ `\s*end-->`)
 		// Replace the contents between the tags with data.Contenthtml
-		pattern  := startTag.FindIndex(b)
-		tagBefore := string(b[0:pattern[1]])
-		pattern = endTag.FindIndex(b)
-		tagAfter := string(b[pattern[0]:])
+		startPattern  := startTag.FindIndex(b)
+		tagBefore := string(b[0:startPattern[1]])
+		endPattern := endTag.FindIndex(b)
+		var tagAfter string
+		if len(endPattern) == 0 {
+			tagAfter = "<!-- " + tagName +" " + data.Content+ " end-->\n" + string(b[startPattern[1] + 1:])
+		}else{
+			tagAfter = string(b[endPattern[0]:])
+		}
 		newContents := []byte(tagBefore + data.Contenthtml + tagAfter)
 		// Write the modified contents back to the file
 		err = ioutil.WriteFile(dirs[data.Page+"?"+data.Content], newContents, 0644)
 		if err != nil {
-			fmt.Println("Error writing to file:", err)
+			printErr("Error writing to file:"+ err.Error())
 			return
 		}
-		fmt.Printf("saved %s successful\n", dir)
+		printSuccess("saved " + dir + " successfully")
 		fmt.Fprintf(w, "success")
 	})
 	//check if running in production mode
@@ -301,16 +318,16 @@ func main() {
 		// fmt.Println("Running in development mode")
 		http.Handle("/", http.FileServer(http.Dir("../dist")))
 	}
-	fmt.Println("Server started on port", strconv.Itoa(port))
-	fmt.Println("Local:\t\t http://127.0.0.1:"+strconv.Itoa(port)+"/")
+	printSuccess("Server started on port" + strconv.Itoa(port))
+	fmt.Println("Local:\t\t"+"\033[0;36m"+"http://127.0.0.1:"+strconv.Itoa(port)+"/"+ "\033[0m")
 	//get local ip
 	if ip := getOutboundIP(); ip != nil {
-		fmt.Println("Network:\t http://"+ip.String()+":"+strconv.Itoa(port)+"/")
+		fmt.Println("Network:\t"+"\033[0;36m"+"http://"+ip.String()+":"+strconv.Itoa(port)+"/"+ "\033[0m")
 	}
 	
 	err = http.ListenAndServe(":"+ strconv.Itoa(port), nil)
 	if err != nil {
-		fmt.Println("Error starting server:", err)
+		printErr("Error starting server:"+ err.Error())
 		return
 	} 
 }
@@ -319,12 +336,19 @@ func main() {
 func getOutboundIP () net.IP {
 	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil {
-		fmt.Println("Error getting local IP")
+		printErr("Error getting local IP")
 		return nil
 	}
 	defer conn.Close()
 	localAddr := conn.LocalAddr().(*net.UDPAddr)
 	return localAddr.IP
 } 
+
+func printErr(err string) {
+	fmt.Println("\033[0;31m" , err , "\033[0m")
+}
+func printSuccess(msg string) {
+	fmt.Println("\033[0;32m" , msg , "\033[0m")
+}
 
 // `<!-- iGEMGotool {{name}} start-->`
