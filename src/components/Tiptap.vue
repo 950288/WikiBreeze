@@ -273,7 +273,7 @@ function save() {
   // console.log(view.value = encodeURI(JSON.stringify(editor.value.getJSON())))
   console.log(generateHTML(editor.value.getJSON(view.value), extensions))
   console.log(generateHTML(editor.value.getJSON(view.value), extensions_costum))
-  emit('save', editor.value.getJSON(), editor.value.getHTML());
+  emit('save', editor.value.getJSON(), generateHTML(editor.value.getJSON(view.value), extensions_costum));    
 }
 </script>
 <style scoped lang="scss">

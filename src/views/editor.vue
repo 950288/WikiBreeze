@@ -15,7 +15,7 @@ import { requestUrl } from "@/App.vue";
 const contenetJson = ref<JSON>();
 const renderConfigJson = ref<JSON>();
 onMounted(() => {
-    let { data , error: getnodeError } = useFetch(requestUrl.value+"/getnode", {
+    let { data , error: getnodeError } = useFetch(requestUrl.value+"/getdata", {
         method: 'POST',
         body: JSON.stringify({
             page: history.state.index,
@@ -51,8 +51,8 @@ onMounted(() => {
     });
 });
 function save(contentjson :JSON, contenthtml :string){
-    console.log(contentjson);
-    let { data, error } = useFetch(requestUrl.value+"/savenode", {
+    // console.log(contentjson);
+    let { data, error } = useFetch(requestUrl.value+"/savedata", {
         method: 'POST',
         body: JSON.stringify({
             page: history.state.index,
