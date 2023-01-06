@@ -128,6 +128,20 @@ func main() {
 			printErr("Error reading file:"+ err.Error())
 			return
 		}
+		renderConfigString := regexp.MustCompile(`(?m)^\s*//.*$|(?m)^\s*/\*[\s\S]*?\*/`).ReplaceAllString(string(renderConfigByte), "")
+		structure := make(map[string]interface{})
+		err = json.Unmarshal([]byte(renderConfigString), &structure)
+		if err != nil {
+			printErr("Error parsing JSON:"+ err.Error())
+			return
+		}
+		// Serialize map to JSON string
+		renderConfigByte, err = json.Marshal(structure)
+		if err != nil {
+			printErr("Error parsing JSON:"+ err.Error())
+			return
+		}
+		// fmt.Println(json.MarshalIndent(renderConfigByte, "", "    "))
 		fmt.Println(string(renderConfigByte))
 
 	}
@@ -175,22 +189,22 @@ func main() {
 	})
 
 	// Serialize map to JSON string
-	jsonData, err := json.MarshalIndent(dataMap, "", "    ")
+	listData, err := json.MarshalIndent(dataMap, "", "    ")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	
-	fmt.Println(string(jsonData) +"\n")
+	fmt.Println(string(listData) +"\n")
 	http.HandleFunc("/list", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println()
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-		fmt.Fprintf(w, string(jsonData))
-		fmt.Println("some one visit homepage and fetched edit list")
+		fmt.Fprintf(w, string(listData))
+		// fmt.Println("some one visit homepage and fetched edit list")
 	})
-	http.HandleFunc("/getnode", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/getdata", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println()
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET")
@@ -254,11 +268,15 @@ func main() {
 		printSuccess("read from file "+dir+" successful")
 
 	})
-	http.HandleFunc("/savenode", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/savedata", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println()
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		//if request is Preflight, return
+		if r.Method == "OPTIONS" {
+			return
+		}
 		type Data struct {
 			Page  string
 			Content string
@@ -269,8 +287,9 @@ func main() {
 		//read json data
 		b := make([]byte, r.ContentLength)
 		r.Body.Read(b)
-		err := json.Unmarshal([]byte(string(b)), &data)
+		err := json.Unmarshal((b), &data)
 		if err != nil {
+			// printErr(string(b))
 			printErr(err.Error())
 			return
 		}
