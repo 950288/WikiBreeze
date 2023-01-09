@@ -51,8 +51,7 @@
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().exitCode().run()">
         ExitCode
       </button>
-      <button id="button" class="button is-success " v-if="mounted"
-        @click="editor.chain().focus().setLink({ href: 'https://example.com' }).run()">
+      <button id="button" class="button is-success " v-if="mounted" @click="">
         set Link
       </button>
       <button id="button" class="button is-success " v-if="mounted"
@@ -63,15 +62,23 @@
         unset Link
       </button>
       <button id="button" class="button is-success " v-if="mounted"
-        @click="editor.chain().focus().setImage({ src: 'https://example.com/foobar.png' }).run()">
+        @click="editor.chain().focus().setImage(getURL('image URL')).run()">
         image
       </button>
       <button id="button" class="button is-info Table" v-if="mounted" @click="TableToogle = TableToogle ? false : true">
         <p>Table</p><img :class="{ imghover: TableToogle }" src="@/assets/angle.svg" />
       </button>
       <button id="button" class="button is-info " v-if="mounted && TableToogle"
-        @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()">
-        insertTable
+        @click="editor.chain().focus().insertTablePro({ rows: 3, cols: 3, withHeaderRow: true }).run()">
+        insertTablePro
+      </button>
+      <button id="button" class="button is-info " v-if="mounted && TableToogle"
+        @click="editor.chain().focus().deleteTablePro().run()">
+        deleteTablePro
+      </button>
+      <button id="button" class="button is-info " v-if="mounted && TableToogle"
+        @click="editor.chain().focus().insertTablePro().run();">
+        TablePro
       </button>
       <button id="button" class="button is-info  " v-if="mounted && TableToogle"
         @click="editor.chain().focus().addColumnBefore().run()">
@@ -137,7 +144,7 @@
 </template>
   
 <script setup lang="ts">
-import { mergeAttributes, Node } from '@tiptap/core'
+import { mergeAttributes} from '@tiptap/core'
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
@@ -157,6 +164,7 @@ import Link from '@tiptap/extension-link'
 import strike from '@tiptap/extension-strike'
 import hardBreak from '@tiptap/extension-hard-break'
 import Table from '@tiptap/extension-table'
+import TablePre from './TablePre'
 import TableRow from '@tiptap/extension-table-row'
 import TableHeader from '@tiptap/extension-table-header'
 import hardCell from '@tiptap/extension-table-cell'
@@ -172,29 +180,15 @@ const state = ref({
   index: history.state.index,
   content: history.state.content
 })
-
-const props = defineProps(['contenetjson' , "renderConfigJson"])
-
+const props = defineProps(['contenetjson', "renderConfigJson"])
 const mounted = ref(false);
 Heading.configure({
   levels: [1, 2, 3],
 })
 const CodePre = Code.extend({
-  // renderHTML({ HTMLAttributes }) {
-  //   // return ['pre', HTMLAttributes, 0]
-  // },
 })
 Link.configure({
   autolink: true,
-})
-const TablePre = Table.extend({
-  addAttributes() {
-    return {
-      class: {
-        default: "table"
-      },
-    }
-  },
 })
 const Paragraphs = Paragraph.extend({
   renderHTML({ HTMLAttributes }) {
@@ -202,15 +196,15 @@ const Paragraphs = Paragraph.extend({
   },
   addAttributes() {
     return {
-      // class: {
-      //   default: "paragraph"
-      // },
     }
   },
 })
 History.configure({
   depth: 100,
   newGroupDelay: 500,
+})
+let TableRowPro = TableRow.extend({
+  // content: '(tableCell | tableHeader)+',
 })
 const extensions = [
   Document,
@@ -229,8 +223,9 @@ const extensions = [
   Image,
   Link,
   hardBreak,
+  Table,
   TablePre,
-  TableRow,
+  TableRowPro,
   TableHeader,
   hardCell,
   strike,
@@ -246,7 +241,7 @@ extensions_costum.forEach((extension: any, index: number) => {
         addAttributes() {
           return costum[extension.name].HTMLAttributes
         },
-        renderHTML({ HTMLAttributes } : any) {
+        renderHTML({ HTMLAttributes }: any) {
           return [costum[extension.name].tag, mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
         },
       })
@@ -266,14 +261,20 @@ const editor: any = useEditor({
 onMounted(() => {
   mounted.value = true;
   console.log(editor.value)
-  console.log(editor.value.chain().focus().toggleBold())
+  // console.log(editor.value.chain().focus().toggleBold())
 })
 function save() {
-  console.log(view.value = editor.value.getJSON())
+  console.log(JSON.stringify(view.value = editor.value.getJSON()))
   // console.log(view.value = encodeURI(JSON.stringify(editor.value.getJSON())))
   console.log(generateHTML(editor.value.getJSON(view.value), extensions))
   console.log(generateHTML(editor.value.getJSON(view.value), extensions_costum))
-  emit('save', editor.value.getJSON(), generateHTML(editor.value.getJSON(view.value), extensions_costum));    
+  emit('save', editor.value.getJSON(), generateHTML(editor.value.getJSON(view.value), extensions_costum));
+}
+function getURL(this: any, msg: string) {
+  let url = window.prompt(msg)
+  if (url) {
+    editor.value.chain().focus().setImage({ src: url }).run()
+  }
 }
 </script>
 <style scoped lang="scss">

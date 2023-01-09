@@ -2,24 +2,13 @@
   <nav :class="`menu ${float}`">
     <div :class="`ribbon  ${float}`"></div>
     <ul class="nav-items">
-      <div
-        :class="`indicator`"
-        :style="{
-          left: `${indicator_X + drift_X}px`,
-          width: `${indicator_W - drift_W}px`,
-        }"
-      ></div>
-      <li
-        v-for="(route, index) in routes"
-        :key="route.name"
-        :class="`nav-item`"
-        :style="{
-          display: `${router.currentRoute.value.name == 'Home' && route.name != 'Home' ? 'none' : ''}`,
-        }"
-        @mouseenter="handleMouseEnter(route.name, index)"
-        @mouseleave="handleMouseLeave(index)"
-        ref="pages"
-      >
+      <div :class="`indicator`" :style="{
+        left: `${indicator_X + drift_X}px`,
+        width: `${indicator_W - drift_W}px`,
+      }"></div>
+      <li v-for="(route, index) in routes" :key="route.name" :class="`nav-item`" :style="{
+        display: `${router.currentRoute.value.name == 'Home' && route.name != 'Home' ? 'none' : ''}`,
+      }" @mouseenter="handleMouseEnter(route.name, index)" @mouseleave="handleMouseLeave(index)" ref="pages">
         <router-link :to="route.path" class="nav-link">{{
           route.name
         }}</router-link>
