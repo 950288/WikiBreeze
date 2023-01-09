@@ -13,22 +13,16 @@ import (
 	"net"
 )
 
-// TreeNode represents a content in the tree
-type TreeNode struct {
-	Subtree []*pages
-}
-type pages struct {
-	name string
-	content []*TreeNode
-}
+
 func main() {
+	//Initialize basic 
 	scanDir := "..\\"
-	storeDir := "..\\iGEMGotoolData"
-	reConfig := regexp.MustCompile(`<!--\s*iGEMGotool\s*(?P<name>\S+)\s*start-->`)
+	storeDir := ".\\WikiData"
+	port := 8080
+	PortConfig := "auto"
+	// reConfig := regexp.MustCompile(`<!--\s*WikiBreeze\s*(?P<name>\S+)\s*start-->`)
+	tagName := "WikiBreeze"
 	fileTypes := []string{".html",".vue"}
-	tagName := "iGEMGotool"
-	renderConfigByte := []byte{}
-	var port int
 	configFile, err := os.Open("./config.json")
 	if err != nil {
 		//create config.json if it doesn't exist
@@ -40,21 +34,20 @@ func main() {
 			jsonString := 
 `{
 	// Directory containing the page to be modified (e.g. "D:\\github\\web\\src\\pages")
-	"ScanDirectory": "..\\",
+	"scanDirectory": "..\\",
 
-	// Directory to store the edited page (e.g. "D:\\github\\web\\src\\iGEMGotoolData")
-	"StoreDirectory": "..\\iGEMGotoolData",
+	// Directory to store the edited page (e.g. "D:\\github\\web\\src\\WikiData")
+	"storeDirectory": ".\\WikiData",
 
 	//Port to be used (e.g. "8080" or "auto")
-	"Port": "auto",
+	"port": "auto",
 
-	//the tag to be scan and incert content (e.g. "iGEMGotool"),
-	//which be automatically converted to <!-- iGEMGotool {{name}} start-->
-	"incert tag":"iGEMGotool",
-
+	//the tag to be scan and incert content (e.g. "WikiBreeze"),
+	//which be automatically converted to <!-- WikiBreeze {{name}} start-->
+	"incertTag":"WikiBreeze",
 	
 	//file type to be scan (e.g. [".html",....])
-	"file type":[".html",".vue"]
+	"fileType":[".html",".vue"]
 }`
 			err = ioutil.WriteFile("./config.json", []byte(jsonString), 0644)
 			if err != nil {
@@ -73,13 +66,7 @@ func main() {
 		// Parse config.json
 		// Use a regular expression to remove comments from the JSON string
 		configJsonString := regexp.MustCompile(`(?m)^\s*//.*$|(?m)^\s*/\*[\s\S]*?\*/`).ReplaceAllString(string(configByteValue), "")
-		type config struct {
-			ScanDirectory string `json:"ScanDirectory"`
-			StoreDirectory string `json:"StoreDirectory"`
-			Port string `json:"Port"`
-			InsertTag string `json:"incert tag"`
-			FileTypes []string `json:"file type"`
-		}
+
 		var configData config
 		// fmt.Println("Parseing:\t", configJsonString)
 		err = json.Unmarshal([]byte(configJsonString), &configData)
@@ -108,11 +95,12 @@ func main() {
 				break
 			}
 		}
-		// port = int(configData.Port)
 		reConfig = regexp.MustCompile(`<!--\s*`+ configData.InsertTag+`\s*(?P<name>\S+)\s*start-->`)
 		fmt.Println("read config.json successful !")
 	}
 	
+	//Initialize render configuration
+	renderConfigByte := []byte{}
 	renderConfig, err := os.Open("./renderConfig.json")
 	if err != nil {	
 		renderConfigByte = []byte("{}")
@@ -395,5 +383,21 @@ func printErr(err string) {
 func printSuccess(msg string) {
 	fmt.Println("\033[0;32m" , msg , "\033[0m")
 }
+//
+type config struct {
+	scanDir string `json:"scanDirectory"`
+	storeDir string `json:"storeDirectory"`
+	Port string `json:"port"`
+	insertTag string `json:"incertTag"`
+	fileTypes []string `json:"fileType"`
+}
+// TreeNode represents a content in the tree
+type TreeNode struct {
+	Subtree []*pages
+}
+type pages struct {
+	name string
+	content []*TreeNode
+}
 
-// `<!-- iGEMGotool {{name}} start-->`
+// `<!-- WikiBreeze {{name}} start-->`

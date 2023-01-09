@@ -1,0 +1,4 @@
+{"routes" : [
+    { "path": "/", "name":"Home" ,"component": "","props": true},
+    { "path": "/editor", "name":"Editor" , "component": "" }
+]}
