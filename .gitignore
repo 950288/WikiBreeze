@@ -1,6 +1,6 @@
 # dist
-dist
-dist/index.html
+dist/*
+
 # FrontEnd directories and files
 frontEnd/node_modules
 frontEnd/dist
@@ -24,4 +24,3 @@ backEnd/WikiData/
 logs
 *.log
 *.local
-
