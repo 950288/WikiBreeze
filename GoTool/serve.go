@@ -46,7 +46,7 @@ func main() {
 	"StoreDirectory": "..\\iGEMGotoolData",
 
 	//Port to be used (e.g. "8080" or "auto")
-	"Port": auto,
+	"Port": "auto",
 
 	//the tag to be scan and incert content (e.g. "iGEMGotool"),
 	//which be automatically converted to <!-- iGEMGotool {{name}} start-->
