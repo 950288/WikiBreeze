@@ -1,5 +1,5 @@
 # dist
-dist/*
+dist/
 
 # FrontEnd directories and files
 frontEnd/node_modules
