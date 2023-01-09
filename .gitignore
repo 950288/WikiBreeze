@@ -1,23 +1,14 @@
-main.exe
-node_modules
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# dist
+./dist
 
-node_modules
-.DS_Store
-dist
-dist-ssr
-coverage
-*.local
+# FrontEnd directories and files
+frontEnd/node_modules
 
-/cypress/videos/
-/cypress/screenshots/
+# BackEnd directories and files
+./backEnd/serve.exe
+./backEnd/config.json
+./backEnd/WikiData/
+./backEnd/renderConfig.json
 
 # Editor directories and files
 .vscode/*
@@ -29,10 +20,7 @@ coverage
 *.sln
 *.sw?
 
-GoTool/serve.exe
-GoTool/data
-GoTool/config.json
-
-
-iGEMGotoolData/
-GoTool/renderConfig.json
+# Logs
+./logs
+./*.log
+./*.local
