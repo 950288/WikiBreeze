@@ -1,0 +1,18 @@
+{
+	// Directory containing the page to be modified (e.g. "D:\\github\\web\\src\\pages")
+	"ScanDirectory": "D:\\github\\web",
+
+	// Directory to store the edited page (e.g. "D:\\github\\web\\src\\iGEMGotoolData")
+	"StoreDirectory": "..\\iGEMGotoolData",
+
+	//Port to be used (e.g. "8080" or "auto")
+	"Port": "auto",
+
+	//the tag to be scan and incert content (e.g. "iGEMGotool"),
+	//which be automatically converted to <!-- iGEMGotool {{name}} start-->
+	"incert tag":"iGEMGotool",
+
+	
+	//file type to be scan (e.g. ".html")
+	"file type":[".html",".vue"]
+}

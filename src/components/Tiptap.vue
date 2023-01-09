@@ -52,33 +52,29 @@
         ExitCode
       </button>
       <button id="button" class="button is-success " v-if="mounted" @click="">
-        set Link
+        SetLink
       </button>
       <button id="button" class="button is-success " v-if="mounted"
         @click="editor.chain().focus().setHardBreak().run()">
-        hardBreak
+        HardBreak
       </button>
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().unsetLink().run()">
-        unset Link
+        UnsetLink
       </button>
       <button id="button" class="button is-success " v-if="mounted"
         @click="editor.chain().focus().setImage(getURL('image URL')).run()">
-        image
+        Image
       </button>
       <button id="button" class="button is-info Table" v-if="mounted" @click="TableToogle = TableToogle ? false : true">
         <p>Table</p><img :class="{ imghover: TableToogle }" src="@/assets/angle.svg" />
       </button>
       <button id="button" class="button is-info " v-if="mounted && TableToogle"
         @click="editor.chain().focus().insertTablePro({ rows: 3, cols: 3, withHeaderRow: true }).run()">
-        insertTablePro
+        TablePro
       </button>
       <button id="button" class="button is-info " v-if="mounted && TableToogle"
         @click="editor.chain().focus().deleteTablePro().run()">
         deleteTablePro
-      </button>
-      <button id="button" class="button is-info " v-if="mounted && TableToogle"
-        @click="editor.chain().focus().insertTablePro().run();">
-        TablePro
       </button>
       <button id="button" class="button is-info  " v-if="mounted && TableToogle"
         @click="editor.chain().focus().addColumnBefore().run()">
@@ -132,7 +128,11 @@
       </button>
       <button id="button" class="button is-warning " v-if="mounted"
         @click="editor.chain().focus().unsetAllMarks().run()">
-        unset
+        RemoveMark
+      </button>
+      <button id="button" class="button is-warning " v-if="mounted"
+        @click="editor.empty()">
+        RemoveAll
       </button>
       <button id="button" class="button is-link" @click="save">save</button>
     </div>
@@ -163,8 +163,9 @@ import Image from '@tiptap/extension-image'
 import Link from '@tiptap/extension-link'
 import strike from '@tiptap/extension-strike'
 import hardBreak from '@tiptap/extension-hard-break'
-import Table from '@tiptap/extension-table'
 import TablePre from './TablePre'
+import Table from '@tiptap/extension-table'
+import textAlign from '@tiptap/extension-text-align'
 import TableRow from '@tiptap/extension-table-row'
 import TableHeader from '@tiptap/extension-table-header'
 import hardCell from '@tiptap/extension-table-cell'
