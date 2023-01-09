@@ -1,0 +1,21 @@
+{
+    "paragraph": {
+        "HTMLAttributes": {
+            // "class": {
+            //     "default": "table"
+            // }
+        },
+        "tag": "h1"
+    },
+    "table" : {
+        "HTMLAttributes": {
+            // "class": {
+            //     "default": "table"
+            // },
+            // ":tablenote": {
+            //     "default": "table"
+            // }
+        },
+        "tag": "Tablegotool"
+    }
+}
