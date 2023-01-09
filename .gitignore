@@ -1,14 +1,14 @@
 # dist
-./dist
-
+dist
+dist/index.html
 # FrontEnd directories and files
 frontEnd/node_modules
+frontEnd/dist
 
 # BackEnd directories and files
-./backEnd/serve.exe
-./backEnd/config.json
-./backEnd/WikiData/
-./backEnd/renderConfig.json
+backEnd/serve.exe
+backEnd/config.json
+backEnd/WikiData/
 
 # Editor directories and files
 .vscode/*
@@ -21,6 +21,7 @@ frontEnd/node_modules
 *.sw?
 
 # Logs
-./logs
-./*.log
-./*.local
+logs
+*.log
+*.local
+
