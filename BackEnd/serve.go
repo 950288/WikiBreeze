@@ -13,7 +13,6 @@ import (
 	"net"
 )
 
-
 func main() {
 	//Initialize basic 
 	scanDir := "..\\"
