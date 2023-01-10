@@ -7,8 +7,9 @@ frontEnd/dist
 
 # BackEnd directories and files
 backEnd/serve.exe
-backEnd/config.json
+backEnd/*.json
 backEnd/WikiData/
+backEnd/configDir/
 
 # Editor directories and files
 .vscode/*

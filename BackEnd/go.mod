@@ -1,5 +1,3 @@
-module serve
+module WikiBreezeBackEnd
 
 go 1.19
-
-replace serve/utils => ./utils

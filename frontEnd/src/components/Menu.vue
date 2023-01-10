@@ -24,7 +24,7 @@
 import type { Ref } from "vue";
 import { ref, computed, onMounted, watch } from "vue";
 import type { NavItem } from "@/interface";
-import ThemeButton from "@/components/theme-button.vue";
+import ThemeButton from "@/components/ThemeButton";
 import { router } from "@/main";
 import { useWindowScroll } from "@vueuse/core";
 const pages = ref([]);
