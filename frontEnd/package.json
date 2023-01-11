@@ -12,6 +12,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@jridgewell/sourcemap-codec": "^1.4.14",
     "@tiptap/extension-bold": "^2.0.0-beta.209",
     "@tiptap/extension-bullet-list": "^2.0.0-beta.209",
     "@tiptap/extension-code": "^2.0.0-beta.209",
