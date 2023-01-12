@@ -1,31 +1,31 @@
-# iGEMGoTool （[简体中文](https://github.com/950288/iGEMGoTool/blob/main/README_zh.md)）🛠️
+# WikiBreeze （[简体中文](https://github.com/950288/WikiBreeze/blob/main/README_zh.md)）🛠️
 
 [![Email](https://img.shields.io/static/v1?label=Email&message=950288s@gmail.com&color=blue)](mailto:950288s@gmail.com)
 
-iGEMGoTool is an online collaborative wiki content editor that enables complete separation of wiki code writing🧑‍💻 and content filling ✍️ with high adaptability and extremely concise operability 🦾, which can greatly improve wiki development efficiency 🥰.
+WikiBreeze is an online collaborative wiki content editor that enables complete separation of wiki code writing🧑‍💻 and content filling ✍️ with high adaptability and extremely concise operability 🦾, which can greatly improve wiki development efficiency 🥰.
 
 ## Introduction for Users (developing)🧑‍💼
 
-iGEMGoTool is a user-friendly online editor 🧰 that allows iGEM teams to easily edit wikis. it provides a simple interface for editing wiki content pages. And only one person from the whole team needs to install it to enable collaborative editing for the whole team. With iGEMGoTool, wiki content editors can focus on quality content without having to think about the technical details of HTML and CSS.
+WikiBreeze is a user-friendly online editor 🧰 that allows iGEM teams to easily edit wikis. it provides a simple interface for editing wiki content pages. And only one person from the whole team needs to install it to enable collaborative editing for the whole team. With WikiBreeze, wiki content editors can focus on quality content without having to think about the technical details of HTML and CSS.
 
-To use iGEMGoTool, follow these steps:
+To use WikiBreeze, follow these steps:
 
-1. Download the latest version of the `iGEMGoTool` zip archive, put the Unziped `iGEMGoTool` folder into the root directory of your project.
-2. Insert the following special tag into your `.html` file or other custom file type for each section that you want to edit: `<!-- iGEMGoTool {{name}} start-->`. Replace `{{name}}` with the The custom name for this section.(Note: A page can contain multiple tags and each tag corresponds to a section that can be edited individually.)
+1. Download the latest version of the `WikiBreeze` zip archive, put the Unziped `WikiBreeze` folder into the root directory of your project.
+2. Insert the following special tag into your `.html` file or other custom file type for each section that you want to edit: `<!-- WikiBreeze {{name}} start-->`. Replace `{{name}}` with the The custom name for this section.(Note: A page can contain multiple tags and each tag corresponds to a section that can be edited individually.)
 ```
 <div>
-    <!-- iGEMGotool test1 start-->
+    <!-- WikiBreeze test1 start-->
 </div>
 ```
 
-3. Double-click the iGEMGoTool executable to run the tool. Then you can see to generated URL in the Console like below. You can edit you page in the browser through the generated URL, iGEMGoTool also supports collaborative editing within a LAN (e.g. personal hotspot, campus network, etc.), where team members within the same LAN can access the editing page via the second link.
+3. Double-click the WikiBreeze executable to run the tool. Then you can see to generated URL in the Console like below. You can edit you page in the browser through the generated URL, WikiBreeze also supports collaborative editing within a LAN (e.g. personal hotspot, campus network, etc.), where team members within the same LAN can access the editing page via the second link.
 ```
 Server started on port 8080
     Local:           http://127.0.0.1:8080/
     Network:         http://192.168.Xx.xx:8080/
 ```
     
-4. For advanced usage, you can deploy iGEMGoTool to a personal server and open ports for the service without worrying about LAN restrictions
+4. For advanced usage, you can deploy WikiBreeze to a personal server and open ports for the service without worrying about LAN restrictions
 
 we also provide configuration file, `config.json`, which will be automatically generated upon the first run of the application. It allows the user to customize certain parameters such as the directory containing the pages to be modified, the directory to store the edited pages data, the port to be used, the tag to be scanned for insertion, and the file types to be scanned. The default values for these parameters can be seen in the example configuration file below:
 ```
@@ -33,15 +33,15 @@ we also provide configuration file, `config.json`, which will be automatically g
 	// Directory containing the page to be modified (e.g. "D:\\github\\web\\src\\pages")
 	"ScanDirectory": "..\\",
 
-	// Directory to store the edited page (e.g. "D:\\github\\web\\src\\iGEMGotoolData")
-	"StoreDirectory": "..\\iGEMGotoolData",
+	// Directory to store the edited page (e.g. "D:\\github\\web\\src\\WikiBreezeData")
+	"StoreDirectory": "..\\WikiBreezeData",
 
 	//Port to be used
 	"Port": 8080,
 
-	//the tag to be scan and incert content (e.g. "iGEMGotool"),
-	//which be automatically converted to <!-- iGEMGotool {{name}} start-->
-	"incert tag":"iGEMGotool",
+	//the tag to be scan and incert content (e.g. "WikiBreeze"),
+	//which be automatically converted to <!-- WikiBreeze {{name}} start-->
+	"incert tag":"WikiBreeze",
 
 	
 	//file type to be scan (e.g. [".html",....])
@@ -55,9 +55,9 @@ we also provide configuration file, `config.json`, which will be automatically g
 
 The following is for developers wishing to make improvements to the tool, but if you just want to do basic usage, no further reading is required!
 
-iGEMGoTool is developed using a modern stack that includes Vue 3 and Go. The front-end is implemented using Vue 3 and Typescript, and it is built using the Vite build tool. The back-end is implemented using Go and provides a RESTful API for the front-end to interact with.
+WikiBreeze is developed using a modern stack that includes Vue 3 and Go. The front-end is implemented using Vue 3 and Typescript, and it is built using the Vite build tool. The back-end is implemented using Go and provides a RESTful API for the front-end to interact with.
 
-To set up the development environment for iGEMGoTool, you will need to have [Node.js](https://nodejs.org/) and [Go](https://golang.org/) installed on your system. Then, follow these steps:
+To set up the development environment for WikiBreeze, you will need to have [Node.js](https://nodejs.org/) and [Go](https://golang.org/) installed on your system. Then, follow these steps:
 
 1. Clone this repository and navigate to the root directory.
 2. Run `npm install` to install the required dependencies for the front-end.
@@ -74,14 +74,14 @@ The target program generated by the compilation is under the dist folder
 
 ## Working Principle 📝
 
-The working principle of iGEMGoTool can be summarized in the following diagram:
+The working principle of WikiBreeze can be summarized in the following diagram:
 
 ```mermaid
 graph TB
     user1 --edit--> WebEditor
     user2 --edit--> WebEditor
     user.. --edit--> WebEditor
-    subgraph iGEMGoTool server
+    subgraph WikiBreeze server
         WebEditor(WebEditor) --track changes--> backend(backend)
         backend --read/write to file system--> data(local datas)
         data --incert codes--> pages(your .html files)

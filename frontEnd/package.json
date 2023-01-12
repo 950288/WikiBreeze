@@ -1,6 +1,6 @@
 {
-  "name": "igemgotool",
-  "version": "0.0.0",
+  "name": "wikibreeze",
+  "version": "0.3.3",
   "private": true,
   "scripts": {
     "dev": "vite",
