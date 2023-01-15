@@ -20,135 +20,23 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(config.ScanDir)
-	//Initialize basic
-	scanDir := "..\\"
-	storeDir := ".\\WikiData"
-	port := 8080
-	// PortConfig := "auto"
-	// reConfig := regexp.MustCompile(`<!--\s*WikiBreeze\s*(?P<name>\S+)\s*start-->`)
-	tagName := "WikiBreeze"
-	fileTypes := []string{".html", ".vue"}
-	reConfig := regexp.MustCompile(`<!--\s*` + "WikiBreeze" + `\s*(?P<name>\S+)\s*start-->`)
-	configFile, err := os.Open("./config.json")
+
+	reConfig := regexp.MustCompile(`<!--\s*` + config.TagName + `\s*(?P<name>\S+)\s*start-->`)
+	port := utils.ScanPort(config.Port)
+	RenderConfigString, err := utils.ReadRenderConfig()
 	if err != nil {
-		//create config.json if it doesn't exist
-		configFile, err = os.Create("./config.json")
-		if err != nil {
-			printErr("Error creating config.json" + err.Error())
-		} else {
-			// Write the JSON string to the file
-			jsonString :=
-				`{
-	// Directory containing the page to be modified (e.g. "D:\\github\\web\\src\\pages")
-	"scanDirectory": "..\\",
-
-	// Directory to store the edited page (e.g. "D:\\github\\web\\src\\WikiData")
-	"storeDirectory": ".\\WikiData",
-
-	//Port to be used (e.g. "8080" or "auto")
-	"port": "auto",
-
-	//the tag to be scan and incert content (e.g. "WikiBreeze"),
-	//which be automatically converted to <!-- WikiBreeze {{name}} start-->
-	"incertTag":"WikiBreeze",
-
-	//file type to be scan (e.g. [".html",....])
-	"fileType":[".html",".vue"]
-}`
-			err = ioutil.WriteFile("./config.json", []byte(jsonString), 0644)
-			if err != nil {
-				printErr("Error writing to file:" + err.Error())
-				return
-			}
-			fmt.Println("created config.json")
-			defer configFile.Close()
-		}
-	} else {
-		configByteValue, err := ioutil.ReadAll(configFile)
-		if err != nil {
-			printErr("Error reading file:" + err.Error())
-			return
-		}
-		// Parse config.json
-		// Use a regular expression to remove comments from the JSON string
-		configJsonString := regexp.MustCompile(`(?m)^\s*//.*$|(?m)^\s*/\*[\s\S]*?\*/`).ReplaceAllString(string(configByteValue), "")
-
-		var configData utils.Config
-		// fmt.Println("Parseing:\t", configJsonString)
-		err = json.Unmarshal([]byte(configJsonString), &configData)
-		if err != nil {
-			printErr("Error parsing JSON:" + err.Error())
-			return
-		}
-		scanDir = configData.ScanDir
-		storeDir = configData.StoreDir
-		fileTypes = configData.FileTypes
-		tagName = configData.InsertTag
-		if configData.Port != "auto" {
-			port, err = strconv.Atoi(configData.Port)
-			if err != nil {
-				printErr("Error parsing port:" + err.Error())
-				return
-			}
-		} else {
-			// scan available port
-			for i := 8080; ; i++ {
-				listener, err := net.Listen("tcp", ":"+strconv.Itoa(i))
-				if err != nil {
-					continue
-				}
-				port = listener.Addr().(*net.TCPAddr).Port
-				break
-			}
-		}
-		reConfig = regexp.MustCompile(`<!--\s*` + configData.InsertTag + `\s*(?P<name>\S+)\s*start-->`)
-		fmt.Println("read config.json successful !")
+		log.Fatal(err)
 	}
 
-	//Initialize render configuration
-	renderConfigByte := []byte{}
-	renderConfig, err := os.Open("./renderConfig.json")
-	if err != nil {
-		renderConfigByte = []byte("{}")
-		//create renderConfig.json if it doesn't exist
-		renderConfig, err = os.Create("./renderConfig.json")
-		if err != nil {
-			printErr("Error creating renderConfig.json" + err.Error())
-		}
-	} else {
-		fmt.Println("read renderConfig.json successful !")
-		renderConfigByte, err = ioutil.ReadAll(renderConfig)
-		if err != nil {
-			printErr("Error reading file:" + err.Error())
-			return
-		}
-		//json.decoder can be used to take out comments
-		renderConfigString := regexp.MustCompile(`(?m)^\s*//.*$|(?m)^\s*/\*[\s\S]*?\*/`).ReplaceAllString(string(renderConfigByte), "")
-		structure := make(map[string]interface{})
-		err = json.Unmarshal([]byte(renderConfigString), &structure)
-		if err != nil {
-			printErr("Error parsing JSON:" + err.Error())
-			return
-		}
-		// Serialize map to JSON string
-		renderConfigByte, err = json.Marshal(structure)
-		if err != nil {
-			printErr("Error parsing JSON:" + err.Error())
-			return
-		}
-		// fmt.Println(json.MarshalIndent(renderConfigByte, "", "    "))
-		fmt.Println(string(renderConfigByte))
-
-	}
 	// Create map to store dataMap
 	dataMap := make(map[string][]string)
 	// Create map to store directory for each content
 	dirs := make(map[string]string)
 	//scan specified type of files in the directory
-	filepath.Walk(scanDir, func(path string, info os.FileInfo, err error) error {
-		// fileTypes = fileTypes.([]interface{})
-		for _, fileType := range fileTypes {
+	//
+	filepath.Walk(config.ScanDir, func(path string, info os.FileInfo, err error) error {
+
+		for _, fileType := range config.FileTypes {
 			if filepath.Ext(path) == fileType {
 				// Read file contents
 				b, err := ioutil.ReadFile(path)
@@ -222,8 +110,8 @@ func main() {
 
 		fmt.Println("editing", dataMap.Content, "on", dataMap.Page)
 		//read json data and create it if it doesn't exist
-		dir := storeDir + "/" + dataMap.Page + "/" + dataMap.Content + ".json"
-		err = os.MkdirAll(storeDir+"/"+dataMap.Page, os.ModePerm)
+		dir := config.StoreDir + "/" + dataMap.Page + "/" + dataMap.Content + ".json"
+		err = os.MkdirAll(config.StoreDir+"/"+dataMap.Page, os.ModePerm)
 		if err != nil {
 			printErr("Error creating directory:" + err.Error())
 			return
@@ -292,7 +180,7 @@ func main() {
 		fmt.Printf("saving to file %s\n")
 
 		//Store json data
-		dir := storeDir + "/" + data.Page + "/" + data.Content + ".json"
+		dir := config.StoreDir + "/" + data.Page + "/" + data.Content + ".json"
 		jsonFile, err := os.Open(dir)
 		if err != nil {
 			printErr("Error saving file:" + err.Error())
@@ -321,15 +209,15 @@ func main() {
 			return
 		}
 		// Use regular expressions to find the start and end tags
-		startTag := regexp.MustCompile(`<!--\s*` + tagName + `\s*` + data.Content + `\s*start-->`)
-		endTag := regexp.MustCompile(`<!--\s*` + tagName + `\s*` + data.Content + `\s*end-->`)
+		startTag := regexp.MustCompile(`<!--\s*` + config.TagName + `\s*` + data.Content + `\s*start-->`)
+		endTag := regexp.MustCompile(`<!--\s*` + config.TagName + `\s*` + data.Content + `\s*end-->`)
 		// Replace the contents between the tags with data.Contenthtml
 		startPattern := startTag.FindIndex(b)
 		tagBefore := string(b[0:startPattern[1]])
 		endPattern := endTag.FindIndex(b)
 		var tagAfter string
 		if len(endPattern) == 0 {
-			tagAfter = "<!-- " + tagName + " " + data.Content + " end-->\n" + string(b[startPattern[1]+1:])
+			tagAfter = "<!-- " + config.TagName + " " + data.Content + " end-->\n" + string(b[startPattern[1]+1:])
 		} else {
 			tagAfter = string(b[endPattern[0]:])
 		}
@@ -348,7 +236,7 @@ func main() {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-		fmt.Fprintf(w, string(renderConfigByte))
+		fmt.Fprintf(w, string(RenderConfigString))
 	})
 	//check if running in production mode
 	stat, err := os.Stat("./index.html")

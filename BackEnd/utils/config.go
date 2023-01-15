@@ -12,8 +12,30 @@ var DefaultConfig = `{
 
 	//the tag to be scan and incert content (e.g. "WikiBreeze"),
 	//which be automatically converted to <!-- WikiBreeze {{name}} start-->
-	"incertTag":"WikiBreeze",
+	"tagName":"WikiBreeze",
 
 	//file type to be scan (e.g. [".html",....])
 	"fileType":[".html",".vue"]
+}`
+
+var DefaultRenderConfig = `{
+    "paragraph": {
+        "HTMLAttributes": {
+            // "class": {
+            //     "default": "table"
+            // }
+        },
+        "tag": "h1"
+    },
+    "table" : {
+        "HTMLAttributes": {
+            // "class": {
+            //     "default": "table"
+            // },
+            // ":tablenote": {
+            //     "default": "table"
+            // }
+        },
+        "tag": "Tablegotool"
+    }
 }`
