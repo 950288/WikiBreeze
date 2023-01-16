@@ -7,8 +7,10 @@ import (
 	"log"
 	"net"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 type Config struct {
@@ -17,15 +19,6 @@ type Config struct {
 	Port      string   `json:"port"`
 	TagName   string   `json:"tagName"`
 	FileTypes []string `json:"fileType"`
-}
-
-// TreeNode represents a content in the tree
-type TreeNode struct {
-	Subtree []*pages
-}
-type pages struct {
-	name    string
-	content []*TreeNode
 }
 
 func ReadConfig() (Config, error) {
@@ -69,13 +62,13 @@ func ReadConfig() (Config, error) {
 	// remove comments
 	comment := regexp.MustCompile(`(?s)//.*?\n|/\*.*?\*/`)
 	configDataString = comment.ReplaceAllString(configDataString, "")
-	fmt.Println(configDataString)
 
 	// decode json to struct
 	err = json.Unmarshal([]byte(configDataString), &configData)
 	if err != nil {
 		log.Fatal(fmt.Errorf("error parsing config.json: %w", err))
 	}
+	fmt.Println("config:\t", configData)
 	return configData, nil
 }
 func ReadRenderConfig() (string, error) {
@@ -112,13 +105,12 @@ func ReadRenderConfig() (string, error) {
 			log.Fatal(fmt.Errorf("error reading renderConfig.json: %w", err))
 		}
 		configRenderString = string(jsonBytes)
-		fmt.Println("read config.json sccessfully")
+		fmt.Println("read renderConfig.json sccessfully")
 	}
 	configFile.Close()
 	// remove comments
 	comment := regexp.MustCompile(`(?s)//.*?\n|/\*.*?\*/`)
 	configRenderString = comment.ReplaceAllString(configRenderString, "")
-	fmt.Println(configRenderString)
 
 	// decode json to struct
 	err = json.Unmarshal([]byte(configRenderString), &configRender)
@@ -126,7 +118,13 @@ func ReadRenderConfig() (string, error) {
 		log.Fatal(fmt.Errorf("error parsing config.json: %w", err))
 	}
 
-	return configRenderString, nil
+	//convert configRender to json string
+	RenderString, err := json.Marshal(configRender)
+	if err != nil {
+		log.Fatal(fmt.Errorf("error parsing config.json: %w", err))
+	}
+	fmt.Println("renderConfig:\t" + string(RenderString))
+	return string(RenderString), nil
 }
 func ScanPort(Port string) int {
 	var port int
@@ -153,4 +151,91 @@ func ScanPort(Port string) int {
 		}
 	}
 	return port
+}
+func ScanFiles(ScanDir string, FileTypes []string, TagName string) (map[string]string, []byte, error) {
+	fmt.Println("scanning files in " + ScanDir)
+	// Create a editor dataMap
+	dataMap := make(map[string][]string)
+	// Create map to store directory for each content
+	// using [fileName+"?"content] as key
+	dirs := make(map[string]string)
+	// Create a regular expression to extract content in each page
+	reConfig := regexp.MustCompile(`<!--\s*` + TagName + `\s*(?P<name>\S+)\s*start-->`)
+	// Scan specified type of files in the directory
+	filepath.Walk(ScanDir, func(path string, info os.FileInfo, err error) error {
+		for _, fileType := range FileTypes {
+			if filepath.Ext(path) == fileType {
+				// Read file contents
+				file, err := os.Open(path)
+				if err != nil {
+					PrintErr("error opening file" + path + ":" + err.Error())
+				}
+				defer file.Close()
+				// Get the file size
+				fileInfo, _ := file.Stat()
+				fileSize := fileInfo.Size()
+
+				// Initialize the byte slice
+				b := make([]byte, fileSize)
+
+				_, err = file.Read(b)
+				if err != nil {
+					return err
+				}
+				// fmt.Print(b)
+				fileName := strings.TrimSuffix(filepath.Base(path), fileType)
+				// Extract content name from file contents
+				matches := reConfig.FindAllStringSubmatch(string(b), -1)
+				contents := make([]string, len(matches))
+				if len(matches) > 0 {
+					for i, match := range matches {
+						contents[i] = match[1]
+						dirs[fileName+"?"+match[1]] = path
+					}
+					// Check if the fileName is already in the dataMap
+					uniqueName := fileName
+					for i := 1; ; i++ {
+						if _, ok := dataMap[uniqueName]; !ok {
+							// Unique fileName found, break the loop
+							break
+						}
+						// Append a number to the fileName and check again
+						uniqueName = fileName + strconv.Itoa(i)
+					}
+					dataMap[uniqueName] = contents
+				}
+
+			}
+		}
+		return nil
+	})
+	// Serialize map to JSON string
+	dataMapByte, err := json.MarshalIndent(dataMap, "", "    ")
+	if err != nil {
+		return nil, nil, fmt.Errorf("error serializing dataMap: %w", err)
+	}
+	fmt.Println("scanned files successfully")
+	if len(dataMap) == 0 {
+		fmt.Println("no files found")
+	} else {
+		fmt.Println("dataMap:\t" + string(dataMapByte))
+		fmt.Println("dirs:\t" + fmt.Sprint(dirs))
+	}
+	return dirs, dataMapByte, nil
+}
+func GetOutboundIP() net.IP {
+	conn, err := net.Dial("udp", "8.8.8.8:80")
+	if err != nil {
+		PrintErr("Error getting local IP")
+		return nil
+	}
+	defer conn.Close()
+	localAddr := conn.LocalAddr().(*net.UDPAddr)
+	return localAddr.IP
+}
+func PrintErr(err string) {
+	fmt.Println("\033[0;31m", err, "\033[0m")
+}
+func PrintSuccess(msg string) {
+	fmt.Println("\033[0;32m", msg, "\033[0m")
 }
