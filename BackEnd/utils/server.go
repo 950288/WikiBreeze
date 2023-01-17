@@ -22,19 +22,28 @@ type Content struct {
 
 func HandlerFetchContentList(getContentByte []byte) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println()
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		//If request is Preflight, return
+		if r.Method == "OPTIONS" {
+			return
+		}
+		fmt.Println()
+
 		fmt.Fprint(w, string(getContentByte))
 	}
 }
 func HandlerGetContent(StoreDir string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println()
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		//If request is Preflight, return
+		if r.Method == "OPTIONS" {
+			return
+		}
+		fmt.Println()
 
 		var getContent GetContent
 		b := make([]byte, r.ContentLength)
@@ -54,7 +63,7 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 			return
 		}
 		//read or create json file
-		jsonFile, err := os.Open(dir)
+		jsonFile, err := os.OpenFile(dir, os.O_RDWR|os.O_CREATE, 0644)
 		if err != nil {
 			fmt.Println("Creating file " + getContent.Content + ".json")
 			// File doesn't exist, create it
@@ -73,8 +82,8 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 			PrintSuccess(dir + " created")
 		}
 		defer jsonFile.Close()
-		var byteValue []byte
-		_, err = io.ReadFull(jsonFile, byteValue)
+		// Read the JSON file
+		byteValue, err := io.ReadAll(jsonFile)
 		if err != nil {
 			PrintErr("Error reading file" + getContent.Content + ".json" + err.Error())
 			return
@@ -92,7 +101,6 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 }
 func HandlerSaveContent(StoreDir string, dirs map[string]string, TagName string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println()
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -100,6 +108,7 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string, TagName string)
 		if r.Method == "OPTIONS" {
 			return
 		}
+		fmt.Println()
 		var content Content
 		//Read json data
 		b := make([]byte, r.ContentLength)
@@ -113,9 +122,16 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string, TagName string)
 
 		//Store json data
 		dir := StoreDir + "/" + content.Page + "/" + content.Content + ".json"
-		jsonFile, err := os.Open(dir)
+		jsonFile, err := os.OpenFile(dir, os.O_RDWR|os.O_CREATE, 0644)
 		if err != nil {
 			PrintErr("Error open " + dir + ":" + err.Error())
+			return
+		}
+		// remove previous data
+		jsonFile.Truncate(0)
+		_, err = jsonFile.Seek(0, 0)
+		if err != nil {
+			PrintErr("Error seeking to beginning of file:" + err.Error())
 			return
 		}
 		_, err = jsonFile.Write([]byte(string(content.Contentjson)))
@@ -126,7 +142,7 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string, TagName string)
 
 		// Incert html data to file
 		// Open the file using the path stored in the dirs map
-		file, err := os.Open(dirs[content.Page+"?"+content.Content])
+		file, err := os.OpenFile(dirs[content.Page+"?"+content.Content], os.O_RDWR|os.O_CREATE, 0644)
 		if err != nil {
 			PrintErr("Error opening file" + dir + ":" + err.Error())
 			return
@@ -155,6 +171,13 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string, TagName string)
 		}
 		// connect tagBefore, the content data, and tagAfter
 		newContents := []byte(tagBefore + content.Contenthtml + tagAfter)
+		// remove the old contents
+		jsonFile.Truncate(0)
+		_, err = file.Seek(0, 0)
+		if err != nil {
+			PrintErr("Error seeking to beginning of file:" + err.Error())
+			return
+		}
 		// Write the modified contents back to the file
 		_, err = file.Write(newContents)
 		if err != nil {
@@ -168,10 +191,15 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string, TagName string)
 }
 func HandlergetRenderconfig(RenderConfigString string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println()
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		//If request is Preflight, return
+		if r.Method == "OPTIONS" {
+			return
+		}
+		fmt.Println()
+
 		fmt.Fprint(w, string(RenderConfigString))
 	}
 }

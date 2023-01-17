@@ -3,7 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net"
 	"os"
@@ -50,7 +50,7 @@ func ReadConfig() (Config, error) {
 		defer configFile.Close()
 
 		// read json file
-		jsonBytes, err := ioutil.ReadAll(configFile)
+		jsonBytes, err := io.ReadAll(configFile)
 		if err != nil {
 			log.Fatal(fmt.Errorf("error reading config.json: %w", err))
 		}
@@ -100,7 +100,7 @@ func ReadRenderConfig() (string, error) {
 		defer configFile.Close()
 
 		// read json file
-		jsonBytes, err := ioutil.ReadAll(configFile)
+		jsonBytes, err := io.ReadAll(configFile)
 		if err != nil {
 			log.Fatal(fmt.Errorf("error reading renderConfig.json: %w", err))
 		}
@@ -171,18 +171,12 @@ func ScanFiles(ScanDir string, FileTypes []string, TagName string) (map[string]s
 					PrintErr("error opening file" + path + ":" + err.Error())
 				}
 				defer file.Close()
-				// Get the file size
-				fileInfo, _ := file.Stat()
-				fileSize := fileInfo.Size()
 
-				// Initialize the byte slice
-				b := make([]byte, fileSize)
-
-				_, err = file.Read(b)
+				// Read file contents
+				b, err := io.ReadAll(file)
 				if err != nil {
 					return err
 				}
-				// fmt.Print(b)
 				fileName := strings.TrimSuffix(filepath.Base(path), fileType)
 				// Extract content name from file contents
 				matches := reConfig.FindAllStringSubmatch(string(b), -1)

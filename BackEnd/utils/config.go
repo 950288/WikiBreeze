@@ -22,10 +22,10 @@ var DefaultRenderConfig = `{
     "paragraph": {
         "HTMLAttributes": {
             // "class": {
-            //     "default": "table"
+            //     "default": "paragraph"
             // }
         },
-        "tag": "h1"
+        "tag": "p"
     },
     "table" : {
         "HTMLAttributes": {

@@ -5,7 +5,7 @@
             //     "default": "table"
             // }
         },
-        "tag": "h1"
+        "tag": "p"
     },
     "table" : {
         "HTMLAttributes": {
