@@ -47,17 +47,27 @@ export default Node.create({
   },
 
   renderHTML({ HTMLAttributes = {} }) {
-    console.log('renderHTML')
+    // console.log('renderHTML')
     return ['table-pro', 0]
   },
 
   addCommands() {
     return {
+
       insertTablePro: ({ rows = 2, cols = 2, withHeaderRow = true } = {}) => ({ commands, editor, tr }) => {
         const table = createTable(editor.schema, rows, cols, withHeaderRow)
-        const noteNode = editor.schema.nodes.paragraph.createAndFill(null, [
-          editor.schema.text('add table note'),
-        ])
+        // use createChecked to create a table node without checking the schema
+        // const noteNode = editor.schema.nodes.paragraph.createChecked(null, [
+        console.log(editor.schema.marks)
+        const noteMark = editor.schema.marks.bold.create({
+          class: "tableNote"
+        });
+        const noteNode = editor.schema.nodes.paragraph.createAndFill(
+          {class: "tableNote"}
+          , [
+            editor.schema.text('add table note'),
+          ])
+        //add class "note" to noteNode 
         if (!noteNode) {
           return false
         }
@@ -68,7 +78,7 @@ export default Node.create({
         console.log(JSON.stringify(tableWithNoteNode))
         return true
       },
-      deleteTablePro: () => ({ commands, editor , tr}) => {
+      deleteTablePro: () => ({ commands, editor, tr }) => {
         const { from, to } = tr.selection;
         let node = tr.doc.nodeAt(from);
         if (node?.type.name == 'TablePro') {
