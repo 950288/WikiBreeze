@@ -1,5 +1,6 @@
-import { mergeAttributes, Node } from '@tiptap/core'
+import { mergeAttributes, Node, findParentNodeClosestToPos } from '@tiptap/core'
 import { createTable } from '@tiptap/extension-table'
+
 
 /**
  * @name TablePro
@@ -53,25 +54,23 @@ export default Node.create({
 
   addCommands() {
     return {
-
       insertTablePro: ({ rows = 2, cols = 2, withHeaderRow = true } = {}) => ({ commands, editor, tr }) => {
         const table = createTable(editor.schema, rows, cols, withHeaderRow)
         // use createChecked to create a table node without checking the schema
         // const noteNode = editor.schema.nodes.paragraph.createChecked(null, [
         console.log(editor.schema.marks)
-        const noteMark = editor.schema.marks.bold.create({
-          class: "tableNote"
-        });
-        const noteNode = editor.schema.nodes.paragraph.createAndFill(
-          {class: "tableNote"}
+        const noteNode = editor.schema.nodes.paragraph.createChecked(
+          { class: "tableNote" }
           , [
             editor.schema.text('add table note'),
           ])
+
+        console.log("'''''''''''''''''''''''''")
+        console.log(JSON.stringify(noteNode))
         //add class "note" to noteNode 
         if (!noteNode) {
           return false
         }
-        console.log(JSON.stringify(noteNode))
 
         const tableWithNoteNode = editor.schema.nodes.TablePro.createChecked({}, [noteNode, table])
         tr.insert(tr.selection.from - 1, tableWithNoteNode)
@@ -79,13 +78,12 @@ export default Node.create({
         return true
       },
       deleteTablePro: () => ({ commands, editor, tr }) => {
-        const { from, to } = tr.selection;
-        let node = tr.doc.nodeAt(from);
-        if (node?.type.name == 'TablePro') {
-          tr.delete(from, to);
+        const { $from } = tr.selection;
+        const tablePro = findParentNodeClosestToPos($from, (node) => node.type === editor.schema.nodes.TablePro);
+        if (tablePro) {
+          tr.delete(tablePro.pos, tablePro.pos + tablePro.node.nodeSize)
           return true;
         }
-
         return false;
       }
     }

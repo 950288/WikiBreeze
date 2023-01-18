@@ -9,6 +9,7 @@
     }
 
     tbody,thead {
+        text-align: center;
         tr {
             background-color: var(--has-background-lightest-grey);
             // border-width: 0 0 1px;
@@ -19,6 +20,7 @@
                 padding: 0.5rem;
                 border: 1px solid var(--has-border-dark);
                 border-width: 0 1px 1px;
+                text-align: center;
             }
             th {
                 color: var(--has-text-black);
@@ -34,7 +36,7 @@
         }
 
         tr:nth-child(2n) {
-            background-color: var(--has-background-white);
+            // background-color: var(--has-background-white);
         }
 
         tr:hover {
@@ -47,7 +49,18 @@
 
 }
 .content table-pro{
-    p.note{
-        
+    display: block;
+    //outline with rounded corners on top
+    border: 2px solid var(--has-border-dark);
+    border-radius: 5px 5px 0 0;
+    padding: 0;
+    
+
+    p.tableNote{
+        //bold
+        font-weight: 600;
+        margin-top: .5em;
+        margin-bottom: .2em;
+        text-align: center;
     }
 }

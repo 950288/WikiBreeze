@@ -192,13 +192,16 @@ Link.configure({
   autolink: true,
 })
 const Paragraphs = Paragraph.extend({
+  addAttributes() {
+    // Return an object with attribute configuration
+    return {
+    class: { default: null },
+  }
+  },
   renderHTML({ HTMLAttributes }) {
     return ['p', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
   },
-  addAttributes() {
-    return {
-    }
-  },
+
 })
 History.configure({
   depth: 100,
