@@ -172,7 +172,7 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string, TagName string)
 		// connect tagBefore, the content data, and tagAfter
 		newContents := []byte(tagBefore + content.Contenthtml + tagAfter)
 		// remove the old contents
-		jsonFile.Truncate(0)
+		file.Truncate(0)
 		_, err = file.Seek(0, 0)
 		if err != nil {
 			PrintErr("Error seeking to beginning of file:" + err.Error())
