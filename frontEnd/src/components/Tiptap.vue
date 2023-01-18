@@ -2,18 +2,16 @@
   <div class="main content">
     <h3>You are editing <u>{{ state.index }}</u> on page <u>{{ state.content }}.</u></h3>
     <div class="buttons">
-      <button id="button" class="button is-success" v-if="mounted"
-        @click="editor.chain().focus().toggleHeading({ level: 1 }).run()">
-        H1
-      </button>
-      <button id="button" class="button is-success" v-if="mounted"
-        @click="editor.chain().focus().toggleHeading({ level: 2 }).run()">
-        H2
-      </button>
-      <button id="button" class="button is-success" v-if="mounted"
-        @click="editor.chain().focus().toggleHeading({ level: 3 }).run()">
-        H3
-      </button>
+      <div class="button" id="heading-toggle">
+        <div class="heading-wrap">
+          <button
+            v-for="(item, index) in costum.otherConfigurations ? costum.otherConfigurations.headingLevels : [1, 2, 3]"
+            :id="'button ' + index" class="button is-success" v-if="mounted"
+            @click="editor.chain().focus().toggleHeading({ level: item }).run()">
+            H{{ item }}<img :class="{ imghover: TableToogle }" src="@/assets/angle.svg" />
+          </button>
+        </div>
+      </div>
       <button id="button" class="button is-success" v-if="mounted" @click="editor.chain().focus().toggleBold().run()">
         Bold
       </button>
@@ -130,8 +128,7 @@
         @click="editor.chain().focus().unsetAllMarks().run()">
         RemoveMark
       </button>
-      <button id="button" class="button is-warning " v-if="mounted"
-        @click="editor.empty()">
+      <button id="button" class="button is-warning " v-if="mounted" @click="editor.empty()">
         RemoveAll
       </button>
       <button id="button" class="button is-link" @click="save">save</button>
@@ -144,7 +141,7 @@
 </template>
   
 <script setup lang="ts">
-import { mergeAttributes} from '@tiptap/core'
+import { mergeAttributes } from '@tiptap/core'
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
@@ -183,9 +180,11 @@ const state = ref({
 })
 const props = defineProps(['contenetjson', "renderConfigJson"])
 const mounted = ref(false);
+let costum = props.renderConfigJson;
 Heading.configure({
-  levels: [1, 2, 3],
+  levels: costum.otherConfigurations ? costum.otherConfigurations.headingLevels : [1, 2, 3],
 })
+console.log(costum)
 const CodePre = Code.extend({
 })
 Link.configure({
@@ -195,8 +194,8 @@ const Paragraphs = Paragraph.extend({
   addAttributes() {
     // Return an object with attribute configuration
     return {
-    class: { default: null },
-  }
+      class: { default: null },
+    }
   },
   renderHTML({ HTMLAttributes }) {
     return ['p', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
@@ -236,7 +235,7 @@ const extensions = [
   History,
 ]
 let extensions_costum: any = extensions.slice();
-let costum = props.renderConfigJson;
+
 console.log(extensions_costum)
 extensions_costum.forEach((extension: any, index: number) => {
   if (costum[extension.name]) {
@@ -338,6 +337,53 @@ function getURL(this: any, msg: string) {
       transform: rotate(90deg);
     }
   }
+}
+
+#heading-toggle {
+  margin: 0 4px 4px 0;
+  padding: 0;
+  z-index: 1;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  .heading-wrap {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    .button {
+      margin: 0;
+      transition: ease 0.2s;
+
+      img {
+        height: 1.5em;
+        width: 1.5em;
+        transform: rotate(0deg);
+        transition: transform 0.5s ease;
+        margin-left: .5em;
+      } 
+
+
+    }
+    .heading-wrap {
+    .button:first-child {
+      img{
+        display: none;
+        .p1:hover ~ .d1{
+	background-color: #fff;
+}
+      }
+    }}
+    
+
+
+    .button:hover {
+      transform: scale(1.2);
+    }
+  }
+
 }
 
 
