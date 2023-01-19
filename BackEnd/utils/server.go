@@ -63,7 +63,7 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 			return
 		}
 		//read or create json file
-		jsonFile, err := os.OpenFile(dir, os.O_RDWR|os.O_CREATE, 0644)
+		jsonFile, err := os.Open(dir)
 		if err != nil {
 			fmt.Println("Creating file " + getContent.Content + ".json")
 			// File doesn't exist, create it
@@ -74,18 +74,24 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 			}
 			// Write the JSON string to the file
 			jsonString := "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Example Text\"}]}]}"
-			jsonFile.Write([]byte(jsonString))
+			_, err = jsonFile.WriteString(jsonString)
+			//some bug remains
 			if err != nil {
 				PrintErr("Error writing to file " + getContent.Content + ".json" + err.Error())
 				return
 			}
 			PrintSuccess(dir + " created")
 		}
-		defer jsonFile.Close()
+		jsonFile.Close()
+		jsonFile, err = os.Open(dir)
+		if err != nil {
+			PrintErr("Error opening file " + getContent.Content + ".json" + err.Error())
+			return
+		}
 		// Read the JSON file
 		byteValue, err := io.ReadAll(jsonFile)
 		if err != nil {
-			PrintErr("Error reading file" + getContent.Content + ".json" + err.Error())
+			PrintErr("Error reading file " + getContent.Content + ".json " + err.Error())
 			return
 		}
 		// Parse the JSON data
@@ -95,7 +101,7 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 			PrintErr("Error parsing JSON:" + err.Error())
 			return
 		}
-		fmt.Fprint(w, string(byteValue))
+		fmt.Fprintln(w, string(byteValue))
 		PrintSuccess("read from file " + dir + " successful")
 	}
 }

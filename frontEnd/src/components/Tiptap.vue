@@ -68,10 +68,26 @@
       </button>
         </div>
       </div>
-      <button id="button" class="button is-success " v-if="mounted"
-        @click="editor.chain().focus().setImage(getURL('image URL')).run()">
-        TextAline
-      </button>
+        <button id="button" class="button is-success " v-if="mounted">
+          textAlign
+        </button>
+        <button id="button" class="button is-success " v-if="mounted"
+          @click="editor.chain().focus().setTextAlign('left').run()">
+          Left
+        </button>
+        <button id="button" class="button is-success " v-if="mounted"
+          @click="editor.chain().focus().setTextAlign('right').run()">
+          Right
+        </button>
+        <button id="button" class="button is-success " v-if="mounted"
+          @click="editor.chain().focus().setTextAlign('center').run()">
+          Center
+        </button>
+        <button id="button" class="button is-success " v-if="mounted"
+          @click="editor.chain().focus().setTextAlign('justify').run()">
+          Justify
+        </button>
+      </div>
       <button id="button" class="button is-info Table" v-if="mounted" @click="TableToogle = TableToogle ? false : true">
         <p>Table</p><img :class="{ imghover: TableToogle }" src="@/assets/angle.svg" />
       </button>
@@ -171,7 +187,7 @@ import strike from '@tiptap/extension-strike'
 import hardBreak from '@tiptap/extension-hard-break'
 import TablePre from './TablePro'
 import Table from '@tiptap/extension-table'
-import textAlign from '@tiptap/extension-text-align'
+import TextAlign from '@tiptap/extension-text-align'
 import TableRow from '@tiptap/extension-table-row'
 import TableHeader from '@tiptap/extension-table-header'
 import hardCell from '@tiptap/extension-table-cell'
@@ -239,7 +255,7 @@ const extensions = [
   TablePre,
   TableRowPro,
   TableHeader,
-  textAlign,
+  TextAlign,
   hardCell,
   strike,
   History,
