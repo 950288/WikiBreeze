@@ -2,8 +2,8 @@
   <div class="main content">
     <h3>You are editing <u>{{ state.index }}</u> on page <u>{{ state.content }}.</u></h3>
     <div class="buttons">
-      <div class="button" id="heading-toggle">
-        <div class="heading-wrap">
+      <div class="button" id="buttons-toggle">
+        <div class="buttons-wrap">
           <button
             v-for="(item, index) in costum.otherConfigurations ? costum.otherConfigurations.headingLevels : [1, 2, 3]"
             :id="'button ' + index" class="button is-success" v-if="mounted"
@@ -59,9 +59,18 @@
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().unsetLink().run()">
         UnsetLink
       </button>
-      <button id="button" class="button is-success " v-if="mounted"
+      <div class="buttons">
+      <div class="button" id="buttons-toggle">
+        <div class="buttons-wrap">
+          <button id="button" class="button is-success " v-if="mounted"
         @click="editor.chain().focus().setImage(getURL('image URL')).run()">
         Image
+      </button>
+        </div>
+      </div>
+      <button id="button" class="button is-success " v-if="mounted"
+        @click="editor.chain().focus().setImage(getURL('image URL')).run()">
+        TextAline
       </button>
       <button id="button" class="button is-info Table" v-if="mounted" @click="TableToogle = TableToogle ? false : true">
         <p>Table</p><img :class="{ imghover: TableToogle }" src="@/assets/angle.svg" />
@@ -230,6 +239,7 @@ const extensions = [
   TablePre,
   TableRowPro,
   TableHeader,
+  textAlign,
   hardCell,
   strike,
   History,
@@ -267,10 +277,10 @@ onMounted(() => {
   // console.log(editor.value.chain().focus().toggleBold())
 })
 function save() {
-  console.log(JSON.stringify(view.value = editor.value.getJSON()))
-  // console.log(view.value = encodeURI(JSON.stringify(editor.value.getJSON())))
-  console.log(generateHTML(editor.value.getJSON(view.value), extensions))
-  console.log(generateHTML(editor.value.getJSON(view.value), extensions_costum))
+  // console.log(JSON.stringify(view.value = editor.value.getJSON()))
+  // // console.log(view.value = encodeURI(JSON.stringify(editor.value.getJSON())))
+  // console.log(generateHTML(editor.value.getJSON(view.value), extensions))
+  // console.log(generateHTML(editor.value.getJSON(view.value), extensions_costum))
   emit('save', editor.value.getJSON(), generateHTML(editor.value.getJSON(view.value), extensions_costum));
 }
 function getURL(this: any, msg: string) {
@@ -339,23 +349,41 @@ function getURL(this: any, msg: string) {
   }
 }
 
-#heading-toggle {
+#buttons-toggle {
+  position: relative;
   margin: 0 4px 4px 0;
   padding: 0;
   z-index: 1;
   flex-direction: column;
   justify-content: flex-start;
+  border-width: 0px;
+  height: 2.5em;
+  width: 5em;
 
-  .heading-wrap {
+
+  .buttons-wrap {
+    position: absolute;
     margin: 0;
+    top: 0;
+    left: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    height: 2.5em;
+    overflow: hidden;
+    width: 5em;
+    transition: ease 0.2s;
+    opacity: 0.9;
+
 
     .button {
       margin: 0;
       transition: ease 0.2s;
+      width: 5em;
+      transform: scale(1);
+
+
 
       img {
         height: 1.5em;
@@ -363,26 +391,32 @@ function getURL(this: any, msg: string) {
         transform: rotate(0deg);
         transition: transform 0.5s ease;
         margin-left: .5em;
-      } 
-
-
-    }
-    .heading-wrap {
-    .button:first-child {
-      img{
         display: none;
-        .p1:hover ~ .d1{
-	background-color: #fff;
-}
       }
-    }}
-    
-
-
-    .button:hover {
-      transform: scale(1.2);
     }
   }
+
+  .buttons-wrap:hover {
+    height: auto;
+    transform: scale(1.1);
+    opacity: 1;
+
+    // background: #000;
+    .button:hover{
+      opacity: 1;
+      // transform: scale(1.1);
+    }
+  }
+
+
+  .button:first-child {
+    img {
+      display: block;
+    }
+  }
+
+  .button:hover {}
+
 
 }
 
