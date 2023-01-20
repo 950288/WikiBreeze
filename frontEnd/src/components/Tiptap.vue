@@ -4,11 +4,11 @@
     <div class="buttons">
       <div class="button" id="buttons-toggle">
         <div class="buttons-wrap">
-          <button
-            v-for="(item, index) in costum.otherConfigurations ? costum.otherConfigurations.headingLevels : [1, 2, 3]"
-            :id="'button ' + index" class="button is-success" v-if="mounted"
+          <button v-for="(item) in costum.otherConfigurations ? costum.otherConfigurations.headingLevels : [1, 2, 3]"
+            id="button" class="button is-success" v-if="mounted"
             @click="editor.chain().focus().toggleHeading({ level: item }).run()">
-            H{{ item }}<img :class="{ imghover: TableToogle }" src="@/assets/angle.svg" />
+            H{{ item }}
+            <img :class="{ imghover: TableToogle }" src="@/assets/angle.svg" />
           </button>
         </div>
       </div>
@@ -43,7 +43,9 @@
         Code
       </button>
       <button id="button" class="button is-success " v-if="mounted"
-        @click="editor.chain().focus().toggleCodeBlock().run()">
+        @click="editor.chain().focus().toggleCodeBlock({
+          class : 'language-javascript'
+        }).run()">
         CodeBlock
       </button>
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().exitCode().run()">
@@ -59,34 +61,32 @@
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().unsetLink().run()">
         UnsetLink
       </button>
-      <div class="buttons">
-      <div class="button" id="buttons-toggle">
-        <div class="buttons-wrap">
-          <button id="button" class="button is-success " v-if="mounted"
+      <button id="button" class="button is-success " v-if="mounted"
         @click="editor.chain().focus().setImage(getURL('image URL')).run()">
         Image
       </button>
+      <div class="button textAlign" id="buttons-toggle">
+        <div class="buttons-wrap">
+          <button id="button" class="button is-success " v-if="mounted">
+            textAlign<img :class="{ imghover: TableToogle }" src="@/assets/angle.svg" />
+          </button>
+          <button id="button" class="button is-success " v-if="mounted"
+            @click="editor.chain().focus().setTextAlign('left').run()">
+            Left
+          </button>
+          <button id="button" class="button is-success " v-if="mounted"
+            @click="editor.chain().focus().setTextAlign('right').run()">
+            Right
+          </button>
+          <button id="button" class="button is-success " v-if="mounted"
+            @click="editor.chain().focus().setTextAlign('center').run()">
+            Center
+          </button>
+          <button id="button" class="button is-success " v-if="mounted"
+            @click="editor.chain().focus().setTextAlign('justify').run()">
+            Justify
+          </button>
         </div>
-      </div>
-        <button id="button" class="button is-success " v-if="mounted">
-          textAlign
-        </button>
-        <button id="button" class="button is-success " v-if="mounted"
-          @click="editor.chain().focus().setTextAlign('left').run()">
-          Left
-        </button>
-        <button id="button" class="button is-success " v-if="mounted"
-          @click="editor.chain().focus().setTextAlign('right').run()">
-          Right
-        </button>
-        <button id="button" class="button is-success " v-if="mounted"
-          @click="editor.chain().focus().setTextAlign('center').run()">
-          Center
-        </button>
-        <button id="button" class="button is-success " v-if="mounted"
-          @click="editor.chain().focus().setTextAlign('justify').run()">
-          Justify
-        </button>
       </div>
       <button id="button" class="button is-info Table" v-if="mounted" @click="TableToogle = TableToogle ? false : true">
         <p>Table</p><img :class="{ imghover: TableToogle }" src="@/assets/angle.svg" />
@@ -174,7 +174,7 @@ import Italic from '@tiptap/extension-italic'
 import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
 import Code from '@tiptap/extension-code'
-import CodeBlock from '@tiptap/extension-code-block'
+import CodeBlock from '@tiptap/extension-code-block-lowlight'
 import Text from '@tiptap/extension-text'
 import Bold from '@tiptap/extension-bold'
 import Underline from '@tiptap/extension-underline'
@@ -192,10 +192,22 @@ import TableRow from '@tiptap/extension-table-row'
 import TableHeader from '@tiptap/extension-table-header'
 import hardCell from '@tiptap/extension-table-cell'
 import History from '@tiptap/extension-history'
-
-
+import css from 'highlight.js/lib/languages/css'
+import js from 'highlight.js/lib/languages/javascript'
+import ts from 'highlight.js/lib/languages/typescript'
+import html from 'highlight.js/lib/languages/xml'
+import python from 'highlight.js/lib/languages/python'
+import { lowlight } from 'lowlight'
 import { generateHTML } from '@tiptap/html'
 import { onMounted, ref, defineEmits } from 'vue'
+
+lowlight.registerLanguage('html', html)
+lowlight.registerLanguage('css', css)
+lowlight.registerLanguage('js', js)
+lowlight.registerLanguage('ts', ts)
+lowlight.registerLanguage('python', python)
+
+
 const emit = defineEmits(['save'])
 const view = ref("click save!")
 const TableToogle = ref(false)
@@ -243,7 +255,10 @@ const extensions = [
   Subscript,
   Superscript,
   CodePre,
-  CodeBlock,
+  CodeBlock.configure({
+    defaultLanguage: null,
+    lowlight,
+  }),
   Underline,
   Heading,
   Bulletlist,
@@ -255,7 +270,9 @@ const extensions = [
   TablePre,
   TableRowPro,
   TableHeader,
-  TextAlign,
+  TextAlign.configure({
+    types: ['heading', 'paragraph'],
+  }),
   hardCell,
   strike,
   History,
@@ -375,6 +392,7 @@ function getURL(this: any, msg: string) {
   border-width: 0px;
   height: 2.5em;
   width: 5em;
+  opacity: 0.9;
 
 
   .buttons-wrap {
@@ -388,18 +406,18 @@ function getURL(this: any, msg: string) {
     justify-content: flex-start;
     height: 2.5em;
     overflow: hidden;
-    width: 5em;
     transition: ease 0.2s;
-    opacity: 0.9;
+    opacity: 1;
+    width: 100%;
 
 
     .button {
       margin: 0;
       transition: ease 0.2s;
-      width: 5em;
       transform: scale(1);
-
-
+      opacity: 1;
+      display: inline-flex;
+      width: 100%;
 
       img {
         height: 1.5em;
@@ -417,10 +435,8 @@ function getURL(this: any, msg: string) {
     transform: scale(1.1);
     opacity: 1;
 
-    // background: #000;
-    .button:hover{
+    .button:hover {
       opacity: 1;
-      // transform: scale(1.1);
     }
   }
 
@@ -430,13 +446,11 @@ function getURL(this: any, msg: string) {
       display: block;
     }
   }
-
-  .button:hover {}
-
-
 }
 
-
+#buttons-toggle.textAlign {
+  width: 8em;
+}
 
 button:hover {
   opacity: 1;
@@ -444,14 +458,6 @@ button:hover {
 
 button * {
   color: #fff;
-}
-
-sup {
-  vertical-align: top;
-}
-
-sub {
-  vertical-align: sub;
 }
 </style>
 <style lang="scss">
@@ -470,5 +476,22 @@ sub {
   >*+* {
     margin-top: 0.75em;
   }
+}
+
+code {
+  font-size: 1.1rem;
+  padding: 0.15em;
+  border-radius: 0.15em;
+  background-color: rgba(#616161, 0.1);
+  color: var(--has-text-dark-grey);
+  box-decoration-break: clone;
+}
+
+sup {
+  vertical-align: top;
+}
+
+sub {
+  vertical-align: sub;
 }
 </style>
