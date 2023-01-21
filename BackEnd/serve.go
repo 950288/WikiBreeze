@@ -1,7 +1,7 @@
 package main
 
 import (
-	"WikiBreezeBackEnd/utils"
+	"WikiBreeze/utils"
 	"fmt"
 	"log"
 	"net/http"

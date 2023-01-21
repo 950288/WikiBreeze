@@ -45,6 +45,7 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 		}
 		fmt.Println()
 
+		var byteValue []byte
 		var getContent GetContent
 		b := make([]byte, r.ContentLength)
 		r.Body.Read(b)
@@ -75,25 +76,22 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 			// Write the JSON string to the file
 			jsonString := "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Example Text\"}]}]}"
 			_, err = jsonFile.WriteString(jsonString)
-			//some bug remains
 			if err != nil {
 				PrintErr("Error writing to file " + getContent.Content + ".json" + err.Error())
 				return
 			}
 			PrintSuccess(dir + " created")
+			byteValue = []byte(jsonString)
+		} else {
+			defer jsonFile.Close()
+			byteValue, err = io.ReadAll(jsonFile)
+			if err != nil {
+				PrintErr("Error reading file " + getContent.Content + ".json " + err.Error())
+				return
+			}
 		}
 		jsonFile.Close()
-		jsonFile, err = os.Open(dir)
-		if err != nil {
-			PrintErr("Error opening file " + getContent.Content + ".json" + err.Error())
-			return
-		}
-		// Read the JSON file
-		byteValue, err := io.ReadAll(jsonFile)
-		if err != nil {
-			PrintErr("Error reading file " + getContent.Content + ".json " + err.Error())
-			return
-		}
+
 		// Parse the JSON data
 		var datas map[string]interface{}
 		err = json.Unmarshal(byteValue, &datas)
@@ -110,13 +108,13 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string, TagName string)
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-		//If request is Preflight, return
+		// If request is preflight, return
 		if r.Method == "OPTIONS" {
 			return
 		}
 		fmt.Println()
 		var content Content
-		//Read json data
+		// Read json data
 		b := make([]byte, r.ContentLength)
 		r.Body.Read(b)
 		err := json.Unmarshal((b), &content)
@@ -126,14 +124,14 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string, TagName string)
 		}
 		fmt.Println("saving to", content.Content, "on", content.Page)
 
-		//Store json data
+		// Store json data
 		dir := StoreDir + "/" + content.Page + "/" + content.Content + ".json"
 		jsonFile, err := os.OpenFile(dir, os.O_RDWR|os.O_CREATE, 0644)
 		if err != nil {
 			PrintErr("Error open " + dir + ":" + err.Error())
 			return
 		}
-		// remove previous data
+		// Remove previous data
 		jsonFile.Truncate(0)
 		_, err = jsonFile.Seek(0, 0)
 		if err != nil {
@@ -190,7 +188,7 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string, TagName string)
 			PrintErr("Error writing to file:" + err.Error())
 			return
 		}
-		fmt.Fprint(w, "success")
+		fmt.Fprint(w, "{'success': 'true'}")
 		PrintSuccess("saved " + dir + " successfully")
 
 	}
