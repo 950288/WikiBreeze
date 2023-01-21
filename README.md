@@ -11,41 +11,38 @@ WikiBreeze is a user-friendly online editor 🧰 that allows iGEM teams to easil
 To use WikiBreeze, follow these steps:
 
 1. Download the latest version of the `WikiBreeze` zip archive, put the Unziped `WikiBreeze` folder into the root directory of your project.
-2. Insert the following special tag into your `.html` file or other custom file type for each section that you want to edit: `<!-- WikiBreeze {{name}} start-->`. Replace `{{name}}` with the The custom name for this section.(Note: A page can contain multiple tags and each tag corresponds to a section that can be edited individually.)
+2. Insert the following special tag into your `.html` file or other custom file type for each section that you want to edit: `<!-- WikiBreeze content start-->`. Replace content with the The custom name for this section.(Note: A page can contain multiple tags corresponds to a section that can be edited individually.)
 ```
-<div>
-    <!-- WikiBreeze test1 start-->
-</div>
+<!-- WikiBreeze test1 start-->
 ```
 
-3. Double-click the WikiBreeze executable to run the tool. Then you can see to generated URL in the Console like below. You can edit you page in the browser through the generated URL, WikiBreeze also supports collaborative editing within a LAN (e.g. personal hotspot, campus network, etc.), where team members within the same LAN can access the editing page via the second link.
+1. Execute WikiBreeze.exe in the console to run the tool. Then you can see generated URL like below. You can edit you page in the browser through the generated URL, WikiBreeze also supports collaborative editing within a LAN (e.g. personal hotspot, campus network, etc.), so team members within the same LAN can access the editing page via the second link.
 ```
 Server started on port 8080
     Local:           http://127.0.0.1:8080/
     Network:         http://192.168.Xx.xx:8080/
 ```
     
-4. For advanced usage, you can deploy WikiBreeze to a personal server and open ports for the service without worrying about LAN restrictions
+1. For advanced usage, you can deploy WikiBreeze to a personal server and open ports for the service without worrying about LAN restrictions
 
-we also provide configuration file, `config.json`, which will be automatically generated upon the first run of the application. It allows the user to customize certain parameters such as the directory containing the pages to be modified, the directory to store the edited pages data, the port to be used, the tag to be scanned for insertion, and the file types to be scanned. The default values for these parameters can be seen in the example configuration file below:
+we also provide configuration file, `config/config.json`, which will be automatically generated upon the first run of the application. It allows to customize certain parameters such as the directory containing the pages to be modified, the directory to store the edited pages data, the port to be used, the tag to be scanned for insertion, and the file types to be scanned. The default values for these parameters can be seen in the example configuration file below:
 ```
 {
-	// Directory containing the page to be modified (e.g. "D:\\github\\web\\src\\pages")
-	"ScanDirectory": "..\\",
+	// Directory containing the page to be modified (e.g "D:\\github\\web\\src\\pages")
+	"scanDirectory": "..\\",
 
-	// Directory to store the edited page (e.g. "D:\\github\\web\\src\\WikiBreezeData")
-	"StoreDirectory": "..\\WikiBreezeData",
+	// Directory to store the edited page (e.g. "D:\\github\\web\\src\\WikiData")
+	"storeDirectory": ".\\WikiData",
 
-	//Port to be used
-	"Port": 8080,
+	// Port to be used (e.g. "8080" or "auto")
+	"port": "auto",
 
-	//the tag to be scan and incert content (e.g. "WikiBreeze"),
+	// The tag to be scan and incert content (e.g. "WikiBreeze"),
 	//which be automatically converted to <!-- WikiBreeze {{name}} start-->
-	"incert tag":"WikiBreeze",
+	"tagName":"WikiBreeze",
 
-	
-	//file type to be scan (e.g. [".html",....])
-	"file type":[".html",".vue"]
+	// File type to be scan (e.g. [".html",....])
+	"fileType":[".html",".vue"]
 }
 ```
 
