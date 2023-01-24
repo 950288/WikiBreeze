@@ -92,3 +92,19 @@ The front-end WebEditor sends HTTP requests to the back-end to retrieve and upda
 - Front-end: Vue 3, TypeScript, Vite, tiptap
 - Back-end: Go 
 - Build tool: Vite, go build
+
+## To do plan list 🤫
+-  ...
+-  citation 🐰(ing)
+-  img with note
+-  custom extensions
+-  notification
+-  v1.0.0
+-  page tempalte with css
+-  v1.1.0
+-  access code with cookie
+-  auto git commit
+-  v2.0.0
+-  custom account login
+-  v3.0.0
+-  ......
