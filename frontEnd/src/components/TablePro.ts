@@ -20,9 +20,6 @@ import { createTable } from '@tiptap/extension-table'
  *   </table>
  * </table-pro>
  */
-interface TableProOptions {
-  HTMLAttributes: Record<string, any>
-}
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -41,14 +38,12 @@ export default Node.create({
   content: 'paragraph table',
 
   parseHTML() {
-    console.log('parseHTML')
     return [
       { tag: 'table-pro' },
     ]
   },
 
-  renderHTML({ HTMLAttributes = {} }) {
-    // console.log('renderHTML')
+  renderHTML() {
     return ['table-pro', 0]
   },
 
@@ -61,13 +56,13 @@ export default Node.create({
         console.log(editor.schema.marks)
         const noteNode = editor.schema.nodes.paragraph.createChecked(
           { class: "tableNote" }
-          , [
+          , 
+          [
             editor.schema.text('add table note'),
           ])
 
         console.log("'''''''''''''''''''''''''")
         console.log(JSON.stringify(noteNode))
-        //add class "note" to noteNode 
         if (!noteNode) {
           return false
         }

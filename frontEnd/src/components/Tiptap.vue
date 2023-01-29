@@ -39,15 +39,36 @@
         @click="editor.chain().focus().toggleBulletList().run()">
         List
       </button>
+      <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().addCitation().run()">
+        Citation
+      </button>
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleCode().run()">
         Code
       </button>
-      <button id="button" class="button is-success " v-if="mounted"
-        @click="editor.chain().focus().toggleCodeBlock({
-          class : 'language-javascript'
-        }).run()">
-        CodeBlock
-      </button>
+      <div class="button CodeBlock" id="buttons-toggle">
+        <div class="buttons-wrap">
+          <button id="button" class="button is-success " v-if="mounted"
+            @click="editor.chain().focus().toggleCodeBlock().run()">
+            CodeBlock<img :class="{ imghover: TableToogle }" src="@/assets/angle.svg" />
+          </button>
+          <button id="button" class="button is-success " v-if="mounted"
+            @click="editor.chain().focus().updateAttributes('codeBlock', { language: 'python' }).run()">
+            python
+          </button>
+          <button id="button" class="button is-success " v-if="mounted"
+            @click="editor.chain().focus().updateAttributes('codeBlock', { language: 'css' }).run()">
+            css
+          </button>
+          <button id="button" class="button is-success " v-if="mounted"
+            @click="editor.chain().focus().updateAttributes('codeBlock', { language: 'html' }).run()">
+            html
+          </button>
+          <button id="button" class="button is-success " v-if="mounted"
+            @click="editor.chain().focus().updateAttributes('codeBlock', { language: 'js' }).run()">
+            js
+          </button>
+        </div>
+      </div>
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().exitCode().run()">
         ExitCode
       </button>
@@ -194,17 +215,18 @@ import hardCell from '@tiptap/extension-table-cell'
 import History from '@tiptap/extension-history'
 import css from 'highlight.js/lib/languages/css'
 import js from 'highlight.js/lib/languages/javascript'
-import ts from 'highlight.js/lib/languages/typescript'
 import html from 'highlight.js/lib/languages/xml'
 import python from 'highlight.js/lib/languages/python'
 import { lowlight } from 'lowlight'
 import { generateHTML } from '@tiptap/html'
+import Gapcursor from '@tiptap/extension-gapcursor'
 import { onMounted, ref, defineEmits } from 'vue'
+import citation from './Citation'
+
 
 lowlight.registerLanguage('html', html)
 lowlight.registerLanguage('css', css)
 lowlight.registerLanguage('js', js)
-lowlight.registerLanguage('ts', ts)
 lowlight.registerLanguage('python', python)
 
 
@@ -259,6 +281,7 @@ const extensions = [
     defaultLanguage: null,
     lowlight,
   }),
+  citation,
   Underline,
   Heading,
   Bulletlist,
@@ -276,6 +299,7 @@ const extensions = [
   hardCell,
   strike,
   History,
+  Gapcursor
 ]
 let extensions_costum: any = extensions.slice();
 
@@ -310,7 +334,7 @@ onMounted(() => {
   // console.log(editor.value.chain().focus().toggleBold())
 })
 function save() {
-  // console.log(JSON.stringify(view.value = editor.value.getJSON()))
+  console.log(JSON.stringify(view.value = editor.value.getJSON()))
   // // console.log(view.value = encodeURI(JSON.stringify(editor.value.getJSON())))
   // console.log(generateHTML(editor.value.getJSON(view.value), extensions))
   // console.log(generateHTML(editor.value.getJSON(view.value), extensions_costum))
@@ -452,6 +476,10 @@ function getURL(this: any, msg: string) {
   width: 8em;
 }
 
+#buttons-toggle.CodeBlock {
+  width: 7.5em;
+}
+
 button:hover {
   opacity: 1;
 }
@@ -467,7 +495,6 @@ button * {
   outline: auto;
   outline-color: var(--has-border-dark);
   outline-style: dashed;
-  // height: calc(100% + 50px);
 }
 
 .ProseMirror-focused {
@@ -486,12 +513,19 @@ code {
   color: var(--has-text-dark-grey);
   box-decoration-break: clone;
 }
-
+.ProseMirror pre code {
+  font-size: 1.1rem;
+}
 sup {
   vertical-align: top;
 }
 
 sub {
   vertical-align: sub;
+}
+.ProseMirror-gapcursor {
+  position: absolute;
+  cursor: ew-resize;
+  cursor: col-resize;
 }
 </style>

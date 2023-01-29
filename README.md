@@ -93,13 +93,15 @@ The front-end WebEditor sends HTTP requests to the back-end to retrieve and upda
 - Back-end: Go 
 - Build tool: Vite, go build
 
-## To do plan list 🤫
+## To-Do List 🤫
 -  ...
+-  set link
+-  v1.0.0
 -  citation 🐰(ing)
+-  table with note
 -  img with note
 -  custom extensions
--  notification
--  v1.0.0
+-  v1.1.0
 -  page tempalte with css
 -  v1.1.0
 -  access code with cookie
