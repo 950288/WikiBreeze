@@ -95,9 +95,9 @@ The front-end WebEditor sends HTTP requests to the back-end to retrieve and upda
 
 ## To-Do List 🤫
 -  ...
--  set link
+-  ✔️ set link 🙂
 -  v1.0.0
--  citation 🐰(ing)
+-  ✔️ citation 🐰
 -  table with note
 -  img with note
 -  custom extensions

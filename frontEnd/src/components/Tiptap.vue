@@ -72,18 +72,18 @@
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().exitCode().run()">
         ExitCode
       </button>
-      <button id="button" class="button is-success " v-if="mounted" @click="">
+      <button id="button" class="button is-success " v-if="mounted" @click="getLink('Link URL \nhttps://')">
         SetLink
-      </button>
-      <button id="button" class="button is-success " v-if="mounted"
-        @click="editor.chain().focus().setHardBreak().run()">
-        HardBreak
       </button>
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().unsetLink().run()">
         UnsetLink
       </button>
       <button id="button" class="button is-success " v-if="mounted"
-        @click="editor.chain().focus().setImage(getURL('image URL')).run()">
+        @click="editor.chain().focus().setHardBreak().run()">
+        HardBreak
+      </button>
+      <button id="button" class="button is-success " v-if="mounted"
+        @click="editor.chain().focus().setImage(setImageURL('image URL')).run()">
         Image
       </button>
       <div class="button textAlign" id="buttons-toggle">
@@ -343,10 +343,16 @@ function save() {
   console.log(html)
   emit('save', editor.value.getJSON(), html);
 }
-function getURL(this: any, msg: string) {
+function setImageURL(this: any, msg: string) {
   let url = window.prompt(msg)
   if (url) {
     editor.value.chain().focus().setImage({ src: url }).run()
+  }
+}
+function getLink(this: any, msg: string) {
+  let url = window.prompt(msg)
+  if (url) {
+    editor.value.chain().focus().setLink({ href: url }).run()
   }
 }
 </script>
