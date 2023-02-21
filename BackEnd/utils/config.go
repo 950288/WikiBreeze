@@ -39,6 +39,7 @@ var DefaultRenderConfig = `{
         "tag": "Tablegotool"
     },
     "otherConfigurations":{
-        "headingLevels": [1,2,3,4]
+        "headingLevels": [1,2,3,4],
+        "citation": "true"
     }
 }`

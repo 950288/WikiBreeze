@@ -39,9 +39,9 @@
         @click="editor.chain().focus().toggleBulletList().run()">
         List
       </button>
-      <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().addCitation().run()">
+      <!-- <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().addCitation().run()">
         Citation
-      </button>
+      </button> -->
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleCode().run()">
         Code
       </button>
@@ -221,7 +221,6 @@ import { lowlight } from 'lowlight'
 import { generateHTML } from '@tiptap/html'
 import Gapcursor from '@tiptap/extension-gapcursor'
 import { onMounted, ref, defineEmits } from 'vue'
-import citation from './Citation'
 
 
 lowlight.registerLanguage('html', html)
@@ -281,7 +280,7 @@ const extensions = [
     defaultLanguage: null,
     lowlight,
   }),
-  citation,
+  // citation,
   Underline,
   Heading,
   Bulletlist,
@@ -335,10 +334,14 @@ onMounted(() => {
 })
 function save() {
   console.log(JSON.stringify(view.value = editor.value.getJSON()))
-  // // console.log(view.value = encodeURI(JSON.stringify(editor.value.getJSON())))
-  // console.log(generateHTML(editor.value.getJSON(view.value), extensions))
-  // console.log(generateHTML(editor.value.getJSON(view.value), extensions_costum))
-  emit('save', editor.value.getJSON(), generateHTML(editor.value.getJSON(view.value), extensions_costum));
+  let html = generateHTML(editor.value.getJSON(view.value), extensions_costum)
+  console.log(html)
+  console.log(costum.otherConfigurations.citation == "true")
+    if(costum.otherConfigurations.citation == "true"){
+      html = html.replace(/<sup>\[(\d)\]<\/sup>/g, '<citation><sup>[<a  href="https://www.w3schools.com">$1</a>]</sup></citation>')
+    }
+  console.log(html)
+  emit('save', editor.value.getJSON(), html);
 }
 function getURL(this: any, msg: string) {
   let url = window.prompt(msg)
