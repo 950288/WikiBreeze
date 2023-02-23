@@ -28,3 +28,4 @@ logs
 *.local
 BackEnd/config/config.json
 BackEnd/config/renderConfig.json
+BackEnd/testPage.html
