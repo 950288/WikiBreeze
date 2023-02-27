@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import Menu from "@/components/Menu.vue";
+import { defineAsyncComponent, h, render } from "vue";
+import notification from "@/components/notification.vue";
 import { RouterView } from "vue-router";
 import { routes } from "@/main";
+const AsyncComp = defineAsyncComponent(() =>
+  import('@/components/MyComponent.vue')
+)
+render(h(h(notification),{time:100,}), document.body)
 </script>
 <script  lang="ts">
 import { ref } from "vue";
@@ -11,6 +17,7 @@ export const requestUrl = ref(process.env.NODE_ENV === 'development' ? "http://1
 <template>
   <Menu  :routes="routes" />
   <router-view />
+  <!-- <notification /> -->
 </template>
 
 <style lang="scss">
