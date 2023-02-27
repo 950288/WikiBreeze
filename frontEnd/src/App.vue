@@ -4,9 +4,7 @@ import { defineAsyncComponent, h, render } from "vue";
 import notification from "@/components/notification.vue";
 import { RouterView } from "vue-router";
 import { routes } from "@/main";
-const AsyncComp = defineAsyncComponent(() =>
-  import('@/components/MyComponent.vue')
-)
+
 render(h(h(notification),{time:100,}), document.body)
 </script>
 <script  lang="ts">
