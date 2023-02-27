@@ -8,10 +8,6 @@
 	//Port to be used (e.g. "8080" or "auto")
 	"port": "auto",
 
-	//the tag to be scan and incert content (e.g. "WikiBreeze"),
-	//which be automatically converted to <!-- WikiBreeze {{name}} start-->
-	"incertTag":"WikiBreeze",
-
 	//file type to be scan (e.g. [".html",....])
 	"fileType":[".html",".vue"]
 }

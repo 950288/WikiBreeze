@@ -11,7 +11,7 @@ WikiBreeze is a user-friendly online editor 🧰 that allows iGEM teams to easil
 To use WikiBreeze, follow these steps:
 
 1. Download the latest version of the `WikiBreeze` zip archive, put the Unziped `WikiBreeze` folder into the root directory of your project.
-2. Insert the following special tag into your `.html` file or other custom file type for each section that you want to edit: `<!-- WikiBreeze content start-->`. Replace content with the The custom name for this section.(Note: A page can contain multiple tags corresponds to a section that can be edited individually.)
+2. Insert the following special tag into your `.html` file or other custom file type for each section that you want to edit: `<!-- WikiBreeze content start-->`. Replace 'content' with the The custom name for this section.(Note: A page can contain multiple tags corresponds to a section that can be edited individually.)
 ```
 <!-- WikiBreeze test1 start-->
 ```
@@ -36,10 +36,6 @@ we also provide configuration file, `config/config.json`, which will be automati
 
 	// Port to be used (e.g. "8080" or "auto")
 	"port": "auto",
-
-	// The tag to be scan and incert content (e.g. "WikiBreeze"),
-	//which be automatically converted to <!-- WikiBreeze {{name}} start-->
-	"tagName":"WikiBreeze",
 
 	// File type to be scan (e.g. [".html",....])
 	"fileType":[".html",".vue"]
@@ -94,7 +90,7 @@ The front-end WebEditor sends HTTP requests to the back-end to retrieve and upda
 -  ✔️ set link 🙂
 -  v1.0.0
 -  ✔️ citation 🐰
--  table with note
+-  ✔️ table with note 🦉
 -  img with note
 -  custom extensions
 -  v1.1.0

@@ -17,7 +17,6 @@ type Config struct {
 	ScanDir   string   `json:"scanDirectory"`
 	StoreDir  string   `json:"storeDirectory"`
 	Port      string   `json:"port"`
-	TagName   string   `json:"tagName"`
 	FileTypes []string `json:"fileType"`
 }
 
@@ -152,7 +151,7 @@ func ScanPort(Port string) int {
 	}
 	return port
 }
-func ScanFiles(ScanDir string, FileTypes []string, TagName string) (map[string]string, []byte, error) {
+func ScanFiles(ScanDir string, FileTypes []string) (map[string]string, []byte, error) {
 	fmt.Println("scanning files in " + ScanDir)
 	// Create a editor dataMap
 	dataMap := make(map[string][]string)
@@ -160,7 +159,7 @@ func ScanFiles(ScanDir string, FileTypes []string, TagName string) (map[string]s
 	// using [fileName+"?"content] as key
 	dirs := make(map[string]string)
 	// Create a regular expression to extract content in each page
-	reConfig := regexp.MustCompile(`<!--\s*` + TagName + `\s*(?P<name>\S+)\s*start-->`)
+	reConfig := regexp.MustCompile(`<!--\s*WikiBreeze\s*(?P<name>\S+)\s*start-->`)
 	// Scan specified type of files in the directory
 	filepath.Walk(ScanDir, func(path string, info os.FileInfo, err error) error {
 		for _, fileType := range FileTypes {

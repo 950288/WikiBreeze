@@ -103,7 +103,7 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 		PrintSuccess("read from file " + dir + " successful")
 	}
 }
-func HandlerSaveContent(StoreDir string, dirs map[string]string, TagName string) http.HandlerFunc {
+func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET")
@@ -159,8 +159,8 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string, TagName string)
 			return
 		}
 		// Use regular expressions to find the start and end tags
-		startTag := regexp.MustCompile(`<!--\s*` + TagName + `\s*` + content.Content + `\s*start-->`)
-		endTag := regexp.MustCompile(`<!--\s*` + TagName + `\s*` + content.Content + `\s*end-->`)
+		startTag := regexp.MustCompile(`<!--\s*WikiBreeze\s*` + content.Content + `\s*start-->`)
+		endTag := regexp.MustCompile(`<!--\s*WikiBreeze\s*` + content.Content + `\s*end-->`)
 		// Replace the contents between the tags with data.Contenthtml
 		startPattern := startTag.FindIndex(b)
 		tagBefore := string(b[0:startPattern[1]])
@@ -168,7 +168,7 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string, TagName string)
 		var tagAfter string
 		if len(endPattern) == 0 {
 			// If the end tag is not found, append it to the end of the file
-			tagAfter = "<!-- " + TagName + " " + content.Content + " end-->\n" + string(b[startPattern[1]+1:])
+			tagAfter = "<!-- WikiBreeze " + content.Content + " end-->\n" + string(b[startPattern[1]+1:])
 		} else {
 			// If the end tag is found
 			tagAfter = string(b[endPattern[0]:])

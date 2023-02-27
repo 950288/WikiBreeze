@@ -23,14 +23,14 @@ func main() {
 
 	// Get the list of file directories to be edit
 	// using [fileName+"?"content] as key
-	dirs, dataMapByte, err := utils.ScanFiles(config.ScanDir, config.FileTypes, config.TagName)
+	dirs, dataMapByte, err := utils.ScanFiles(config.ScanDir, config.FileTypes)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	http.HandleFunc("/list", utils.HandlerFetchContentList(dataMapByte))
 	http.HandleFunc("/getdata", utils.HandlerGetContent(config.StoreDir))
-	http.HandleFunc("/savedata", utils.HandlerSaveContent(config.StoreDir, dirs, config.TagName))
+	http.HandleFunc("/savedata", utils.HandlerSaveContent(config.StoreDir, dirs))
 	http.HandleFunc("/getRenderconfig", utils.HandlergetRenderconfig(RenderConfigString))
 
 	//check if running in production mode

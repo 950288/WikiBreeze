@@ -10,10 +10,6 @@ var DefaultConfig = `{
 	// Port to be used (e.g. "8080" or "auto")
 	"port": "auto",
 
-	// The tag to be scan and incert content (e.g. "WikiBreeze"),
-	//which be automatically converted to <!-- WikiBreeze {{name}} start-->
-	"tagName":"WikiBreeze",
-
 	// File type to be scan (e.g. [".html",....])
 	"fileType":[".html",".vue"]
 }`
