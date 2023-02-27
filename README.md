@@ -59,7 +59,7 @@ To set up the development environment for WikiBreeze, you will need to have [Nod
 To develop this project, you can run the following commands:
 1. run `cd frontEnd | npm run dev` to start the front-end development server.
 2. run `cd BackEnd | go run .` to start the back-end development server.
-access the link in the frontEnd console to view the page.
+3. access the link in the frontEnd console to view the page.
 
 ## Working Principle 📝
 
