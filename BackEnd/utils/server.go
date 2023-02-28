@@ -188,7 +188,7 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 			PrintErr("Error writing to file:" + err.Error())
 			return
 		}
-		fmt.Fprint(w, "{'success': 'true'}")
+		fmt.Fprint(w, "{\"success\": \"true\"}")
 		PrintSuccess("saved " + dir + " successfully")
 
 	}

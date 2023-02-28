@@ -13,6 +13,7 @@
 <script setup lang="ts">
 import { booleanLiteral } from '@babel/types';
 import { ref, onMounted} from 'vue'
+console.log('notification')
 const props = defineProps({
     time: {
         type: Number,
@@ -47,7 +48,8 @@ onMounted(() => {
             destory()
         }, time)
     }
-    props.Promise.then((returns) => {
+
+    props.Promise?.then((returns) => {
         if(returns.notify){
             console.log(returns.notify)
         }else{

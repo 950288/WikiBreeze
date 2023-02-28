@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import Menu from "@/components/Menu.vue";
-import { defineAsyncComponent, h, render } from "vue";
-import notification from "@/components/notification.vue";
+import { h, render } from "vue";
 import { RouterView } from "vue-router";
 import { routes } from "@/main";
 
-render(h(h(notification),{time:100,}), document.body)
 </script>
 <script  lang="ts">
 import { ref } from "vue";
