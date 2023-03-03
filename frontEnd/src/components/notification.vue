@@ -1,10 +1,7 @@
 <template>
     <div :class="`notification notification${count}`" :style="`transform: translateX(-50%) translateY(${trsY}%);`">
-        <div class="body">
-            <div class="title">
-                {{ title }}
-            </div>
-            <div class="content">
+        <div :class="`body ${notifyType}`">
+            <div class="infoContent">
                 {{ msg }}
             </div>
         </div>
@@ -14,6 +11,7 @@
 import { ref, onMounted } from 'vue'
 console.log('notification')
 const trsY = ref(100);
+const notifyType = ref("info")
 setTimeout(() => { trsY.value = 0; }, 1)
 const props = defineProps({
     duration: {
@@ -42,7 +40,7 @@ const props = defineProps({
     }
 })
 const title = ref(props.title)
-const msg = ref(props.msg) 
+const msg = ref(props.msg)
 console.log(props)
 console.log(props.duration)
 async function java(a: number) {
@@ -56,37 +54,37 @@ const duration = props.duration
 onMounted(() => {
     console.log(duration)
     if (duration != 0) {
-        console.log("ov 0" + duration)
-        setTimeout(() => {
-            destory()
-        }, duration)
+        destory(duration)
     } else {
         props.promise?.then((value) => {
             console.log(value)
             if (value.notify) {
-                console.log(value.notify)
                 msg.value = value.notify
             } else {
                 console.log('no notify')
             }
-            setTimeout(() => {
-                destory()
-            }, 3000)
+            if(value.success){
+                notifyType.value = "success"
+            } else {
+                notifyType.value = "danger"
+            }
+            destory()
         })
     }
 })
 
-function destory() {
+function destory(duration: number = 2500) {
     console.log('translate' + '.notification' + props.count)
-    trsY.value = 100;
     setTimeout(() => {
-        console.log('destory' + '.notification' + props.count)
-        const notification = document.querySelector('.notification' + props.count)
-        if (notification) {
-            notification.remove()
-        }
-    }, 1000)
-
+        trsY.value = 100;
+        setTimeout(() => {
+            console.log('destory' + '.notification' + props.count)
+            const notification = document.querySelector('.notification' + props.count)
+            if (notification) {
+                notification.remove()
+            }
+        }, 1000)
+    }, duration)
 }
 </script>
 
@@ -97,26 +95,50 @@ function destory() {
     width: 60%;
     left: 50%;
     // transform: translateX(-50%) translateY(100%);
-    transition: all .4s ease;
+    transition: all .2s ease;
 
     .body {
-        height: 100px;
+        height: 60px;
         width: 100%;
-        background: #d5e157;
+        // background: #d5e157;
         margin: 0 auto 20px auto;
         border-radius: 10px;
+        transition: background-color .2s linear;
 
-        .title {
-            height: 30px;
+        .infoContent {
             width: 100%;
-            background: #000000;
+            // background: #000000;
             border-radius: 10px 10px 0 0;
-            color: #fff;
-            font-size: 20px;
-            line-height: 30px;
+            // color: #fff;
+            font-size: 2em;
+            line-height: 60px;
             text-align: center;
+            // transform: translateY(50%);
         }
     }
+}
+
+.info {
+    background-color: #ffe08a;
+    * {
+        color: rgba(0, 0, 0, 1);
+    }
+}
+
+.success {
+    background-color: #48c78e;
+    * {
+        color: #fff;
+    }
+
+}
+
+.danger {
+    background-color: #f14668;
+    * {
+        color: #fff;
+    }
+
 }
 </style>
 

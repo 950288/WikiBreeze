@@ -74,7 +74,7 @@ function save(contentjson: JSON, contenthtml: string) {
                 console.log("java")
                 if (val && val.success == 'true') {
                     console.log("saved success!");
-                    resolve({ success: true, notify: "save success!" });
+                    resolve({ success: true, notify: "saved successful!" });
                 } else {
                     console.log("saved failed!");
                     resolve({ success: false, notify: saveError.value ?  saveError.value : "saved failed!"});

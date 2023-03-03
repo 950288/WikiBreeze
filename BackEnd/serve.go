@@ -42,7 +42,7 @@ func main() {
 		// fmt.Println("Running in development mode")
 		http.Handle("/", http.FileServer(http.Dir("../dist")))
 	}
-	utils.PrintSuccess("Server started on port" + strconv.Itoa(port))
+	utils.PrintSuccess("Server started on port " + strconv.Itoa(port))
 	fmt.Println("Local:\t\t" + "\033[0;36m" + "http://127.0.0.1:" + strconv.Itoa(port) + "/" + "\033[0m")
 	//Get local ip
 	if ip := utils.GetOutboundIP(); ip != nil {
