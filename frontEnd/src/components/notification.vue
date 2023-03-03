@@ -1,68 +1,92 @@
 <template>
-    <div class="notification">
+    <div :class="`notification notification${count}`" :style="`transform: translateX(-50%) translateY(${trsY}%);`">
         <div class="body">
             <div class="title">
-                <slot name="title">java</slot>
+                {{ title }}
             </div>
             <div class="content">
-                <slot name="content">asdfghj</slot>
+                {{ msg }}
             </div>
         </div>
     </div>
 </template>
 <script setup lang="ts">
-import { booleanLiteral } from '@babel/types';
-import { ref, onMounted} from 'vue'
+import { ref, onMounted } from 'vue'
 console.log('notification')
+const trsY = ref(100);
+setTimeout(() => { trsY.value = 0; }, 1)
 const props = defineProps({
-    time: {
+    duration: {
         type: Number,
         default: 3000
     },
-    msg:{
+    msg: {
         type: String,
-        default: 'java'
+        default: ''
+    },
+    title: {
+        type: String,
+        default: ""
     },
     type: {
         type: String,
-        default: 'success'
+        default: 'info'
     },
-    Promise: {
-        type: Promise<{success:boolean,notify:string | undefined}>,
+    promise: {
+        type: Promise<{ success: boolean, notify: string | undefined }>,
         default: null
+    },
+    count: {
+        type: Number,
+        default: 0
     }
 })
-async function java(a: number){
+const title = ref(props.title)
+const msg = ref(props.msg) 
+console.log(props)
+console.log(props.duration)
+async function java(a: number) {
     console.log(a + 1)
     return a + 1
-} 
+}
 java(1).then((a) => {
     console.log(a)
 })
-const time = props.time
-
+const duration = props.duration
 onMounted(() => {
-    console.log(time)
-    if (time) {
+    console.log(duration)
+    if (duration != 0) {
+        console.log("ov 0" + duration)
         setTimeout(() => {
             destory()
-        }, time)
+        }, duration)
+    } else {
+        props.promise?.then((value) => {
+            console.log(value)
+            if (value.notify) {
+                console.log(value.notify)
+                msg.value = value.notify
+            } else {
+                console.log('no notify')
+            }
+            setTimeout(() => {
+                destory()
+            }, 3000)
+        })
     }
-
-    props.Promise?.then((returns) => {
-        if(returns.notify){
-            console.log(returns.notify)
-        }else{
-            console.log('no notify')
-        }
-        setTimeout(() => {
-            destory()
-        }, 1500)
-    })
 })
 
 function destory() {
-    document.body.removeChild(document.querySelector('.notification') as Node)
+    console.log('translate' + '.notification' + props.count)
+    trsY.value = 100;
+    setTimeout(() => {
+        console.log('destory' + '.notification' + props.count)
+        const notification = document.querySelector('.notification' + props.count)
+        if (notification) {
+            notification.remove()
+        }
+    }, 1000)
+
 }
 </script>
 
@@ -70,12 +94,15 @@ function destory() {
 .notification {
     position: fixed;
     bottom: 0;
-    width: 100%;
+    width: 60%;
+    left: 50%;
+    // transform: translateX(-50%) translateY(100%);
+    transition: all .4s ease;
 
     .body {
         height: 100px;
-        width: 60%;
-        background: #000000;
+        width: 100%;
+        background: #d5e157;
         margin: 0 auto 20px auto;
         border-radius: 10px;
 
@@ -90,7 +117,8 @@ function destory() {
             text-align: center;
         }
     }
-}</style>
+}
+</style>
 
 //Q. to copilot :"thank you so much"
 //A. "you're welcome"

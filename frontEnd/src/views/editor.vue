@@ -69,28 +69,27 @@ function save(contentjson: JSON, contenthtml: string) {
         }
     }).get().json();
     async function recall() {
-        watch(saveReturnMsg, (val) => {
-            if (val.success == true) {
-                console.log("saved success!");
-                Promise.resolve({ success: true, notify: "save success !" })
-            } else {
-                console.log("saved failed!");
-                Promise.resolve({ success: false, notify: saveError.value })
-            }
+        return new Promise((resolve) => {
+            watch(saveReturnMsg, (val) => {
+                console.log("java")
+                if (val && val.success == 'true') {
+                    console.log("saved success!");
+                    resolve({ success: true, notify: "save success!" });
+                } else {
+                    console.log("saved failed!");
+                    resolve({ success: false, notify: saveError.value ?  saveError.value : "saved failed!"});
+                }
+            });
         });
     }
-    
-
-    // proxy.$notify({
-    //     title: 'save',
-    //     content: 'saving...',
-    //     duration: 0,
-    //     type: 'info',
-    //     Promise: recall()
-    // });
+    app?.proxy.$notify(
+        0,
+        'save',
+        'saving...',
+        'info',
+        recall()
+    );
     console.log("notify");
-    // console.log(proxy);
-    app?.proxy.$notify();
 
     console.log(saveReturnMsg.value);
 }

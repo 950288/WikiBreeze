@@ -1,8 +1,8 @@
 {
     "scripts": {
-        "install": "cd ./frontend && npm install",
-        "build-backend": "cd ./backend && go build -o ../dist/",
-        "build-frontend": "cd ./frontend && npm run build",
+        "install": "cd ./FrontEnd && npm install",
+        "build-backend": "cd ./BackEnd && go build -o ../dist/",
+        "build-frontend": "cd ./FrontEnd && npm run build",
         "build": "npm run build-backend && npm run build-frontend"
     }
 }

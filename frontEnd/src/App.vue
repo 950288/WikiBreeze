@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import Menu from "@/components/Menu.vue";
-import { h, render } from "vue";
+import { defineComponent, h, render } from "vue";
 import { RouterView } from "vue-router";
 import { routes } from "@/main";
+import notification from "@/components/Notification.vue";
+
 
 </script>
 <script  lang="ts">
