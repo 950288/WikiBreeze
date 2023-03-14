@@ -25,7 +25,9 @@ app.use(router);
 let notifycount = 0;
 // Define the global Vue property $notify
 app.config.globalProperties.$notify = (duration: Number, title:string ,msg: string, type: string, recall: Promise<{ success: boolean, notify: string | undefined }>) => {
-  const notificationInstance = h(notification, {
+  //Q: How to fix  Type 'unknown' is not assignable to type '{}'
+  
+  const notificationInstance = h(<any>notification, {
     duration:duration,
     msg,
     title,
