@@ -91,7 +91,7 @@ The front-end WebEditor sends HTTP requests to the back-end to retrieve and upda
 -  v1.0.0
 -  ✔️ citation 🐰
 -  ✔️ table with note 🦉
--  img with note
+-  ✔️ img with note 🌌
 -  custom extensions
 -  v1.1.0
 -  page tempalte with css

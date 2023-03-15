@@ -113,11 +113,17 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 			return
 		}
 		fmt.Println()
+		//Q: print the request infominations
+		fmt.Println(r.RequestURI)
+		fmt.Println(r.Header)
+		fmt.Println(r.Body)
+		fmt.Println(r.ContentLength)
 		var content Content
 		// Read json data
 		b := make([]byte, r.ContentLength)
 		r.Body.Read(b)
 		err := json.Unmarshal((b), &content)
+		// fmt.Print(content)
 		if err != nil {
 			PrintErr("Error parsing JSON:" + err.Error())
 			return

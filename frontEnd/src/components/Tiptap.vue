@@ -39,9 +39,6 @@
         @click="editor.chain().focus().toggleBulletList().run()">
         List
       </button>
-      <!-- <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().addCitation().run()">
-        Citation
-      </button> -->
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleCode().run()">
         Code
       </button>
@@ -85,6 +82,10 @@
       <button id="button" class="button is-success " v-if="mounted"
         @click="editor.chain().focus().setImage(setImageURL('image URL')).run()">
         Image
+      </button>
+      <button id="button" class="button is-success " v-if="mounted"
+        @click="editor.chain().focus().insertImagePro().run()">
+        ImagePro
       </button>
       <div class="button textAlign" id="buttons-toggle">
         <div class="buttons-wrap">
@@ -207,6 +208,7 @@ import Link from '@tiptap/extension-link'
 import strike from '@tiptap/extension-strike'
 import hardBreak from '@tiptap/extension-hard-break'
 import TablePre from './TablePro'
+import ImagePro from './ImagePro'
 import Table from '@tiptap/extension-table'
 import TextAlign from '@tiptap/extension-text-align'
 import TableRow from '@tiptap/extension-table-row'
@@ -286,6 +288,7 @@ const extensions = [
   Bulletlist,
   Listitem,
   Image,
+  ImagePro,
   Link,
   hardBreak,
   Table,
@@ -375,6 +378,7 @@ function getLink(this: any, msg: string) {
   position: sticky;
   top: 60px;
   margin: 0 0 0 0;
+  z-index: 1;
 
   #button {
     margin-right: 0rem;
