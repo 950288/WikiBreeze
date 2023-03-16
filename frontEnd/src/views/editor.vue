@@ -71,7 +71,6 @@ function save(contentjson: JSON, contenthtml: string) {
     async function recall() {
         return new Promise((resolve) => {
             watch(saveReturnMsg, (val) => {
-                console.log("java")
                 if (val && val.success == 'true') {
                     console.log("saved success!");
                     resolve({ success: true, notify: "saved successful!" });

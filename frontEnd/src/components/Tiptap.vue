@@ -113,11 +113,15 @@
       <button id="button" class="button is-info Table" v-if="mounted" @click="TableToogle = TableToogle ? false : true">
         <p>Table</p><img :class="{ imghover: TableToogle }" src="@/assets/angle.svg" />
       </button>
-      <button id="button" class="button is-info " v-if="mounted && TableToogle"
+      <button id="button" class="button is-info " v-if="mounted && TableToogle && !(costum.otherConfigurations.tablePro == 'true' && costum.otherConfigurations.tableMustContainNote == 'true')"
+        @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()">
+        insertTable
+      </button>
+      <button id="button" class="button is-info " v-if="mounted && TableToogle && costum.otherConfigurations.tablePro == 'true'"
         @click="editor.chain().focus().insertTablePro({ rows: 3, cols: 3, withHeaderRow: true }).run()">
         TablePro
       </button>
-      <button id="button" class="button is-info " v-if="mounted && TableToogle"
+      <button id="button" class="button is-info " v-if="mounted && TableToogle && costum.otherConfigurations.tablePro == 'true'"
         @click="editor.chain().focus().deleteTablePro().run()">
         deleteTablePro
       </button>
