@@ -73,8 +73,15 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 				PrintErr("Error creating file " + getContent.Content + ".json" + err.Error())
 				return
 			}
+			var jsonString string
+			fmt.Println(getContent.Content)
+			fmt.Println(getContent.Page)
+			if getContent.Content == "content" && getContent.Page == "testPage" {
+				jsonString = TestPageJson
+			} else {
+				jsonString = DefaultRenderJson
+			}
 			// Write the JSON string to the file
-			jsonString := "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Example Text\"}]}]}"
 			_, err = jsonFile.WriteString(jsonString)
 			if err != nil {
 				PrintErr("Error writing to file " + getContent.Content + ".json" + err.Error())

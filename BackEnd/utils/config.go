@@ -39,3 +39,7 @@ var DefaultRenderConfig = `{
         "citation": "true"
     }
 }`
+
+var DefaultRenderJson = `{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Example Text"}]}]}`
+
+var TestPageJson = `{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"testPage"}]}]}`
