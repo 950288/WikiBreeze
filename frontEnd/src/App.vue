@@ -3,8 +3,7 @@ import Menu from "@/components/Menu.vue";
 import { defineComponent, h, render } from "vue";
 import { RouterView } from "vue-router";
 import { routes } from "@/main";
-import notification from "@/components/Notification.vue";
-
+import InputInfo from "@/components/InputInfo.vue"
 
 </script>
 <script  lang="ts">
@@ -15,7 +14,7 @@ export const requestUrl = ref(process.env.NODE_ENV === 'development' ? "http://1
 <template>
   <Menu  :routes="routes" />
   <router-view />
-  <!-- <notification /> -->
+  <InputInfo />
 </template>
 
 <style lang="scss">

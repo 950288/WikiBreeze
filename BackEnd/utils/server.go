@@ -30,6 +30,7 @@ func HandlerFetchContentList(getContentByte []byte) http.HandlerFunc {
 			return
 		}
 		fmt.Println()
+		fmt.Println("some one fetched content list")
 
 		fmt.Fprint(w, string(getContentByte))
 	}
@@ -120,7 +121,7 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 			return
 		}
 		fmt.Println()
-		//Q: print the request infominations
+
 		fmt.Println(r.RequestURI)
 		fmt.Println(r.Header)
 		fmt.Println(r.Body)
@@ -130,9 +131,10 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 		b := make([]byte, r.ContentLength)
 		r.Body.Read(b)
 		err := json.Unmarshal((b), &content)
-		// fmt.Print(content)
+		fmt.Print(content)
 		if err != nil {
 			PrintErr("Error parsing JSON:" + err.Error())
+			fmt.Fprint(w, "{\"success\": \"false\"}")
 			return
 		}
 		fmt.Println("saving to", content.Content, "on", content.Page)
