@@ -1,6 +1,6 @@
 <template>
   <div class="main content">
-    <h3>You are editing <u>{{ state.index }}</u> on page <u>{{ state.content }}.</u></h3>
+    <h3>You are editing <u>{{ state.content }}</u> on <u>{{ state.index }}</u> page.</h3>
     <div class="buttons">
       <div class="button" id="buttons-toggle">
         <div class="buttons-wrap">
@@ -186,7 +186,7 @@
     </div>
     <editor-content :editor="editor" class="edit" />
     <br>
-    <div class="block">click save after edited !</div>
+    <div class="block">Click save after edited !</div>
   </div>
 
 </template>

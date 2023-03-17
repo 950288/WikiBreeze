@@ -185,6 +185,10 @@ function destory() {
                 margin-left: 25px;
                 margin-right: 25px;
                 width: 100px;
+                transition: ease 0.2s;
+            }
+            button:hover{
+                transform: scale(1.2);
             }
         }
     }
