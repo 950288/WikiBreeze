@@ -56,8 +56,8 @@ const props = defineProps({
 })
 function confirm(){
     destory()
+    if(props.recall)
     props.recall.value = url.value;
-
 }
 function destory() {
     const notification = document.querySelector('.Input')
