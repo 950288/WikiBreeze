@@ -15,15 +15,15 @@
                 </div>
             </div>
             <div class="confirm">
-                <button class="button is-primary">{{ "confirm" }}</button>
+                <button class="button is-primary" @click="confirm()">{{ "confirm" }}</button>
             </div>
-            <div>
+            <div v-if="upload">
                 <div class="upload">
                     <p>{{ 'Or upload the image' }}</p>
                     <input type="file" />
                 </div>
             </div>
-            <div class="confirm">
+            <div class="confirm" v-if="upload">
                 <button class="button is-primary">{{ "upload" }}</button>
                 <!-- <button class="button is-danger" @click="destory()">{{ "cancel" }}</button> -->
             </div>
@@ -32,14 +32,34 @@
 </template>
 <script lang="ts" setup>
 
+import { anyTypeAnnotation } from '@babel/types';
 import { ref, onMounted } from 'vue'
 import { defineProps } from 'vue'
 
 const url = ref("")
+const props = defineProps({
+    title: {
+        type: String,
+        // default: "Title"
+    },
+    upload:{
+        type: Boolean,
+        // default: falses
+    },
+    count: {
+        type: Number,
+        default: 0
+    },
+    recall: {
+        type: ref
+    }
+})
+function confirm(){
+    destory()
+    props.recall.value = url.value;
 
+}
 function destory() {
-    // console.log('translate' + '.notification' + props.count)
-    // const notification = document.querySelector('.notification' + props.count)
     const notification = document.querySelector('.Input')
     if (notification) {
         notification.remove()
@@ -66,8 +86,6 @@ function destory() {
         backdrop-filter: blur(5px);
     }
 
-
-
     .body {
         position: absolute;
         top: 50%;
@@ -75,14 +93,14 @@ function destory() {
         transform: translate(-50%, -50%);
         width: 400px;
         background-color: var(--has-background-lightest-grey);
-        border-radius: 5px;
+        border-radius: 3.5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, .5);
 
         .heading {
             width: 100%;
             height: 50px;
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
+            border-top-left-radius: 3.5px;
+            border-top-right-radius: 3.5px;
             font-size: 2rem;
             font-family: 'Microsoft YaHei';
             background-color: #333;

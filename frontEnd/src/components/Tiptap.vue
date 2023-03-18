@@ -15,8 +15,7 @@
       <button id="button" class="button is-success" v-if="mounted" @click="editor.chain().focus().toggleBold().run()">
         Bold
       </button>
-      <button id="button" class="button is-success " v-if="mounted"
-        @click="editor.chain().focus().toggleItalic().run()">
+      <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleItalic().run()">
         <em>Italic</em>
       </button>
       <button id="button" class="button is-success " v-if="mounted"
@@ -31,8 +30,7 @@
         @click="editor.chain().focus().toggleUnderline().run()">
         <u>Underline</u>
       </button>
-      <button id="button" class="button is-success " v-if="mounted"
-        @click="editor.chain().focus().toggleStrike().run()">
+      <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleStrike().run()">
         <s>Strike</s>
       </button>
       <button id="button" class="button is-success " v-if="mounted"
@@ -69,22 +67,21 @@
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().exitCode().run()">
         ExitCode
       </button>
-      <button id="button" class="button is-success " v-if="mounted" @click="getLink('Link URL \nhttps://')">
+      <button id="button" class="button is-success " v-if="mounted" @click="setLink()">
         SetLink
       </button>
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().unsetLink().run()">
         UnsetLink
       </button>
-      <button id="button" class="button is-success " v-if="mounted"
-        @click="editor.chain().focus().setHardBreak().run()">
+      <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().setHardBreak().run()">
         HardBreak
       </button>
       <button id="button" class="button is-success " v-if="mounted"
-        @click="editor.chain().focus().setImage(setImageURL('image URL')).run()">
+        @click="setImageURL()">
         Image
       </button>
       <button id="button" class="button is-success " v-if="mounted"
-        @click="editor.chain().focus().insertImagePro().run()">
+        @click="$event => setImageProURL()">
         ImagePro
       </button>
       <div class="button textAlign" id="buttons-toggle">
@@ -113,15 +110,18 @@
       <button id="button" class="button is-info Table" v-if="mounted" @click="TableToogle = TableToogle ? false : true">
         <p>Table</p><img :class="{ imghover: TableToogle }" src="@/assets/angle.svg" />
       </button>
-      <button id="button" class="button is-info " v-if="mounted && TableToogle && !(costum.otherConfigurations.tablePro == 'true' && costum.otherConfigurations.tableMustContainNote == 'true')"
+      <button id="button" class="button is-info "
+        v-if="mounted && TableToogle && !(costum.otherConfigurations.tablePro == 'true' && costum.otherConfigurations.tableMustContainNote == 'true')"
         @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()">
         insertTable
       </button>
-      <button id="button" class="button is-info " v-if="mounted && TableToogle && costum.otherConfigurations.tablePro == 'true'"
+      <button id="button" class="button is-info "
+        v-if="mounted && TableToogle && costum.otherConfigurations.tablePro == 'true'"
         @click="editor.chain().focus().insertTablePro({ rows: 3, cols: 3, withHeaderRow: true }).run()">
         TablePro
       </button>
-      <button id="button" class="button is-info " v-if="mounted && TableToogle && costum.otherConfigurations.tablePro == 'true'"
+      <button id="button" class="button is-info "
+        v-if="mounted && TableToogle && costum.otherConfigurations.tablePro == 'true'"
         @click="editor.chain().focus().deleteTablePro().run()">
         deleteTablePro
       </button>
@@ -175,11 +175,10 @@
       <button id="button" class="button is-warning " v-if="mounted" @click="editor.chain().focus().redo().run()">
         redo➡️
       </button>
-      <button id="button" class="button is-warning " v-if="mounted"
-        @click="editor.chain().focus().unsetAllMarks().run()">
+      <button id="button" class="button is-warning " v-if="mounted" @click="editor.chain().focus().unsetAllMarks().run()">
         RemoveMark
       </button>
-      <button id="button" class="button is-warning " v-if="mounted" @click="editor.empty()">
+      <button id="button" class="button is-warning " v-if="mounted" @click="editor.chain().focus().clearContent().run()">
         RemoveAll
       </button>
       <button id="button" class="button is-link" @click="save">save</button>
@@ -188,7 +187,6 @@
     <br>
     <div class="block">Click save after edited !</div>
   </div>
-
 </template>
   
 <script setup lang="ts">
@@ -226,8 +224,9 @@ import python from 'highlight.js/lib/languages/python'
 import { lowlight } from 'lowlight'
 import { generateHTML } from '@tiptap/html'
 import Gapcursor from '@tiptap/extension-gapcursor'
-import { onMounted, ref, defineEmits } from 'vue'
+import { onMounted, ref, defineEmits, getCurrentInstance, watch } from 'vue'
 
+const app = <any>getCurrentInstance();
 
 lowlight.registerLanguage('html', html)
 lowlight.registerLanguage('css', css)
@@ -344,23 +343,47 @@ function save() {
   let html = generateHTML(editor.value.getJSON(view.value), extensions_costum)
   console.log(html)
   console.log(costum.otherConfigurations.citation == "true")
-    if(costum.otherConfigurations.citation == "true"){
-      html = html.replace(/<sup>\[(\d)\]<\/sup>/g, '<citation><sup>[<a  href="https://www.w3schools.com">$1</a>]</sup></citation>')
-    }
+  if (costum.otherConfigurations.citation == "true") {
+    html = html.replace(/<sup>\[(\d)\]<\/sup>/g, '<citation><sup>[<a  href="https://www.w3schools.com">$1</a>]</sup></citation>')
+  }
   console.log(html)
   emit('save', editor.value.getJSON(), html);
 }
-function setImageURL(this: any, msg: string) {
-  let url = window.prompt(msg)
-  if (url) {
-    editor.value.chain().focus().setImage({ src: url }).run()
-  }
+function setImageURL() {
+  console.log(app)
+  let recall = app?.proxy.$input(
+    "Set image", 
+    false
+  );
+  console.log("input");
+  watch(recall, (val) => {
+    console.log(val)
+    editor.value.chain().focus().setImage({ src: val }).run()
+  })
 }
-function getLink(this: any, msg: string) {
-  let url = window.prompt(msg)
-  if (url) {
-    editor.value.chain().focus().setLink({ href: url }).run()
-  }
+function setImageProURL() {
+  console.log(app)
+  let recall = app?.proxy.$input(
+    "Set image", 
+    true
+  );
+  console.log("input");
+  watch(recall, (val) => {
+    console.log(val)
+    editor.value.chain().focus().insertImagePro(val).run()
+  })
+}
+function setLink() {
+  console.log(app)
+  let recall = app?.proxy.$input(
+    "Set Link", 
+    false
+  );
+  console.log("input");
+  watch(recall, (val) => {
+    console.log(val)
+    editor.value.chain().focus().setLink({ href: val, target: '_blank' }).run()
+  })
 }
 </script>
 <style scoped lang="scss">
@@ -376,7 +399,6 @@ function getLink(this: any, msg: string) {
 .bold {
   font-weight: bold;
 }
-
 
 .buttons {
   position: sticky;
@@ -512,6 +534,14 @@ button * {
   outline: auto;
   outline-color: var(--has-border-dark);
   outline-style: dashed;
+  img{
+  display: block;
+    border: 2px solid var(--has-border-dark);
+    border-radius: 5px 5px 0 0;
+    width: 60%;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
 }
 
 .ProseMirror-focused {
@@ -530,9 +560,11 @@ code {
   color: var(--has-text-dark-grey);
   box-decoration-break: clone;
 }
+
 .ProseMirror pre code {
   font-size: 1.1rem;
 }
+
 sup {
   vertical-align: top;
 }
@@ -540,9 +572,15 @@ sup {
 sub {
   vertical-align: sub;
 }
+
 .ProseMirror-gapcursor {
   position: absolute;
   cursor: ew-resize;
   cursor: col-resize;
 }
+
+a {
+  color: var(--has-text-link);
+}
+
 </style>

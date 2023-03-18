@@ -13,12 +13,19 @@ import { useFetch } from "@vueuse/core";
 import Tiptap from '@/components/Tiptap.vue'
 import { ref, watch, onMounted, getCurrentInstance } from "vue";
 import { requestUrl } from "@/App.vue";
+import { router } from "@/main";
+
 const contenetJson = ref<JSON>();
 const renderConfigJson = ref<JSON>();
 const app = <any>getCurrentInstance();
 
-
 onMounted(() => {
+    if(!history.state.content){
+        router.push({
+            name:"Home"
+        })
+        return
+    }
     let { data: PageDate, error: getnodeError } = useFetch(requestUrl.value + "/getdata", {
         method: 'POST',
         body: JSON.stringify({

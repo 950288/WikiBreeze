@@ -1,7 +1,8 @@
-import { cloneVNode, createApp, h, render, defineComponent, createVNode } from "vue";
+import { createApp, h, render, createVNode, ref } from "vue";
 import App from "./App.vue";
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHashHistory, createWebHistory } from "vue-router";
 import notification from "@/components/Notification.vue";
+import input from "@/components/InputInfo.vue";
 import routes_list from "@/routes.json";
 import { useColorMode } from "@vueuse/core";
 
@@ -12,7 +13,8 @@ routes_list.routes.forEach((route: { component: any; name: string, path: string 
 });
 export const routes: any = routes_list.routes;
 export const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
+  // history: createWebHashHistory(),
   routes: routes,
 });
 // import { useColorMode } from "@vueuse/core";
@@ -25,8 +27,6 @@ app.use(router);
 let notifycount = 0;
 // Define the global Vue property $notify
 app.config.globalProperties.$notify = (duration: Number, title:string ,msg: string, type: string, recall: Promise<{ success: boolean, notify: string | undefined }>) => {
-  //Q: How to fix  Type 'unknown' is not assignable to type '{}'
-  
   const notificationInstance = h(<any>notification, {
     duration:duration,
     msg,
@@ -43,6 +43,29 @@ app.config.globalProperties.$notify = (duration: Number, title:string ,msg: stri
   document.body.appendChild(container);
   render(vnode, container);
 };
+
+let inputcount = 0;
+app.config.globalProperties.$input = (
+  title: string,
+  upload: boolean
+) => {
+  let recall = ref();
+  const inputInstance = h(<any>input ,{
+    title,
+    upload,
+    count: inputcount++,
+    recall
+  });
+  console.log(recall)
+  console.log(inputInstance.props)
+  // Render the notification component
+  const vnode = createVNode(inputInstance);
+  // Mount the VNode to an element outside of the app root
+  const container = document.createElement('div');
+  document.body.appendChild(container);
+  render(vnode, container);
+  return recall;
+}
 
 
 app.mount("#app");

@@ -15,7 +15,7 @@ import { Image } from '@tiptap/extension-image'
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     ImagePro: {
-      insertImagePro: () => ReturnType,
+      insertImagePro: (url: String) => ReturnType,
       // deleteImagePro: () => ReturnType,
     }
   }
@@ -40,8 +40,8 @@ export default Node.create({
 
   addCommands() {
     return {
-      insertImagePro: () => ({ commands, editor, tr }) => {
-        let url = window.prompt('image URL')
+      insertImagePro: (url) => ({ commands, editor, tr }) => {
+        console.log(url)
         if (!url) {
           return false
         }
