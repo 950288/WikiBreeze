@@ -15,6 +15,7 @@ export const routes: any = routes_list.routes;
 export const router = createRouter({
   history: createWebHistory(),
   // history: createWebHashHistory(),
+  // 404 => home page
   routes: routes,
 });
 // import { useColorMode } from "@vueuse/core";

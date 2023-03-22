@@ -3,7 +3,7 @@
         <div class="background" @click="destory()"></div>
         <div class="body">
             <div class="heading">
-                <p>{{ "Set picture" }}</p>
+                <p>{{ props.title }}</p>
                 <div class="close"><button @click="destory()">
                         <img src="/src/assets/close.svg" alt="">
                     </button></div>
