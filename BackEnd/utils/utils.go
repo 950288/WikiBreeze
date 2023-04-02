@@ -11,6 +11,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/fatih/color"
 )
 
 type Config struct {
@@ -227,8 +229,13 @@ func GetOutboundIP() net.IP {
 	return localAddr.IP
 }
 func PrintErr(err string) {
-	fmt.Println("\033[0;31m", err, "\033[0m")
+	// fmt.Println("\033[31m", err, "\033[0m")
+	color.Red(err)
 }
 func PrintSuccess(msg string) {
-	fmt.Println("\033[0;32m", msg, "\033[0m")
+	// fmt.Println("\033[32m", msg, "\033[0m")
+	color.Green(msg)
+}
+func Cyanf(msg string) string {
+	return color.New(color.FgCyan).SprintfFunc()(msg)
 }

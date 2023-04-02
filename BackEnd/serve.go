@@ -43,10 +43,11 @@ func main() {
 		http.Handle("/", http.FileServer(http.Dir("../dist")))
 	}
 	utils.PrintSuccess("Server started on port " + strconv.Itoa(port))
-	fmt.Println("Local:\t\t" + "\033[0;36m" + "http://127.0.0.1:" + strconv.Itoa(port) + "/" + "\033[0m")
+	fmt.Println("Local:\t\t", utils.Cyanf("http://127.0.0.1:"+strconv.Itoa(port)+"/"))
+
 	//Get local ip
 	if ip := utils.GetOutboundIP(); ip != nil {
-		fmt.Println("Network:\t" + "\033[0;36m" + "http://" + ip.String() + ":" + strconv.Itoa(port) + "/" + "\033[0m")
+		fmt.Println("Network:\t" + utils.Cyanf("http://"+ip.String()+":"+strconv.Itoa(port)+"/"))
 	}
 
 	err = http.ListenAndServe(":"+strconv.Itoa(port), nil)
