@@ -70,7 +70,7 @@ graph TB
     user1 --edit--> WebEditor
     user2 --edit--> WebEditor
     user.. --edit--> WebEditor
-    subgraph WikiBreeze server
+    subgraph WikiBreeze
         WebEditor(WebEditor) --track changes--> backend(backend)
         backend --read/write to file system--> data(local datas)
         data --incert codes--> pages(your .html files)
