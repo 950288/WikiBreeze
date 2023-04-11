@@ -2,7 +2,7 @@
 
 [![Email](https://img.shields.io/static/v1?label=Email&message=950288s@gmail.com&color=blue)](mailto:950288s@gmail.com)
 
-WikiBreeze is an LAN collaborative wiki content editor that enables complete separation of wiki code writing🧑‍💻 and content filling ✍️ with high adaptability and extremely concise operability 🦾, which can greatly improve wiki development efficiency 🥰.
+WikiBreeze is a LAN collaborative wiki content editor that enables complete separation of wiki code writing🧑‍💻 and content filling ✍️ with high adaptability and extremely concise operability 🦾, which can greatly improve wiki development efficiency 🥰.
 
 ## Introduction for Users (developing)🧑‍💼
 
