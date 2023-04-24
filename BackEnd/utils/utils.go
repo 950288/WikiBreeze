@@ -25,13 +25,13 @@ type Config struct {
 func ReadConfig() (Config, error) {
 	var configDataString string
 	var configData Config
-	configDir := "./config/config.json"
+	configDir := "../WikibreezeData/config/config.json"
 	fmt.Println("reading config.json")
 	configFile, err := os.Open(configDir)
 	if err != nil {
 		//create config.json if it doesn't exist
 		//make config directory if it doesn't exist
-		err = os.MkdirAll("./config", 0755)
+		err = os.MkdirAll("../WikibreezeData/config", 0755)
 		if err != nil {
 			log.Fatal(fmt.Errorf("error creating config directory: %w", err))
 		}
@@ -75,13 +75,13 @@ func ReadConfig() (Config, error) {
 func ReadRenderConfig() (string, error) {
 	configRender := make(map[string]interface{})
 	var configRenderString string
-	configDir := "./config/renderConfig.json"
+	configDir := "../WikibreezeData/config/renderConfig.json"
 	fmt.Println("reading renderConfig.json")
 	configFile, err := os.Open(configDir)
 	if err != nil {
 		//create renderConfig.json if it doesn't exist
 		//make config directory if it doesn't exist
-		err = os.MkdirAll("./config", 0755)
+		err = os.MkdirAll("../WikibreezeData/config", 0755)
 		if err != nil {
 			log.Fatal(fmt.Errorf("error creating config directory: %w", err))
 		}

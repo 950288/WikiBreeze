@@ -5,7 +5,7 @@ var DefaultConfig = `{
 	"scanDirectory": "..\\",
 
 	// Directory to store the edited page (e.g. "D:\\github\\web\\src\\WikiData")
-	"storeDirectory": ".\\WikiData",
+	"storeDirectory": "..\\WikibreezeData\\WikiData",
 
 	// Port to be used (e.g. "8080" or "auto")
 	"port": "auto",
