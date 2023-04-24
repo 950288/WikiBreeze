@@ -206,18 +206,33 @@ func ScanFiles(ScanDir string, FileTypes []string) (map[string]string, []byte, e
 		}
 		return nil
 	})
+	fmt.Println("scanned files successfully")
+	if len(dataMap) == 0 {
+		fmt.Println("no files found")
+		//create testPage.html
+		configFile, err := os.Create("../testPage.html")
+		if err != nil {
+			log.Fatal(fmt.Errorf("error creating testPage.html: %w", err))
+		}
+		//write default content to testPage.html
+		_, err = configFile.Write([]byte(TestPage))
+		if err != nil {
+			log.Fatal(fmt.Errorf("error writing to testPage.html: %w", err))
+		}
+		fmt.Println("created testPage.html")
+		contents := make([]string, 1)
+		contents[0] = "testContent"
+		dataMap["testPage"] = contents
+		dirs["testPage?testContent"] = "../testPage.html"
+		// 复制testContent.json 到 目标路径
+	}
 	// Serialize map to JSON string
 	dataMapByte, err := json.MarshalIndent(dataMap, "", "    ")
 	if err != nil {
 		return nil, nil, fmt.Errorf("error serializing dataMap: %w", err)
 	}
-	fmt.Println("scanned files successfully")
-	if len(dataMap) == 0 {
-		fmt.Println("no files found")
-	} else {
-		fmt.Println("dataMap:\t" + string(dataMapByte))
-		fmt.Println("dirs:\t" + fmt.Sprint(dirs))
-	}
+	fmt.Println("dataMap:\t" + string(dataMapByte))
+	fmt.Println("dirs:\t" + fmt.Sprint(dirs))
 	return dirs, dataMapByte, nil
 }
 func GetOutboundIP() net.IP {

@@ -45,3 +45,5 @@ var DefaultRenderConfig = `{
 var DefaultRenderJson = `{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Example Text"}]}]}`
 
 var TestPageJson = `{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"testPage"}]}]}`
+
+var TestPage = `<head></head><body><!-- WikiBreeze content start--></body>`

@@ -122,10 +122,10 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 		}
 		fmt.Println()
 
-		fmt.Println(r.RequestURI)
-		fmt.Println(r.Header)
-		fmt.Println(r.Body)
-		fmt.Println(r.ContentLength)
+		// fmt.Println(r.RequestURI)
+		// fmt.Println(r.Header)
+		// fmt.Println(r.Body)
+		// fmt.Println(r.ContentLength)
 		var content Content
 		// Read json data
 		b := make([]byte, r.ContentLength)
@@ -163,6 +163,7 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 		// Open the file using the path stored in the dirs map
 		file, err := os.OpenFile(dirs[content.Page+"?"+content.Content], os.O_RDWR|os.O_CREATE, 0644)
 		if err != nil {
+			fmt.Println(dirs)
 			PrintErr("Error opening file" + dir + ":" + err.Error())
 			return
 		}
