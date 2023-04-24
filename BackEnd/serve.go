@@ -47,7 +47,7 @@ func main() {
 
 	//Get local ip
 	if ip := utils.GetOutboundIP(); ip != nil {
-		fmt.Println("Network:\t" + utils.Cyanf("http://"+ip.String()+":"+strconv.Itoa(port)+"/"))
+		fmt.Println("Network:\t", utils.Cyanf("http://"+ip.String()+":"+strconv.Itoa(port)+"/"))
 	}
 
 	err = http.ListenAndServe(":"+strconv.Itoa(port), nil)

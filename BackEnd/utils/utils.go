@@ -136,18 +136,20 @@ func ScanPort(Port string) int {
 			log.Fatal(fmt.Errorf("error parsing port: %w", err))
 		}
 		// check if port is available
-		_, err := net.Listen("tcp", ":"+strconv.Itoa(port))
+		ln, err := net.Listen("tcp", ":"+strconv.Itoa(port))
 		if err != nil {
 			log.Fatal(fmt.Errorf("error listening to port: %w", err))
 		}
+		ln.Close()
 	} else {
 		// scan available port
 		for i := 8080; ; i++ {
-			listener, err := net.Listen("tcp", ":"+strconv.Itoa(i))
+			ln, err := net.Listen("tcp", ":"+strconv.Itoa(i))
 			if err != nil {
 				continue
 			}
-			port = listener.Addr().(*net.TCPAddr).Port
+			port = ln.Addr().(*net.TCPAddr).Port
+			ln.Close()
 			break
 		}
 	}
