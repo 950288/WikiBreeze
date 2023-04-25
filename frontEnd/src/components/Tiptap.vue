@@ -365,7 +365,7 @@ function setImageProURL() {
   console.log(app)
   let recall = app?.proxy.$input(
     "Set image", 
-    true
+    false
   );
   console.log("input");
   watch(recall, (val) => {
