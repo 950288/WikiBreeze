@@ -1,0 +1,43 @@
+@use "sass:map";
+
+// @import "@/../../../node_modules/bulma/sass/utilities/_all.sass";
+@import "bulma/sass/utilities/_all.sass";
+@import "bulma/sass/helpers/_all.sass";
+@import "bulma/sass/elements/button.sass";
+@import "bulma/sass/elements/content.sass";
+@import "bulma/sass/elements/box.sass";
+@import "bulma/sass/elements/progress.sass";
+@import "bulma/sass/components/message.sass";
+// @import "bulma/sass/elements/notification.sass";
+
+@import "./table.scss";
+@import "./light/light.scss";
+@import "./dark/dark.scss";
+@import "./heading.scss";
+@import "./codeblock.scss";
+
+.content{
+    margin: 0 8% 0 8%;
+}
+.content image-pro{
+    display: block;
+    //outline with rounded corners on top
+    border: 2px solid var(--has-border-dark);
+    border-radius: 5px 5px 0 0;
+    padding: 0;
+    margin-bottom: 1em;
+    width: 60%;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    p.imageNote{
+        //bold
+        font-weight: 600;
+        margin-top: .5em;
+        margin-bottom: .2em;
+        text-align: center;
+    }
+    img{
+        width: 100%;
+        // 降低显示优先级
+    }
+}
