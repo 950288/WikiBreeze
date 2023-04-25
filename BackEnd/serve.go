@@ -40,7 +40,7 @@ func main() {
 		http.Handle("/", http.FileServer(http.Dir("./")))
 	} else {
 		// fmt.Println("Running in development mode")
-		http.Handle("/", http.FileServer(http.Dir("../dist")))
+		http.Handle("/", http.FileServer(http.Dir("../Wikibreeze")))
 	}
 	utils.PrintSuccess("Server started on port " + strconv.Itoa(port))
 	fmt.Println("Local:\t\t", utils.Cyanf("http://127.0.0.1:"+strconv.Itoa(port)+"/"))

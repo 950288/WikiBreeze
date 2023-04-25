@@ -1,6 +1,7 @@
 # data
 dist/
 WikibreezeData/
+Wikibreeze/
 
 # FrontEnd directories and files
 FrontEnd/node_modules

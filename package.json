@@ -1,8 +1,9 @@
 {
     "scripts": {
         "install": "cd ./FrontEnd && npm install",
-        "build-backend": "cd ./BackEnd && go build -o ../dist/",
-        "build-frontend": "cd ./FrontEnd && npm run build",
-        "build": "npm run build-backend && npm run build-frontend"
+        "build-backend": "cd ./BackEnd && go build -o ../Wikibreeze/",
+        "build-frontend": "cd ./FrontEnd && npm run build ",
+        "use-template": "copy .\\BackEnd\\testContent.json .\\Wikibreeze",
+        "build": "npm run build-backend && npm run build-frontend && npm run use-template"
     }
 }
