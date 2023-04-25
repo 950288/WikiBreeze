@@ -35,7 +35,9 @@ export default Node.create({
 
   group: 'block',
 
-  content: 'paragraph table',
+  content: 'table paragraph',
+
+  allowGapCursor: true,
 
   parseHTML() {
     return [
@@ -45,6 +47,12 @@ export default Node.create({
 
   renderHTML() {
     return ['table-pro', 0]
+  },
+
+  addAttributes() {
+    return {
+      allowGapCursor: true  
+    }
   },
 
   addCommands() {
@@ -58,7 +66,7 @@ export default Node.create({
           { class: "tableNote" }
           , 
           [
-            editor.schema.text('add table note'),
+            editor.schema.text('add table note here'),
           ])
 
         console.log("'''''''''''''''''''''''''")
@@ -67,7 +75,7 @@ export default Node.create({
           return false
         }
 
-        const tableWithNoteNode = editor.schema.nodes.TablePro.createChecked({}, [noteNode, table])
+        const tableWithNoteNode = editor.schema.nodes.TablePro.createChecked({}, [table, noteNode])
         tr.insert(tr.selection.from - 1, tableWithNoteNode)
         console.log(JSON.stringify(tableWithNoteNode))
         return true
@@ -84,3 +92,5 @@ export default Node.create({
     }
   }
 })
+
+//Q: How to make sure when the paragraph is empty , use the Backspace to delete the whole tablepro?

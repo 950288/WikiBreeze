@@ -16,7 +16,7 @@ declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     ImagePro: {
       insertImagePro: (url: String) => ReturnType,
-      // deleteImagePro: () => ReturnType,
+      deleteImagePro: () => ReturnType,
     }
   }
 }
@@ -26,7 +26,9 @@ export default Node.create({
 
   group: 'block',
 
-  content: 'paragraph image',
+  content: 'image paragraph',
+
+  allowGapCursor: true,
 
   parseHTML() {
     return [
@@ -37,7 +39,6 @@ export default Node.create({
   renderHTML() {
     return ['image-pro', 0]
   },
-
   addCommands() {
     return {
       insertImagePro: (url) => ({ commands, editor, tr }) => {
@@ -46,14 +47,16 @@ export default Node.create({
           return false
         }
         const image = editor.schema.nodes.image.createChecked(
-          { src: url }
+          { src: url,
+            allowGapCursor: false,
+          }
         )
-        console.log(JSON.stringify(image))
+        console.log(image)
         const note = editor.schema.nodes.paragraph.createChecked(
           { class: "imageNote" }
           , 
           [
-            editor.schema.text('edit your image note')
+            editor.schema.text('edit your image note here')
           ]
         )
         console.log(JSON.stringify(note))
@@ -61,16 +64,23 @@ export default Node.create({
           { class: "imagePro" }
           , 
           [
-            note,
-            image
+            image,
+            note
           ]
         )
         tr.replaceSelectionWith(imagePro)
         editor.view.dispatch(tr)
         return true
       },
-      // deleteTablePro: () => ({ commands, editor, tr }) => {
-      // }
+      deleteImagePro: () => ({ commands, editor, tr }) => {
+        const { $from } = tr.selection
+        const imagePro = findParentNodeClosestToPos($from, (node) => node.type === editor.schema.nodes.ImagePro)
+        if (imagePro) {
+          tr.deleteRange(imagePro.pos, imagePro.pos + imagePro.node.nodeSize)
+          return true
+        }
+        return false
+      }
     }
   }
 })

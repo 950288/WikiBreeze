@@ -54,14 +54,16 @@
     border: 2px solid var(--has-border-dark);
     border-radius: 5px 5px 0 0;
     padding: 0;
+    margin-top: 1em;
     margin-bottom: 1em;
     
-
-    p.tableNote{
-        //bold
+    table{
+        margin-bottom: 0;
+    }
+    p.tableNote ,p{
         font-weight: 600;
-        margin-top: .5em;
-        margin-bottom: .2em;
+        // margin-top: -.6em;
+        margin-bottom: .5em;
         text-align: center;
     }
 }

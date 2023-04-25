@@ -84,6 +84,10 @@
         @click="$event => setImageProURL()">
         ImagePro
       </button>
+      <button id="button" class="button is-success " v-if="mounted"
+        @click="$event => editor.chain().focus().deleteImagePro().run()">
+        deleteImagePro
+      </button>
       <div class="button textAlign" id="buttons-toggle">
         <div class="buttons-wrap">
           <button id="button" class="button is-success " v-if="mounted">
