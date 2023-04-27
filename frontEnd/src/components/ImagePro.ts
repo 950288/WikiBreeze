@@ -1,7 +1,4 @@
-import { mergeAttributes, Node, findParentNodeClosestToPos } from '@tiptap/core'
-import { createTable } from '@tiptap/extension-table'
-import { Image } from '@tiptap/extension-image'
-
+import { mergeAttributes, Node, findParentNodeClosestToPos,NodeView } from '@tiptap/core'
 
 /**
  * @name ImagePro
@@ -39,6 +36,15 @@ export default Node.create({
   renderHTML() {
     return ['image-pro', 0]
   },
+
+  addAttributes() {
+    return {
+      class: {
+        default: 'imagePro',
+      },
+    }
+  },
+
   addCommands() {
     return {
       insertImagePro: (url) => ({ commands, editor, tr }) => {
@@ -53,7 +59,7 @@ export default Node.create({
         )
         console.log(image)
         const note = editor.schema.nodes.paragraph.createChecked(
-          { class: "imageNote" }
+          {} 
           , 
           [
             editor.schema.text('edit your image note here')
@@ -82,5 +88,19 @@ export default Node.create({
         return false
       }
     }
-  }
+  },
+  addNodeView(): NodeViewRenderer<ImageProNodeType, Editor> {
+    return {
+      name: 'ImagePro',
+      // 监听删除事件，触发删除命令
+      destroy: (view: EditorView, node: ImageProNodeType) => {
+        const { deleteImagePro } = view.state.commands;
+        try {
+          deleteImagePro();
+        } catch (err) {
+          // 如果删除失败，说明这个节点已经被删除了，不需要再做任何事情
+        }
+      },
+    };
+  },
 })

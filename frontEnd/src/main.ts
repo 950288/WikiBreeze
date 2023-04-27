@@ -13,8 +13,8 @@ routes_list.routes.forEach((route: { component: any; name: string, path: string 
 });
 export const routes: any = routes_list.routes;
 export const router = createRouter({
-  history: createWebHistory(),
-  // history: createWebHashHistory(),
+  // history: createWebHistory(),
+  history: createWebHashHistory(),
   // 404 => home page
   routes: routes,
 });
