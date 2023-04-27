@@ -8,13 +8,7 @@ FrontEnd/node_modules
 FrontEnd/dist
 
 # BackEnd directories and files
-BackEnd/serve.exe
-BackEnd/*.json
-BackEnd/WikiData/
-BackEnd/configDir/
 BackEnd/*.exe
-BackEnd/config/config.json
-BackEnd/config/renderConfig.json
 BackEnd/testPage.html
 
 # Editor directories and files
