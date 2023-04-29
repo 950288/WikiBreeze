@@ -54,7 +54,7 @@ export default Node.create({
 
   addAttributes() {
     return {
-      allowGapCursor: true  
+      allowGapCursor: true
     }
   },
 
@@ -67,12 +67,11 @@ export default Node.create({
         console.log(editor.schema.marks)
         const noteNode = editor.schema.nodes.paragraph.createChecked(
           { class: "tableNote" }
-          , 
+          ,
           [
             editor.schema.text('add table note here'),
           ])
 
-        console.log("'''''''''''''''''''''''''")
         console.log(JSON.stringify(noteNode))
         if (!noteNode) {
           return false
@@ -95,5 +94,3 @@ export default Node.create({
     }
   }
 })
-
-//Q: How to make sure when the paragraph is empty , use the Backspace to delete the whole tablepro?

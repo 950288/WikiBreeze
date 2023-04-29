@@ -45,9 +45,6 @@ export default Node.create({
       class: {
         default: 'imagePro',
       },
-      // gapCursor: {
-      //   name: 'imageProCursor'  
-      // } 
     }
   },
 
