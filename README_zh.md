@@ -2,6 +2,10 @@
 
 [![Email](https://img.shields.io/static/v1?label=Email&message=2779307196@qq.com&color=blue)](mailto:2779307196@qq.com)
 
+# 该项目正在开发中，待第一个版本还未发布，待第一个版本发布后，将提供详细的使用说明。
+
+# 以下内容还未跟新
+
 WikiBreeze 是一款在线协同wiki内容编辑器，能够实现wiki代码编写🧑‍💻与内容填充✍️的完全分离，具有极高的适配性和极简操作性🦾，能够极大提高wiki开发效率🥰。
 
 ## 使用说明 (开发ing) 🧑‍💼

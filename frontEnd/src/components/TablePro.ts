@@ -37,7 +37,10 @@ export default Node.create({
 
   content: 'table paragraph',
 
-  allowGapCursor: true,
+  defining: false,
+
+  isolating: true,
+
 
   parseHTML() {
     return [

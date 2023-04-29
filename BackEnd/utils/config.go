@@ -38,7 +38,7 @@ var DefaultRenderConfig = `{
         "headingLevels": [1,2,3,4],
         "citation": "true",
         "tablePro": "true",             //table with note
-        "tableMustContainNote": "true"  //table must contain note
+        "tableMustContainNote": "false"  //table must contain note
     }
 }`
 
