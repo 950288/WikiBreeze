@@ -76,12 +76,10 @@
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().setHardBreak().run()">
         HardBreak
       </button>
-      <button id="button" class="button is-success " v-if="mounted"
-        @click="setImageURL()">
+      <button id="button" class="button is-success " v-if="mounted" @click="setImageURL()">
         Image
       </button>
-      <button id="button" class="button is-success " v-if="mounted"
-        @click="$event => setImageProURL()">
+      <button id="button" class="button is-success " v-if="mounted" @click="$event => setImageProURL()">
         ImagePro
       </button>
       <button id="button" class="button is-success " v-if="mounted"
@@ -195,9 +193,10 @@
   
 <script setup lang="ts">
 import { mergeAttributes } from '@tiptap/core'
-import { useEditor, EditorContent } from '@tiptap/vue-3'
+import { useEditor, EditorContent, findParentNodeClosestToPos } from '@tiptap/vue-3'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
+import { note } from './Note'
 import Italic from '@tiptap/extension-italic'
 import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
@@ -210,6 +209,7 @@ import Heading from '@tiptap/extension-heading'
 import Bulletlist from '@tiptap/extension-bullet-list'
 import Listitem from '@tiptap/extension-list-item'
 import Image from '@tiptap/extension-image'
+import { ImageX } from './ImageX'
 import Link from '@tiptap/extension-link'
 import strike from '@tiptap/extension-strike'
 import hardBreak from '@tiptap/extension-hard-break'
@@ -259,7 +259,6 @@ Link.configure({
 })
 const Paragraphs = Paragraph.extend({
   addAttributes() {
-    // Return an object with attribute configuration
     return {
       class: { default: null },
     }
@@ -267,7 +266,22 @@ const Paragraphs = Paragraph.extend({
   renderHTML({ HTMLAttributes }) {
     return ['p', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
   },
-
+  addKeyboardShortcuts() {
+    return {
+      'Backspace': function({editor}) { 
+        let tr = editor.state.tr
+        console.log("Backspace")
+        const { $from } = tr.selection
+        let imagePro = <any> findParentNodeClosestToPos($from, (node) => node.type === editor.schema.nodes.ImagePro)
+        if(imagePro && typeof(imagePro.node.content.content[1]?.content.content[0]?.text) == "undefined") {
+          console.log("delete ImagePro")
+          editor.chain().focus().deleteImagePro().run()
+          return true 
+        }
+        return false
+      },
+    }
+  }
 })
 History.configure({
   depth: 100,
@@ -279,6 +293,7 @@ let TableRowPro = TableRow.extend({
 const extensions = [
   Document,
   Paragraphs,
+  note,
   Text,
   Bold,
   Italic,
@@ -289,12 +304,17 @@ const extensions = [
     defaultLanguage: null,
     lowlight,
   }),
-  // citation,
+  ImageX,
   Underline,
   Heading,
   Bulletlist,
   Listitem,
-  Image,
+  Image.configure({
+    HTMLAttributes: {
+      class: 'image',
+      draggable: false,
+    },
+  }),
   ImagePro,
   Link,
   hardBreak,
@@ -341,6 +361,8 @@ onMounted(() => {
   mounted.value = true;
   console.log(editor.value)
   // console.log(editor.value.chain().focus().toggleBold())
+
+  console.log(editor.value.schema)
 })
 function save() {
   console.log(JSON.stringify(view.value = editor.value.getJSON()))
@@ -356,7 +378,7 @@ function save() {
 function setImageURL() {
   console.log(app)
   let recall = app?.proxy.$input(
-    "Set image", 
+    "Set image",
     false
   );
   console.log("input");
@@ -368,7 +390,7 @@ function setImageURL() {
 function setImageProURL() {
   console.log(app)
   let recall = app?.proxy.$input(
-    "Set image", 
+    "Set image",
     false
   );
   console.log("input");
@@ -380,7 +402,7 @@ function setImageProURL() {
 function setLink() {
   console.log(app)
   let recall = app?.proxy.$input(
-    "Set Link", 
+    "Set Link",
     false
   );
   console.log("input");
@@ -398,8 +420,6 @@ function setLink() {
   margin: 0 0 0 0;
 }
 
-
-
 .bold {
   font-weight: bold;
 }
@@ -416,7 +436,6 @@ function setLink() {
     display: inline-block;
     opacity: 0.9;
     transition: ease 0.2s;
-
   }
 
   #button:hover {
@@ -460,7 +479,6 @@ function setLink() {
   height: 2.5em;
   width: 5em;
   opacity: 0.9;
-
 
   .buttons-wrap {
     position: absolute;
@@ -532,29 +550,6 @@ button * {
 }
 </style>
 <style lang="scss">
-.ProseMirror {
-  padding: 0.4em;
-  min-height: 25ch;
-  outline: auto;
-  outline-color: var(--has-border-dark);
-  outline-style: dashed;
-  img{
-  display: block;
-    border: 2px solid var(--has-border-dark);
-    border-radius: 5px 5px 0 0;
-    width: 60%;
-    margin-left: 50%;
-    transform: translateX(-50%);
-}
-}
-
-.ProseMirror-focused {
-  outline: auto;
-
-  >*+* {
-    margin-top: 0.75em;
-  }
-}
 
 code {
   font-size: 1.1rem;
@@ -577,14 +572,7 @@ sub {
   vertical-align: sub;
 }
 
-.ProseMirror-gapcursor {
-  position: absolute;
-  cursor: ew-resize;
-  cursor: col-resize;
-}
-
 a {
   color: var(--has-text-link);
 }
-
 </style>

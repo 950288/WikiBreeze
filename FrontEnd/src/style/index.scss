@@ -26,41 +26,65 @@
 
 .content image-pro {
   display: block;
-  //outline with rounded corners on top
-  border: 2px solid var(--has-border-dark);
-  border-radius: 5px 5px 0 0;
   padding: 0;
   margin-bottom: 1em;
+  border: 2px solid var(--has-border-dark);
+  border-radius: 5px 5px 5px 5px;
   width: 60%;
   margin-left: 50%;
   transform: translateX(-50%);
 
-  p.imageNote {
-    //bold
-    font-weight: 600;
-    margin-top: .5em;
-    margin-bottom: .2em;
+  p {
+    // font-weight: 600;
+    margin-top: .2em;
+    margin-bottom: .3em;
     text-align: center;
   }
 
   img {
     width: 100%;
-    // 降低显示优先级
+    border: 0;
+    margin-bottom: 0;
   }
 }
 
-.ProseMirror{
-  img {
-    margin-top: 0;
-  }
-}
 .ProseMirror-gapcursor {
   display: none;
   pointer-events: none;
   position: absolute;
   margin: 0;
 }
+.ProseMirror {
+  padding: 0.4em;
+  min-height: 25ch;
+  outline: auto;
+  outline-color: var(--has-border-dark);
+  outline-style: dashed;
 
+  img {
+    margin-top: 0;
+    display: block;
+    // border: 2px solid var(--has-border-dark);
+    border-radius: 5px 5px 5px 5px;
+    width: 60%;
+    margin-left: 50%;
+    margin-bottom: 1em;
+    transform: translateX(-50%);
+  }  
+  
+  img.ProseMirror-selectednode{
+    border: 2px solid var(--has-border-dark);
+    box-shadow: 0 0 5px var(--has-shadow-dark);
+  }
+}
+
+.ProseMirror-focused {
+  outline: auto;
+
+  >*+* {
+    margin-top: 0.75em;
+  }
+}
 .ProseMirror-gapcursor:after {
   content: "";
   display: block;

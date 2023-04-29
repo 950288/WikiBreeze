@@ -1,4 +1,5 @@
 import { mergeAttributes, Node, findParentNodeClosestToPos,NodeView } from '@tiptap/core'
+import { Editor, NodeViewRenderer } from '@tiptap/vue-3'
 
 /**
  * @name ImagePro
@@ -23,9 +24,11 @@ export default Node.create({
 
   group: 'block',
 
-  content: 'image paragraph',
+  content: 'imageX note',
 
-  allowGapCursor: true,
+  // allowGapCursor: true,
+
+  isolating: true,
 
   parseHTML() {
     return [
@@ -34,9 +37,9 @@ export default Node.create({
   },
 
   renderHTML() {
-    return ['image-pro', 0]
+    return ['image-pro', { 'data-gapcursor': 'ImageProCursor' }, 0]
   },
-
+  
   addAttributes() {
     return {
       class: {
@@ -52,20 +55,22 @@ export default Node.create({
         if (!url) {
           return false
         }
-        const image = editor.schema.nodes.image.createChecked(
-          { src: url,
-            allowGapCursor: false,
+        const image = editor.schema.nodes.imageX.createChecked(
+          { 
+            src: url
           }
         )
         console.log(image)
-        const note = editor.schema.nodes.paragraph.createChecked(
-          {} 
+        const note = editor.schema.nodes.note.createChecked(
+          {
+            class: "note"
+          } 
           , 
           [
-            editor.schema.text('edit your image note here')
+            editor.schema.text('Edit your image note here')
           ]
         )
-        console.log(JSON.stringify(note))
+        console.log(JSON.stringify(image))
         const imagePro = editor.schema.nodes.ImagePro.createChecked(
           { class: "imagePro" }
           , 
@@ -86,21 +91,8 @@ export default Node.create({
           return true
         }
         return false
-      }
-    }
-  },
-  addNodeView(): NodeViewRenderer<ImageProNodeType, Editor> {
-    return {
-      name: 'ImagePro',
-      // 监听删除事件，触发删除命令
-      destroy: (view: EditorView, node: ImageProNodeType) => {
-        const { deleteImagePro } = view.state.commands;
-        try {
-          deleteImagePro();
-        } catch (err) {
-          // 如果删除失败，说明这个节点已经被删除了，不需要再做任何事情
-        }
       },
-    };
+      
+    }
   },
 })
