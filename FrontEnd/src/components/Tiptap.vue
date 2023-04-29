@@ -196,7 +196,7 @@ import { mergeAttributes } from '@tiptap/core'
 import { useEditor, EditorContent, findParentNodeClosestToPos } from '@tiptap/vue-3'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
-import { note } from './Note'
+import { Note } from './Note'
 import Italic from '@tiptap/extension-italic'
 import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
@@ -293,7 +293,7 @@ let TableRowPro = TableRow.extend({
 const extensions = [
   Document,
   Paragraphs,
-  note,
+  Note,
   Text,
   Bold,
   Italic,

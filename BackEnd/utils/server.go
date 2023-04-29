@@ -74,6 +74,9 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 				PrintErr("Error creating file " + getContent.Content + ".json" + err.Error())
 				return
 			}
+
+			直接传前端，不用创建文件
+
 			var jsonString string
 			fmt.Println(getContent.Content)
 			fmt.Println(getContent.Page)
@@ -184,7 +187,7 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 		var tagAfter string
 		if len(endPattern) == 0 {
 			// If the end tag is not found, append it to the end of the file
-			tagAfter = "<!-- WikiBreeze " + content.Content + " end-->\n" + string(b[startPattern[1]+1:])
+			tagAfter = "<!-- WikiBreeze " + content.Content + " end-->\n" + string(b[startPattern[1]:])
 		} else {
 			// If the end tag is found
 			tagAfter = string(b[endPattern[0]:])
