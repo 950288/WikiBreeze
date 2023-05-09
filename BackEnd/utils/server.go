@@ -75,11 +75,7 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 				return
 			}
 
-			直接传前端，不用创建文件
-
 			var jsonString string
-			fmt.Println(getContent.Content)
-			fmt.Println(getContent.Page)
 			if getContent.Content == "content" && getContent.Page == "testPage" {
 				jsonString = TestPageJson
 			} else {

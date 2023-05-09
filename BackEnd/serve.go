@@ -14,7 +14,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	RenderConfigString, err := utils.ReadRenderConfig()
+	RenderConfigString, err := utils.ReadEditorConfig()
 	if err != nil {
 		log.Fatal(err)
 	}
