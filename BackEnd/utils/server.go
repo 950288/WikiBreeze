@@ -67,13 +67,13 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 		//read or create json file
 		jsonFile, err := os.Open(dir)
 		if err != nil {
-			fmt.Println("Creating file " + getContent.Content + ".json")
+			// fmt.Println("Creating file " + getContent.Content + ".json")
 			// File doesn't exist, create it
-			jsonFile, err = os.Create(dir)
-			if err != nil {
-				PrintErr("Error creating file " + getContent.Content + ".json" + err.Error())
-				return
-			}
+			// jsonFile, err = os.Create(dir)
+			// if err != nil {
+			// 	PrintErr("Error creating file " + getContent.Content + ".json" + err.Error())
+			// 	return
+			// }
 
 			var jsonString string
 			if getContent.Content == "content" && getContent.Page == "testPage" {
@@ -101,9 +101,12 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 
 		// Parse the JSON data
 		var datas map[string]interface{}
+		if string(byteValue) == "" {
+			byteValue = []byte("{}")
+		}
 		err = json.Unmarshal(byteValue, &datas)
 		if err != nil {
-			PrintErr("Error parsing JSON:" + err.Error())
+			PrintErr("Error parsing " + dir + ":" + err.Error())
 			return
 		}
 		fmt.Fprintln(w, string(byteValue))

@@ -22,6 +22,23 @@ type Config struct {
 	FileTypes []string `json:"fileType"`
 }
 
+func ParseJson(filename string, configString string) (string, error) {
+	jsonMap := make(map[string]interface{})
+	PrintErr(filename)
+	PrintErr(configString)
+	// decode json to struct
+	err := json.Unmarshal([]byte(configString), &jsonMap)
+	if err != nil {
+		return "", fmt.Errorf("error decoding %s: %w", filename, err)
+	}
+
+	//convert editorConfig to json string
+	encoded, err := json.MarshalIndent(jsonMap, "", "    ")
+	if err != nil {
+		return "", fmt.Errorf("error encoding %s: %w", filename, err)
+	}
+	return string(encoded), nil
+}
 func ReadDefaultConfig() string {
 	DefaultConfigFile, err := os.Open("./src/config.json")
 	if err != nil {
@@ -37,25 +54,37 @@ func ReadDefaultConfig() string {
 	// remove comments
 	comment := regexp.MustCompile(`(?s)//.*?\n|/\*.*?\*/`)
 
-	return comment.ReplaceAllString(string(Bytes), "")
+	ConfigString := comment.ReplaceAllString(string(Bytes), "")
+
+	ConfigString, err = ParseJson("./src/config.json", ConfigString)
+	if err != nil {
+		log.Fatal(fmt.Errorf("error parse config.json: %w", err))
+	}
+	return ConfigString
 }
 
 func ReadDefaultEditorConfig() string {
 	DefaultEditorConfigFile, err := os.Open("./src/editorConfig.json")
 	if err != nil {
-		log.Fatal(fmt.Errorf("error opening ./src/config.json : %w", err))
+		log.Fatal(fmt.Errorf("error opening ./src/editorConfig.json : %w", err))
 	}
 	defer DefaultEditorConfigFile.Close()
 	Bytes, err := io.ReadAll(DefaultEditorConfigFile)
 	if err != nil {
-		log.Fatal(fmt.Errorf("error reading config.json: %w", err))
+		log.Fatal(fmt.Errorf("error reading editorConfig.json: %w", err))
 	}
-	fmt.Println("read ./src/config.json sccessfully")
+	fmt.Println("read ./src/editorConfig.json sccessfully")
 
 	// remove comments
 	comment := regexp.MustCompile(`(?s)//.*?\n|/\*.*?\*/`)
 
-	return comment.ReplaceAllString(string(Bytes), "")
+	EditorConfigString := comment.ReplaceAllString(string(Bytes), "")
+
+	EditorConfigString, err = ParseJson("./src/editorConfig.json", EditorConfigString)
+	if err != nil {
+		log.Fatal(fmt.Errorf("error parse editorConfig.json: %w", err))
+	}
+	return EditorConfigString
 }
 
 func ReadConfig() (Config, error) {
@@ -65,6 +94,7 @@ func ReadConfig() (Config, error) {
 	fmt.Println("reading config.json")
 	configFile, err := os.Open(configDir)
 	if err != nil {
+		fmt.Println("config.json doesn't exist, creating it")
 		//create config.json if it doesn't exist
 		//make config directory if it doesn't exist
 		err = os.MkdirAll("../WikibreezeData/config", 0755)
@@ -91,13 +121,14 @@ func ReadConfig() (Config, error) {
 			log.Fatal(fmt.Errorf("error reading config.json: %w", err))
 		}
 		configDataString = string(jsonBytes)
+
+		// remove comments
+		comment := regexp.MustCompile(`(?s)//.*?\n|/\*.*?\*/`)
+		configDataString = comment.ReplaceAllString(configDataString, "")
+
 		fmt.Println("read config.json sccessfully")
 	}
 	configFile.Close()
-
-	// remove comments
-	comment := regexp.MustCompile(`(?s)//.*?\n|/\*.*?\*/`)
-	configDataString = comment.ReplaceAllString(configDataString, "")
 
 	// decode json to struct
 	err = json.Unmarshal([]byte(configDataString), &configData)
@@ -108,12 +139,12 @@ func ReadConfig() (Config, error) {
 	return configData, nil
 }
 func ReadEditorConfig() (string, error) {
-	editorConfig := make(map[string]interface{})
 	var editorConfigString string
 	configDir := "../WikibreezeData/config/editorConfig.json"
 	fmt.Println("reading editorConfig.json")
 	configFile, err := os.Open(configDir)
 	if err != nil {
+		fmt.Println("editorConfig.json doesn't exist, creating it")
 		//create editorConfig.json if it doesn't exist
 		//make config directory if it doesn't exist
 		err = os.MkdirAll("../WikibreezeData/config", 0755)
@@ -134,33 +165,27 @@ func ReadEditorConfig() (string, error) {
 		fmt.Println("created editorConfig.json")
 	} else {
 		defer configFile.Close()
-
 		// read json file
 		jsonBytes, err := io.ReadAll(configFile)
 		if err != nil {
 			log.Fatal(fmt.Errorf("error reading editorConfig.json: %w", err))
 		}
 		editorConfigString = string(jsonBytes)
+
+		// remove comments
+		comment := regexp.MustCompile(`(?s)//.*?\n|/\*.*?\*/`)
+		editorConfigString = comment.ReplaceAllString(editorConfigString, "")
 		fmt.Println("read editorConfig.json sccessfully")
+
+		editorConfigString, err = ParseJson("editorConfig.json", editorConfigString)
+		if err != nil {
+			log.Fatal(fmt.Errorf("error parsing editorConfig.json: %w", err))
+		}
 	}
 	configFile.Close()
-	// remove comments
-	comment := regexp.MustCompile(`(?s)//.*?\n|/\*.*?\*/`)
-	editorConfigString = comment.ReplaceAllString(editorConfigString, "")
 
-	// decode json to struct
-	err = json.Unmarshal([]byte(editorConfigString), &editorConfig)
-	if err != nil {
-		log.Fatal(fmt.Errorf("error parsing config.json: %w", err))
-	}
-
-	//convert editorConfig to json string
-	EditorString, err := json.Marshal(editorConfig)
-	if err != nil {
-		log.Fatal(fmt.Errorf("error parsing config.json: %w", err))
-	}
-	fmt.Println("editorConfig:\t" + string(EditorString))
-	return string(EditorString), nil
+	fmt.Println("editorConfig:\n" + editorConfigString)
+	return editorConfigString, nil
 }
 func ScanPort(Port string) int {
 	var port int

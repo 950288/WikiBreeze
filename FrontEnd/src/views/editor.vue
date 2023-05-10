@@ -3,8 +3,14 @@
         <br>
         <tiptap v-if="contenetJson && renderConfigJson" @save="save" :contenetjson="contenetJson"
             :renderConfigJson="renderConfigJson" />
-        <progress v-if="!(contenetJson && renderConfigJson)" class="progress is-large is-info" max="100">60%</progress>
+        <progress v-if="!(contenetJson && renderConfigJson) && !error" class="progress is-large is-info" max="100">60%</progress>
         <br>
+        <article v-if="error" class="message is-warning is-large">
+            <div class="message-body">
+                <h3>Error!</h3>
+                <p>{{ error }}</p>
+            </div>
+        </article>
     </div>
 </template>
 
@@ -18,6 +24,7 @@ import { router } from "@/main";
 const contenetJson = ref<JSON>();
 const renderConfigJson = ref<JSON>();
 const app = <any>getCurrentInstance();
+let error = ref<string>();
 
 onMounted(() => {
     if(!history.state.content){
@@ -42,6 +49,7 @@ onMounted(() => {
     });
     watch(getnodeError, (val) => {
         console.log(val);
+        error.value = val;
     });
     let { data: renderData, error: getRenderDataError } = useFetch(requestUrl.value + "/getRenderconfig", {
         method: 'POST',
@@ -100,3 +108,12 @@ function save(contentjson: JSON, contenthtml: string) {
     console.log(saveReturnMsg.value);
 }
 </script>
+<style lang="scss" scoped>
+.message {
+    background: var(--is-warning-gb);
+
+    .message-body * {
+        // color: #000;
+    }
+}
+</style>

@@ -23,5 +23,6 @@
         "citation": "true",
         "tablePro": "true",             //table with note
         "tableMustContainNote": "false"  //table must contain note
+        
     }
 }

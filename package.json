@@ -1,11 +1,13 @@
 {
     "scripts": {
         "prepare": "node -v",
+        "build": "rimraf ./Wikibreeze && npm run build:backend && npm run build:frontend",
+        
         "cp:src": "rimraf ./Wikibreeze/src && ncp ./BackEnd/src ./Wikibreeze/src",
-        "build": "npm run build:backend && npm run build:frontend",
         "build:backend": "cd BackEnd && go build -o ../Wikibreeze/ && npm run cp:src",
-        "build:frontend": "npm run cp:template && cd FrontEnd && npm run build",
-        "cp:template": "ncp ./BackEnd/testContent.json ./Wikibreeze",
+
+        "cp:template": "ncp ./BackEnd/testContent.json ./Wikibreeze/testContent.json",
+        "build:frontend": "cd FrontEnd && npm run build && cd ../ && npm run cp:template",
         "install": "cd FrontEnd && npm install"
     },
     "dependencies": {

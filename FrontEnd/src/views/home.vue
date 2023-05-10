@@ -15,7 +15,6 @@
             <div class="message-body">
                 <h3>fetch page list error!</h3>
                 <p>{{ error }}</p>
-                <p>please refresh this page</p>
             </div>
         </article>
         <progress v-if="!data && !error" class="progress is-large is-info" max="100">60%</progress>
