@@ -2,6 +2,4 @@ package utils
 
 var DefaultRenderJson = `{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Example Text"}]}]}`
 
-var TestPageJson = `{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"testPage"}]}]}`
-
-var TestPage = `<head></head><body><main><!-- WikiBreeze testContent start--></main></body>`
+var TestPage = `<head><link rel="stylesheet" type="text/css" href="./Wikibreeze/src/template.css"></head><body><main><!-- WikiBreeze content start--></main></body>`

@@ -24,8 +24,6 @@ type Config struct {
 
 func ParseJson(filename string, configString string) (string, error) {
 	jsonMap := make(map[string]interface{})
-	PrintErr(filename)
-	PrintErr(configString)
 	// decode json to struct
 	err := json.Unmarshal([]byte(configString), &jsonMap)
 	if err != nil {
@@ -281,36 +279,36 @@ func ScanFiles(ScanDir string, FileTypes []string) (map[string]string, []byte, e
 		}
 		fmt.Println("created testPage.html")
 		contents := make([]string, 1)
-		contents[0] = "testContent"
+		contents[0] = "content"
 		dataMap["testPage"] = contents
-		dirs["testPage?testContent"] = "../testPage.html"
-		// copy testContent.json to WikibreezeData directory
-		err = os.MkdirAll("../WikibreezeData/WikiData/testPage", 0755)
-		if err != nil {
-			log.Fatal(fmt.Errorf("error creating ../WikibreezeData/WikiData/testPage directory: %w", err))
-		}
+		dirs["testPage?content"] = "../testPage.html"
+		// // copy testContent.json to WikibreezeData directory
+		// err = os.MkdirAll("../WikibreezeData/WikiData/testPage", 0755)
+		// if err != nil {
+		// 	log.Fatal(fmt.Errorf("error creating ../WikibreezeData/WikiData/testPage directory: %w", err))
+		// }
 
-		src := "./testContent.json"
-		dst := "../WikibreezeData/WikiData/testPage/testContent.json"
-		fin, err := os.Open(src)
-		if err != nil {
-			log.Fatal(fmt.Errorf("error open to testContent.json: %w", err))
-		}
-		defer fin.Close()
+		// src := "./testContent.json"
+		// dst := "../WikibreezeData/WikiData/testPage/testContent.json"
+		// fin, err := os.Open(src)
+		// if err != nil {
+		// 	log.Fatal(fmt.Errorf("error open to testContent.json: %w", err))
+		// }
+		// defer fin.Close()
 
-		fout, err := os.Create(dst)
-		if err != nil {
-			log.Fatal(fmt.Errorf("error creating ../WikibreezeData/WikiData/testPage/testContent.json: %w", err))
-		}
-		defer fout.Close()
+		// fout, err := os.Create(dst)
+		// if err != nil {
+		// 	log.Fatal(fmt.Errorf("error creating ../WikibreezeData/WikiData/testPage/testContent.json: %w", err))
+		// }
+		// defer fout.Close()
 
-		_, err = io.Copy(fout, fin)
+		// _, err = io.Copy(fout, fin)
 
-		if err != nil {
-			log.Fatal(fmt.Errorf("copy testContent.json to WikibreezeData directory: %w", err))
-		}
+		// if err != nil {
+		// 	log.Fatal(fmt.Errorf("copy testContent.json to WikibreezeData directory: %w", err))
+		// }
 
-		fmt.Println("created testContent.json")
+		// fmt.Println("created testContent.json")
 
 	}
 	// Serialize map to JSON string

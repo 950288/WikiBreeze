@@ -201,7 +201,7 @@ import Italic from '@tiptap/extension-italic'
 import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
 import Code from '@tiptap/extension-code'
-import CodeBlock from '@tiptap/extension-code-block-lowlight'
+import codeBlock from '@tiptap/extension-code-block-lowlight'
 import Text from '@tiptap/extension-text'
 import Bold from '@tiptap/extension-bold'
 import Underline from '@tiptap/extension-underline'
@@ -273,6 +273,11 @@ History.configure({
 })
 let TableRowPro = TableRow.extend({
   // content: '(tableCell | tableHeader)+',
+})
+let CodeBlock = codeBlock.extend({
+  // renderHTML({ node }) {
+  //   return `<pre><code class="language-${node.attrs.highlight || ''}">${node.textContent}</code></pre>`
+  // },
 })
 const extensions = [
   Document,

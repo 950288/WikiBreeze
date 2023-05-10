@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"regexp"
@@ -67,6 +68,7 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 		//read or create json file
 		jsonFile, err := os.Open(dir)
 		if err != nil {
+			fmt.Println(dir + " doesn't exist , reading from default")
 			// fmt.Println("Creating file " + getContent.Content + ".json")
 			// File doesn't exist, create it
 			// jsonFile, err = os.Create(dir)
@@ -76,8 +78,19 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 			// }
 
 			var jsonString string
+			fmt.Println(getContent.Content, getContent.Page)
+			// fmt.Println(TestPageJson)
 			if getContent.Content == "content" && getContent.Page == "testPage" {
-				jsonString = TestPageJson
+				fin, err := os.Open("./testContent.json")
+				if err != nil {
+					log.Fatal(fmt.Errorf("error open to testContent.json: %w", err))
+				}
+				defer fin.Close()
+				byteValue, err = io.ReadAll(fin)
+				if err != nil {
+					log.Fatal(fmt.Errorf("error read to testContent.json: %w", err))
+				}
+				jsonString = string(byteValue)
 			} else {
 				jsonString = DefaultRenderJson
 			}
@@ -90,6 +103,7 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 			// PrintSuccess(dir + " created")
 			byteValue = []byte(jsonString)
 		} else {
+			PrintSuccess("read from file " + dir)
 			defer jsonFile.Close()
 			byteValue, err = io.ReadAll(jsonFile)
 			if err != nil {
@@ -109,8 +123,9 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 			PrintErr("Error parsing " + dir + ":" + err.Error())
 			return
 		}
+		// fmt.Println(string(byteValue))
 		fmt.Fprintln(w, string(byteValue))
-		PrintSuccess("read from file " + dir + " successful")
+		PrintSuccess("fetch successful")
 	}
 }
 func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFunc {
