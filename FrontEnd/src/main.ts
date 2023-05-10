@@ -3,15 +3,15 @@ import App from "./App.vue";
 import { createRouter, createWebHashHistory, createWebHistory } from "vue-router";
 import notification from "@/components/Notification.vue";
 import input from "@/components/InputInfo.vue";
-import routes_list from "@/routes.json";
+
+import Home from "@/views/home.vue";
+import Editor from "@/views/editor.vue";
+
 import { useColorMode } from "@vueuse/core";
-
-
-routes_list.routes.forEach((route: { component: any; name: string, path: string }, index) => {
-  route.component = () => import(`@/views/${route.name.toLowerCase()}.vue`);
-  route.path = route.path;
-});
-export const routes: any = routes_list.routes;
+export const routes = [
+  { "name":"Home", path: "/", component: Home, "props": true},
+  { "name":"Editor", path: "/editor", component: Editor }
+];
 export const router = createRouter({
   // history: createWebHistory(),
   history: createWebHashHistory(),

@@ -32,10 +32,12 @@ const { x, y } = useWindowScroll();
 const float = ref<string>("");
 const props = defineProps({
   routes: {
-    type: Array as () => NavItem[],
+    type: Array as () => any[],
     required: true,
   },
 });
+
+console.log(props.routes);
 
 const indicator_X = ref<number>(0);
 const indicator_W = ref<number>(0);

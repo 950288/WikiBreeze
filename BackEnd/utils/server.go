@@ -82,12 +82,12 @@ func HandlerGetContent(StoreDir string) http.HandlerFunc {
 				jsonString = DefaultRenderJson
 			}
 			// Write the JSON string to the file
-			_, err = jsonFile.WriteString(jsonString)
-			if err != nil {
-				PrintErr("Error writing to file " + getContent.Content + ".json" + err.Error())
-				return
-			}
-			PrintSuccess(dir + " created")
+			// _, err = jsonFile.WriteString(jsonString)
+			// if err != nil {
+			// 	PrintErr("Error writing to file " + getContent.Content + ".json" + err.Error())
+			// 	return
+			// }
+			// PrintSuccess(dir + " created")
 			byteValue = []byte(jsonString)
 		} else {
 			defer jsonFile.Close()

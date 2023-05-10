@@ -1,5 +1,5 @@
 import { mergeAttributes, Node, findParentNodeClosestToPos,NodeView } from '@tiptap/core'
-import { Editor, NodeViewRenderer } from '@tiptap/vue-3'
+import { Editor, type NodeViewRenderer } from '@tiptap/vue-3'
 
 /**
  * @name ImagePro
