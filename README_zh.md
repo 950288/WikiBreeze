@@ -1,10 +1,6 @@
-# WikiBreeze （[English](https://github.com/950288/WikiBreeze/blob/main/README.md)🛠️
+# WikiBreeze （[English](https://github.com/950288/WikiBreeze/blob/main/README.md))🛠️
 
 [![Email](https://img.shields.io/static/v1?label=Email&message=2779307196@qq.com&color=blue)](mailto:2779307196@qq.com)
-
-# 该项目正在开发中，待第一个版本还未发布，待第一个版本发布后，将提供详细的使用说明。
-
-# 以下内容还未跟新
 
 WikiBreeze 是一款在线协同wiki内容编辑器，能够实现wiki代码编写🧑‍💻与内容填充✍️的完全分离，具有极高的适配性和极简操作性🦾，能够极大提高wiki开发效率🥰。
 
@@ -15,22 +11,19 @@ WikiBreeze 是一个用户友好的在线编辑器🧰，允许 iGEM 团队轻�
 使用 WikiBreeze，请按照以下步骤操作：
 
 1. 下载最新版的`WikiBreeze`压缩包，将解压的 `WikiBreeze` 文件夹放入你的wiki项目根目录中。
-2. 在您想要编辑的每 `.html` 文件或其他自定义文件类型中插入以下特殊标记： `<!-- WikiBreeze {{name}} start-->`。将 `{{name}}` 替换为一个任意的自定义名称。(注意: 一个页面可以包含多个标记，每个标记所对应的部分可被单独编辑。)
+2. 在您想要编辑的每 `.html` 文件或其他自定义文件类型中插入以下特殊标记： `<!-- WikiBreeze {{CONTENT}} start-->`。将 `{{CONTENT}}` 替换为一个任意的自定义名称。(注意: 一个页面可以包含多个标记，每个标记所对应的部分可被单独编辑。)
 ```
 <div>
     <!-- WikiBreeze test1 start-->
 </div>
 ```
 
-
-3. 双击 WikiBreeze 可执行文件运行工具。然后你可以在控制台中看到生成的 URL，如下所示。您可以通过生成的 URL 在浏览器中进行wiki编辑，WikiBreeze 还支持局域网(如个人热点、校园网等)内的协作编辑功能，同一局域网内的团队成员可通过第二链接访问编辑页面。
+3. 在控制台运行 ./WikiBreeze/WikiBreeze 可执行文件启动工具。然后你将在控制台中看到生成的 URL，如下所示。您可以通过生成的 URL 在浏览器中进行wiki编辑，WikiBreeze 还支持局域网(如个人热点、校园网等)内的协作编辑功能，同一局域网内的团队成员可通过第二链接访问编辑页面。
 ```
    Server started on port 8080
     Local:           http://127.0.0.1:8080/
     Network:         http://192.168.Xx.xx:8080/
 ```
-    
-4. 对于进阶用法，您可以将 WikiBreeze 部署到个人服务器并开启相应服务端口，这将破除局域网的局限。
 
 我们还提供了配置文件 config.json，该文件在应用程序首次运行时会自动生成。它允许用户自定义某些参数，如包含要修改的页面的目录、用于存储编辑的页面的目录、要使用的端口、要扫描的插入标记以及要扫描的文件类型。下面的示例配置文件显示了这些参数的默认值：
 ```
