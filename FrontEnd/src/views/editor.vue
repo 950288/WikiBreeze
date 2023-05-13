@@ -51,7 +51,7 @@ onMounted(() => {
         console.log(val);
         error.value = val;
     });
-    let { data: renderData, error: getRenderDataError } = useFetch(requestUrl.value + "/getRenderconfig", {
+    let { data: renderData, error: getRenderDataError } = useFetch(requestUrl.value + "/getEditorConfig", {
         method: 'POST',
         body: JSON.stringify({
             page: history.state.index,

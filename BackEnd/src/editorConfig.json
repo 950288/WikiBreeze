@@ -20,7 +20,7 @@
     },
     "otherConfigurations":{
         "headingLevels": [1,2,3,4],
-        "citation": "true",
+        "citation": "false",
         "tablePro": "true",             //table with note
         "tableMustContainNote": "false"  //table must contain note
         
