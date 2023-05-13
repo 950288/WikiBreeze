@@ -80,7 +80,7 @@ To develop this project, you can run the following commands:
 
 The working principle of WikiBreeze can be summarized in the following diagram:
 
-mermaid
+```mermaid
 graph TB
     user1 --edit content1--> WebEditor
     user2 --edit content2--> WebEditor 
@@ -89,6 +89,7 @@ graph TB
         backend <--read/write local data files--> data(local datas)
         backend --insert web page source code--> pages(your .html files)
     end
+```
 
 The front-end WebEditor sends HTTP requests to the back-end to retrieve and update the edited content. The back-end reads and writes automatically generated data files in real time and synchronizes the changes to the wiki code.
 
