@@ -35,13 +35,15 @@ body {
   }
   
   code {
-    background: #eee;
+    background: #0D0D0D;
     padding: 0.2rem 0.4rem;
     font-size: 0.9rem;
+    line-height: 1.3rem;
+    color: #fff;
   }
   
   pre {
-    background: #eee;
+    background: #0D0D0D;
     padding: 1rem;
     overflow-x: auto;
   }
