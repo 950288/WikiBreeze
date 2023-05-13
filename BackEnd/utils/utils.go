@@ -17,7 +17,6 @@ import (
 
 type Config struct {
 	ScanDir   string   `json:"scanDirectory"`
-	StoreDir  string   `json:"storeDirectory"`
 	Port      string   `json:"port"`
 	FileTypes []string `json:"fileType"`
 }

@@ -29,9 +29,9 @@ func main() {
 	}
 
 	http.HandleFunc("/list", utils.HandlerFetchContentList(dataMapByte))
-	http.HandleFunc("/getdata", utils.HandlerGetContent(config.StoreDir))
-	http.HandleFunc("/savedata", utils.HandlerSaveContent(config.StoreDir, dirs))
-	http.HandleFunc("/getRenderconfig", utils.HandlergetRenderconfig(RenderConfigString))
+	http.HandleFunc("/getdata", utils.HandlerGetContent(utils.StoreDir))
+	http.HandleFunc("/savedata", utils.HandlerSaveContent(utils.StoreDir, dirs))
+	http.HandleFunc("/getEditorConfig", utils.HandlergetRenderconfig(RenderConfigString))
 
 	//check if running in production mode
 	stat, _ := os.Stat("./index.html")
