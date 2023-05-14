@@ -17,7 +17,7 @@ To use WikiBreeze, follow these steps:
     <!-- WikiBreeze test1 start-->
 </div>
 ```
-3. Run the executable file WikiBreeze.exe in the WikiBreeze directory to start the tool. You will then see the generated URL in the console, as shown below. You can edit your wiki in the browser via the generated URL. WikiBreeze also supports collaborative editing within a LAN (e.g. personal hotspot, campus network, etc.), so team members within the same LAN can access the editing page through the second link.
+3. Use terminals run the executable file WikiBreeze.exe in the WikiBreeze directory to start the tool. You will then see the generated URL in the console, as shown below. You can edit your wiki in the browser via the generated URL. WikiBreeze also supports collaborative editing within a LAN (e.g. personal hotspot, campus network, etc.), so team members within the same LAN can access the editing page through the second link.
 ```
    Server started on port 8080
     Local:           <http://127.0.0.1:8080/> 
@@ -85,8 +85,8 @@ graph TB
     user1 --edit content1--> WebEditor
     user2 --edit content2--> WebEditor 
     subgraph WikiBreeze
-        WebEditor(WebEditor) <--track changes-- backend(backend)
-        backend <--read/write local data files--> data(local datas)
+        WebEditor(WebEditor) <--track changes--> backend(backend)
+        backend <--read/write local data files--> data(page datas)
         backend --insert web page source code--> pages(your .html files)
     end
 ```

@@ -73,7 +73,7 @@ graph TB
     用户2 --edit content2--> WebEditor
     subgraph WikiBreeze
         WebEditor(WebEditor) <--记录更改--> backend(backend)
-        backend <--读出/写入本分地数据文件--> data(local datas)
+        backend <--读出/写入本分地数据文件--> data(page datas)
         backend --插入网页源码--> pages(your .html files)
     end
 ```

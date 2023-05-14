@@ -115,29 +115,29 @@
       <button id="button" class="button is-info "
         v-if="mounted && TableToogle && !(costum.otherConfigurations.tablePro == 'true' && costum.otherConfigurations.tableMustContainNote == 'true')"
         @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()">
-        insertTable
+        addTable
       </button>
       <button id="button" class="button is-info "
         v-if="mounted && TableToogle && costum.otherConfigurations.tablePro == 'true'"
         @click="editor.chain().focus().insertTablePro({ rows: 3, cols: 3, withHeaderRow: true }).run()">
         TablePro
       </button>
-      <button id="button" class="button is-info "
+      <!-- <button id="button" class="button is-info "
         v-if="mounted && TableToogle && costum.otherConfigurations.tablePro == 'true'"
         @click="editor.chain().focus().deleteTablePro().run()">
         deleteTablePro
-      </button>
+      </button> -->
       <button id="button" class="button is-info  " v-if="mounted && TableToogle"
         @click="editor.chain().focus().addColumnBefore().run()">
-        addColumnBefore
+        addColBefore
       </button>
       <button id="button" class="button is-info " v-if="mounted && TableToogle"
         @click="editor.chain().focus().addColumnAfter().run()">
-        addColumnAfter
+        addColAfter
       </button>
       <button id="button" class="button is-info  " v-if="mounted && TableToogle"
         @click="editor.chain().focus().deleteColumn().run()">
-        deleteColumn
+        delCol
       </button>
       <button id="button" class="button is-info  " v-if="mounted && TableToogle"
         @click="editor.chain().focus().addRowBefore().run()">
@@ -149,12 +149,12 @@
       </button>
       <button id="button" class="button is-info  " v-if="mounted && TableToogle"
         @click="editor.chain().focus().deleteRow().run()">
-        deleteRow
+        delRow
       </button>
-      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
+      <!-- <button id="button" class="button is-info  " v-if="mounted && TableToogle"
         @click="editor.chain().focus().deleteTable().run()">
         deleteTable
-      </button>
+      </button> -->
       <button id="button" class="button is-info  " v-if="mounted && TableToogle"
         @click="editor.chain().focus().mergeCells().run()">
         mergeCells
@@ -165,7 +165,7 @@
       </button>
       <button id="button" class="button is-info  " v-if="mounted && TableToogle"
         @click="editor.chain().focus().toggleHeaderCell().run()">
-        toggleHeaderCell
+        setHeader
       </button>
       <button id="button" class="button is-info  " v-if="mounted && TableToogle"
         @click="editor.chain().focus().fixTables().run()">
@@ -350,9 +350,15 @@ const editor: any = useEditor({
 onMounted(() => {
   mounted.value = true;
   console.log(editor.value)
-  // console.log(editor.value.chain().focus().toggleBold())
 
   console.log(editor.value.schema)
+  
+  document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.key == 's') {
+            e.preventDefault();
+            save();
+        }
+    });
 })
 function save() {
   console.log(JSON.stringify(view.value = editor.value.getJSON()))
