@@ -70,17 +70,19 @@ onMounted(() => {
     });
 });
 function save(contentjson: JSON, contenthtml: string) {
+    let RequestBody = JSON.stringify({
+        page: history.state.index,
+        content: history.state.content,
+        Contentjson: contentjson,
+        Contenthtml: contenthtml
+    });
     // console.log(contentjson);
     let { data: saveReturnMsg, error: saveError } = useFetch(requestUrl.value + "/savedata", {
         method: 'POST',
-        body: JSON.stringify({
-            page: history.state.index,
-            content: history.state.content,
-            Contentjson: contentjson,
-            Contenthtml: contenthtml
-        }),
+        body: RequestBody,
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Content-Length':  RequestBody.length.toString()
         }
     }).get().json();
     async function recall() {

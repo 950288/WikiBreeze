@@ -54,7 +54,7 @@ export default Node.create({
 
   addAttributes() {
     return {
-      allowGapCursor: true
+      allowGapCursor: true,
     }
   },
 

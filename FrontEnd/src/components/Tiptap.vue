@@ -187,7 +187,7 @@
     </div>
     <editor-content :editor="editor" class="edit" />
     <br>
-    <div class="block">Click save after edited !</div>
+    <div class="block">Click 'save' or press 'ctrl + s' to save !</div>
   </div>
 </template>
   
@@ -200,7 +200,7 @@ import { Note } from './Note'
 import Italic from '@tiptap/extension-italic'
 import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
-import Code from '@tiptap/extension-code'
+import code from '@tiptap/extension-code'
 import codeBlock from '@tiptap/extension-code-block-lowlight'
 import Text from '@tiptap/extension-text'
 import Bold from '@tiptap/extension-bold'
@@ -218,8 +218,8 @@ import ImagePro from './ImagePro'
 import Table from '@tiptap/extension-table'
 import TextAlign from '@tiptap/extension-text-align'
 import TableRow from '@tiptap/extension-table-row'
-import TableHeader from '@tiptap/extension-table-header'
-import hardCell from '@tiptap/extension-table-cell'
+import tableHeader from '@tiptap/extension-table-header'
+import tableCell from '@tiptap/extension-table-cell'
 import History from '@tiptap/extension-history'
 import css from 'highlight.js/lib/languages/css'
 import js from 'highlight.js/lib/languages/javascript'
@@ -252,7 +252,7 @@ Heading.configure({
   levels: costum.otherConfigurations ? costum.otherConfigurations.headingLevels : [1, 2, 3],
 })
 console.log(costum)
-const CodePre = Code.extend({
+const Code = code.extend({
 })
 Link.configure({
   autolink: true,
@@ -271,8 +271,11 @@ History.configure({
   depth: 100,
   newGroupDelay: 500,
 })
-let TableRowPro = TableRow.extend({
-  // content: '(tableCell | tableHeader)+',
+const TableHeader = tableHeader.extend({
+  content: 'paragraph+',
+})
+const TableCell = tableCell.extend({
+  content: 'paragraph+',
 })
 let CodeBlock = codeBlock.extend({
   // renderHTML({ node }) {
@@ -289,7 +292,7 @@ const extensions = [
   Italic,
   Subscript,
   Superscript,
-  CodePre,
+  Code,
   CodeBlock.configure({
     defaultLanguage: null,
     lowlight,
@@ -308,14 +311,16 @@ const extensions = [
   ImagePro,
   Link,
   hardBreak,
-  Table,
-  TablePre,
-  TableRowPro,
-  TableHeader,
   TextAlign.configure({
     types: ['heading', 'paragraph'],
   }),
-  hardCell,
+  Table.configure({
+    // resizable: true,
+  }),
+  TablePre,
+  TableRow,
+  TableHeader,
+  TableCell,
   strike,
   History,
   Gapcursor
@@ -352,13 +357,13 @@ onMounted(() => {
   console.log(editor.value)
 
   console.log(editor.value.schema)
-  
+
   document.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && e.key == 's') {
-            e.preventDefault();
-            save();
-        }
-    });
+    if (e.ctrlKey && e.key == 's') {
+      e.preventDefault();
+      save();
+    }
+  });
 })
 function save() {
   console.log(JSON.stringify(view.value = editor.value.getJSON()))
@@ -546,7 +551,6 @@ button * {
 }
 </style>
 <style lang="scss">
-
 code {
   font-size: 1.1rem;
   padding: 0.15em;
