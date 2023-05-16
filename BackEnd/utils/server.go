@@ -135,32 +135,62 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		// If request is preflight, return
 		if r.Method == "OPTIONS" {
+			r.Body.Close()
 			return
 		}
-		fmt.Println()
 
-		// fmt.Println(r.RequestURI)
-		// fmt.Println(r.Header)
-		// fmt.Println(r.Body)
-		// fmt.Println(r.ContentLength)
+		// Set a max request size
+		// r.Body = http.MaxBytesReader(w, r.Body, maxRequestSize)
+
+		var count = 1
 		var content Content
-		// Read json data
-		b := make([]byte, r.ContentLength)
-		r.Body.Read(b)
-		err := json.Unmarshal((b), &content)
-		// fmt.Print(content)
-		if err != nil {
-			PrintErr("Error parsing JSON:" + err.Error())
-			fmt.Fprint(w, "{\"success\": \"false\"}")
-			return
-		}
-		fmt.Println("saving to", content.Content, "on", content.Page)
+		decoder := json.NewDecoder(r.Body)
+		for {
+			var c Content
+			err := decoder.Decode(&c)
+			if err == io.EOF {
+				break
+			} else if err != nil {
+				PrintErr("Error parsing JSON: " + err.Error())
+				http.Error(w, "Bad request", http.StatusBadRequest)
+				return
+			}
 
-		// Store json data
+			// PrintSuccess(c.Content)
+			// fmt.Println(c.Contenthtml)
+			fmt.Println(count)
+			count += 1
+			content.Content += c.Content
+			content.Page += c.Page
+			// Merge JSON
+			if content.Contentjson == nil {
+				content.Contentjson = c.Contentjson
+			} else if c.Contentjson != nil {
+				content.Contentjson = append(content.Contentjson, ',')
+				content.Contentjson = append(content.Contentjson, c.Contentjson...)
+			}
+
+			// Concatenate HTML
+			if c.Contenthtml != "" {
+				content.Contenthtml += c.Contenthtml
+			}
+		}
+
+		// Use content...
+		fmt.Println("Saving to", content.Content, "on", content.Page)
+
+		r.Body.Close()
+
+		// fmt.Fprint(w, "{\"success\": \"true\"}")
+		// return
+
+		// Open file and write JSON
 		dir := StoreDir + "/" + content.Page + "/" + content.Content + ".json"
 		jsonFile, err := os.OpenFile(dir, os.O_RDWR|os.O_CREATE, 0644)
 		if err != nil {
-			PrintErr("Error open " + dir + ":" + err.Error())
+			PrintErr("Error opening " + dir + ": " + err.Error())
+			fmt.Fprint(w, "{\"success\": \""+"Error opening "+dir+": "+err.Error()+"\"}")
+
 			return
 		}
 		// Remove previous data
@@ -168,11 +198,14 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 		_, err = jsonFile.Seek(0, 0)
 		if err != nil {
 			PrintErr("Error seeking to beginning of file:" + err.Error())
+			fmt.Fprint(w, "{\"success\": \""+"Error seeking to beginning of file:"+err.Error()+"\"}")
 			return
 		}
 		_, err = jsonFile.Write([]byte(string(content.Contentjson)))
 		if err != nil {
 			fmt.Println(err)
+			fmt.Fprint(w, "{\"success\": \"false\"}")
+
 		}
 		jsonFile.Close()
 
@@ -182,13 +215,16 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 		if err != nil {
 			fmt.Println(dirs)
 			PrintErr("Error opening file" + dir + ":" + err.Error())
+			fmt.Fprint(w, "{\"success\": \"false\"}")
 			return
 		}
 		defer file.Close()
 		// Read the file contents
-		b, err = io.ReadAll(file)
+		b, err := io.ReadAll(file)
 		if err != nil {
 			PrintErr("Error reading file:" + err.Error())
+			fmt.Fprint(w, "{\"success\": \"false\"}")
+
 			return
 		}
 		// Use regular expressions to find the start and end tags
@@ -213,12 +249,14 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 		_, err = file.Seek(0, 0)
 		if err != nil {
 			PrintErr("Error seeking to beginning of file:" + err.Error())
+			fmt.Fprint(w, "{\"success\": \"false\"}")
 			return
 		}
 		// Write the modified contents back to the file
 		_, err = file.Write(newContents)
 		if err != nil {
 			PrintErr("Error writing to file:" + err.Error())
+			fmt.Fprint(w, "{\"success\": \"false\"}")
 			return
 		}
 		fmt.Fprint(w, "{\"success\": \"true\"}")

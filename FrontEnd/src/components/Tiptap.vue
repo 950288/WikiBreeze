@@ -359,7 +359,7 @@ onMounted(() => {
   console.log(editor.value.schema)
 
   document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.key == 's') {
+    if (e.ctrlKey && (e.key == 's' || e.key == 'S')) {
       e.preventDefault();
       save();
     }
