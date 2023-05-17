@@ -10,7 +10,21 @@ WikiBreeze 是一个用户友好的在线编辑器🧰，允许 iGEM 团队轻�
 
 使用 WikiBreeze，请按照以下步骤操作：
 
-1. 下载最新版的`WikiBreeze`压缩包，将解压的 `WikiBreeze` 文件夹放入你的wiki项目目录中。
+1. 下载最新版的`WikiBreeze`压缩包([release](https://github.com/950288/WikiBreeze/releases))，将解压的 `WikiBreeze` 文件夹放入你的wiki项目目录中。
+````bash
+    project name
+    ├── Wikibreeze
+    │   ├── WikibreezeData
+    |   ├── WikiBreeze.exe
+    │   └── ...
+    ├── home.html
+    ├── xxx.html
+    ├── pages
+    │   ├── xxx.html
+    │   └── ...
+    └── ...
+````
+
 2. 在您想要编辑的每`.html`文件或其他文件类型中插入以下特殊标记: `<!-- WikiBreeze {{CONTENT}} start-->`。将 `{{CONTENT}}` 替换为一个任意的自定义名称。(注意: 一个页面可以包含多个不同名标记，每个标记所对应的部分可被独立编辑。)如果没有在项目目录中找到含有该标记的文件，将自动生成实例文件`testPage.html`。
 ```html
 <div>
@@ -26,8 +40,10 @@ WikiBreeze 是一个用户友好的在线编辑器🧰，允许 iGEM 团队轻�
 ```
 
 4. 编辑保存后的html源码会被自动插入到页面相对位置，同时会生成WikibreezeData文件夹储存所编辑页面的信息。
+   
+5. Add `Wikibreeze/` directory into .gitignore file.  
 
-5. 我们还提供了配置文件 WikibreezeData/config/config.json，该文件在应用程序首次运行时会自动生成。它允许用户自定义某些参数，如要修改的页面的目录使、使用的端口、文件类型。下面的示例配置文件显示了这些参数的默认值：
+6. 我们还提供了配置文件 WikibreezeData/config/config.json，该文件在应用程序首次运行时会自动生成。它允许用户自定义某些参数，如要修改的页面的目录使、使用的端口、文件类型。下面的示例配置文件显示了这些参数的默认值：
 ```json
 {
 	// 包含要修改的页面的目录 (e.g. "D:\\github\\web\\src\\pages\\")
@@ -43,7 +59,7 @@ WikiBreeze 是一个用户友好的在线编辑器🧰，允许 iGEM 团队轻�
 
 ## 构建指南 🧑‍💻
 
-以下内容适用于希望对该工具进行改进开发人员，但如果您只是想进行基本的使用，则不需要进一步阅读！
+以下内容适用于希望对该工具进行改进开发人员或想要自行打包者！
 
 WikiBreeze 使用Vue3 和 Golang 开发。前端使用 Vue 3 和 Typescript 实现，并使用 Vite 构建工具构建。后端使用 Go 实现，能够进行文件读取并与前端交互。
 
