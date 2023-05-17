@@ -6,7 +6,7 @@
         "cp:src": "rimraf ./Wikibreeze/src && ncp ./BackEnd/src ./Wikibreeze/src",
         "build:backend": "cd BackEnd && go build -o ../Wikibreeze/ && npm run cp:src",
 
-        "cp:template": "ncp ./BackEnd/testContent.json ./Wikibreeze/testContent.json && ncp ./Template/template.css ./Wikibreeze/src/template.css",
+        "cp:template": "ncp ./BackEnd/testContent.json ./Wikibreeze/testContent.json && ncp ./Template/Template.css ./Wikibreeze/src/Template.css",
         "build:frontend": "cd FrontEnd && npm run build && cd ../ && npm run cp:template",
         "install": "cd FrontEnd && npm install"
     },
