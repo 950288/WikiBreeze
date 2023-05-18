@@ -15,7 +15,7 @@ WikiBreeze 是一个用户友好的在线编辑器🧰，允许 iGEM 团队轻�
     project name
     ├── Wikibreeze
     │   ├── WikibreezeData
-    |   ├── WikiBreeze.exe
+    │   ├── WikiBreeze.exe
     │   └── ...
     ├── home.html
     ├── xxx.html
@@ -46,8 +46,8 @@ WikiBreeze 是一个用户友好的在线编辑器🧰，允许 iGEM 团队轻�
 6. 我们还提供了配置文件 WikibreezeData/config/config.json，该文件在应用程序首次运行时会自动生成。它允许用户自定义某些参数，如要修改的页面的目录使、使用的端口、文件类型。下面的示例配置文件显示了这些参数的默认值：
 ```json
 {
-	// 包含要修改的页面的目录 (e.g. "D:\\github\\web\\src\\pages\\")
-	"ScanDirectory": "..\\",
+	// 包含要修改的页面的目录 (e.g. "D:/github/web/src/pages/")
+	"ScanDirectory": "../",
 
 	//使用的端口 (e.g. "8080" or "auto")
 	"Port": "auto",

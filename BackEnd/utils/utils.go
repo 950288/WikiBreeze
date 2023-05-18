@@ -242,10 +242,6 @@ func ScanFiles(ScanDir string, FileTypes []string) (map[string]string, []byte, e
 				matches := reConfig.FindAllStringSubmatch(string(b), -1)
 				contents := make([]string, len(matches))
 				if len(matches) > 0 {
-					for i, match := range matches {
-						contents[i] = match[1]
-						dirs[fileName+"?"+match[1]] = path
-					}
 					// Check if the fileName is already in the dataMap
 					uniqueName := fileName
 					for i := 1; ; i++ {
@@ -254,9 +250,16 @@ func ScanFiles(ScanDir string, FileTypes []string) (map[string]string, []byte, e
 							break
 						}
 						// Append a number to the fileName and check again
-						uniqueName = fileName + strconv.Itoa(i)
+						uniqueName = fileName + "'" + strconv.Itoa(i)
 					}
+
+					for i, match := range matches {
+						contents[i] = match[1]
+						dirs[uniqueName+"?"+match[1]] = path
+					}
+
 					dataMap[uniqueName] = contents
+
 				}
 
 			}

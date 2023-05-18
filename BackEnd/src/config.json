@@ -1,6 +1,6 @@
 {
-	// Directory containing the page to be modified (e.g. "D:\\github\\web\\src\\pages")
-	"scanDirectory": "..\\",
+	// Directory containing the page to be modified (e.g. "D:/github/web/src/pages")
+	"scanDirectory": "../",
 
 	//Port to be used (e.g. "8080" or "auto")
 	"port": "auto",

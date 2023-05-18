@@ -142,10 +142,11 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 		// Set a max request size
 		// r.Body = http.MaxBytesReader(w, r.Body, maxRequestSize)
 
-		var count = 1
+		var count = 0
 		var content Content
 		decoder := json.NewDecoder(r.Body)
 		for {
+
 			var c Content
 			err := decoder.Decode(&c)
 			if err == io.EOF {
@@ -155,11 +156,9 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 				http.Error(w, "Bad request", http.StatusBadRequest)
 				return
 			}
-
+			count += 1
 			// PrintSuccess(c.Content)
 			// fmt.Println(c.Contenthtml)
-			fmt.Println(count)
-			count += 1
 			content.Content += c.Content
 			content.Page += c.Page
 			// Merge JSON
@@ -177,7 +176,7 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 		}
 
 		// Use content...
-		fmt.Println("Saving to", content.Content, "on", content.Page)
+		fmt.Println("Saving to", content.Content, "on", content.Page, "(", count, ")")
 
 		r.Body.Close()
 
@@ -213,7 +212,7 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 		// Open the file using the path stored in the dirs map
 		file, err := os.OpenFile(dirs[content.Page+"?"+content.Content], os.O_RDWR|os.O_CREATE, 0644)
 		if err != nil {
-			fmt.Println(dirs)
+			fmt.Println(dirs[content.Page+"?"+content.Content])
 			PrintErr("Error opening file" + dir + ":" + err.Error())
 			fmt.Fprint(w, "{\"success\": \"false\"}")
 			return

@@ -15,7 +15,7 @@ To use WikiBreeze, follow these steps:
     project name
     ├── Wikibreeze
     │   ├── WikibreezeData
-    |   ├── WikiBreeze.exe
+    │   ├── WikiBreeze.exe
     │   └── ...
     ├── home.html
     ├── xxx.html
@@ -46,8 +46,8 @@ To use WikiBreeze, follow these steps:
 6. We also provide a configuration file WikibreezeData/config/config.json, which will be automatically generated upon the first run of the application. It allows you to customize certain parameters such as the directory containing the pages to be modified, the port to be used, and the file types. The default values for these parameters can be seen in the example configuration file below:
 ```json
 {
-    // Directory containing the page to be modified (e.g. "D:\\github\\web\\src\\pages\\")
-    "scanDirectory": "..\\",  
+    // Directory containing the page to be modified (e.g. "D:/github/web/src/pages/")
+    "scanDirectory": "../",  
 
     // Port to be used (e.g. "8080" or "auto")
     "port": "auto",  
