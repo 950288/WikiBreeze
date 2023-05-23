@@ -1,0 +1,83 @@
+name: Build and Release WikiBreeze 
+on: 
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    strategy:  
+      matrix: 
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: npm install
+      - name: Build frontend
+        run: npm run build:frontend
+      - name: Build backend
+        run: npm run build:backend  
+      - name: Build 
+        run: npm run build
+      - name: Create artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: WikiBreeze-${{ matrix.os }}-build
+          path: ./WikiBreeze
+  release:         
+    needs: build          
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2    
+      # Download macOS artifact  
+      - name: Download macOS built binaries
+        if: contains(needs.build.outputs.os, 'macos-latest') 
+        uses: actions/download-artifact@v2
+        with: 
+          name: WikiBreeze-macos-latest-build
+          path: ./
+      # Upload macOS release asset  
+      - name: Upload macOS Release Asset
+        if: contains(needs.build.outputs.os, 'macos-latest')
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}  
+          asset_path: ./WikiBreeze.zip  
+          asset_name: WikiBreeze-macOS.zip  
+          asset_content_type: application/zip
+      # Download Windows artifact  
+      - name: Download Windows built binaries
+        if: contains(needs.build.outputs.os, 'windows-latest') 
+        uses: actions/download-artifact@v2
+        with: 
+          name: WikiBreeze-windows-latest-build
+          path: ./
+      # Upload Windows release asset  
+      - name: Upload Windows Release Asset
+        if: contains(needs.build.outputs.os, 'windows-latest')
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}  
+          asset_path: ./WikiBreeze.zip  
+          asset_name: WikiBreeze-Windows.zip  
+          asset_content_type: application/zip
+      # Download Linux artifact
+      - name: Download Linux built binaries
+        if: contains(needs.build.outputs.os, 'ubuntu-latest') 
+        uses: actions/download-artifact@v2
+        with: 
+          name: WikiBreeze-ubuntu-latest-build
+          path: ./
+      # Upload Linux release asset  
+      - name: Upload Linux Release Asset
+        if: contains(needs.build.outputs.os, 'ubuntu-latest')
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}  
+          asset_path: ./WikiBreeze.zip  
+          asset_name: WikiBreeze-Linux.zip  
+          asset_content_type: application/zip
