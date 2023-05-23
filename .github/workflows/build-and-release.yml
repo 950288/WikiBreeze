@@ -22,7 +22,7 @@ jobs:
       - name: Archive project
         run: |
           mkdir ./WikiBreeze-${{ matrix.os }}
-          mv -r ./Wikibreeze ./WikiBreeze-${{ matrix.os }}/
+          mv ./Wikibreeze ./WikiBreeze-${{ matrix.os }}/
       - name: Create artifacts
         uses: actions/upload-artifact@v3
         with:
