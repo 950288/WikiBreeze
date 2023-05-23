@@ -7,7 +7,7 @@ jobs:
   build:
     strategy:  
       matrix: 
-        os: [macos-latest, windows-latest, ubuntu-latest]
+        os: [windows-latest, ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -17,11 +17,7 @@ jobs:
           node-version: '16'
       - name: Install dependencies
         run: npm install
-      - name: Build frontend
-        run: npm run build:frontend
-      - name: Build backend
-        run: npm run build:backend  
-      - name: Build 
+      - name: Build
         run: npm run build
       - name: Create artifacts
         uses: actions/upload-artifact@v2
