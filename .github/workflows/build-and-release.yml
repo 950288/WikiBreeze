@@ -23,6 +23,8 @@ jobs:
         run: |
           mkdir ./WikiBreeze-${{ matrix.os }}
           mv ./Wikibreeze ./WikiBreeze-${{ matrix.os }}/
+          cd ./WikiBreeze-${{ matrix.os }}
+          tar -czf ../WikiBreeze.tar.gz *
       - name: Create artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -61,6 +63,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}  
-          asset_path: ./WikiBreeze.zip  
+          asset_path: ./WikiBreeze-ubuntu-latest-build/WikiBreeze.tar.gz     
           asset_name: WikiBreeze-Linux.zip  
-          asset_content_type: application/zip
+          asset_content_type: application/gzip 
