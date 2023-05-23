@@ -8,7 +8,7 @@
 
         "cp:template": "ncp ./BackEnd/testContent.json ./Wikibreeze/testContent.json && ncp ./Template/template.css ./Wikibreeze/src/template.css",
         "build:frontend": "cd FrontEnd && npm run build && cd ../ && npm run cp:template",
-        "install": "cd FrontEnd && npm install"
+        "install": "cd FrontEnd && npm install && cd ../BackEnd && go install"
     },
     "dependencies": {
         "ncp": "^2.0.0",
