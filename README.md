@@ -44,7 +44,7 @@ To use WikiBreeze, follow these steps:
 5. Add `Wikibreeze/` directory into .gitignore file.  
 
 6. We also provide a configuration file WikibreezeData/config/config.json, which will be automatically generated upon the first run of the application. It allows you to customize certain parameters such as the directory containing the pages to be modified, the port to be used, and the file types. The default values for these parameters can be seen in the example configuration file below:
-```json with comments
+```j
 {
     // Directory containing the page to be modified (e.g. "D:/github/web/src/pages/")
     "scanDirectory": "../",  

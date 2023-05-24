@@ -1,6 +1,6 @@
 # WikiBreeze （[English](https://github.com/950288/WikiBreeze/blob/main/README.md))🛠️
 
-[![Email](https://img.shields.io/static/v1?label=Email&message=2779307196@qq.com&color=blue)](mailto:2779307196@qq.com)![WikiBreeze交流群](https://img.shields.io/static/v1?label=WikiBreeze交流群&message=782668167&color=blue)
+[![Email](https://img.shields.io/static/v1?label=Email&message=2779307196@qq.com&color=blue)](mailto:2779307196@qq.com) ![WikiBreeze交流群](https://img.shields.io/static/v1?label=WikiBreeze交流群&message=782668167&color=blue)
 
 WikiBreeze 是一款在线协同wiki内容编辑器，能够实现wiki代码编写🧑‍💻与内容填充✍️的完全分离，具有极高的适配性和极简操作性🦾，能够极大提高wiki开发效率🥰。
 
@@ -44,7 +44,7 @@ WikiBreeze 是一个用户友好的在线编辑器🧰，允许 iGEM 团队轻�
 5. Add `Wikibreeze/` directory into .gitignore file.  
 
 6. 我们还提供了配置文件 WikibreezeData/config/config.json，该文件在应用程序首次运行时会自动生成。它允许用户自定义某些参数，如要修改的页面的目录使、使用的端口、文件类型。下面的示例配置文件显示了这些参数的默认值：
-```json with comments
+```
 {
 	// 包含要修改的页面的目录 (e.g. "D:/github/web/src/pages/")
 	"ScanDirectory": "../",
