@@ -1,3 +1,6 @@
+// This file is the template for editorConfig.json.
+// It is not intended for manual editing.
+// Edit WikibreezeData/config/editorConfig.json instead.
 {
     "paragraph": {
         "HTMLAttributes": {
