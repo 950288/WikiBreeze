@@ -1,6 +1,6 @@
 # WikiBreeze （[English](https://github.com/950288/WikiBreeze/blob/main/README.md))🛠️
 
-[![Email](https://img.shields.io/static/v1?label=Email&message=2779307196@qq.com&color=blue)](mailto:2779307196@qq.com)
+[![Email](https://img.shields.io/static/v1?label=Email&message=2779307196@qq.com&color=blue)](mailto:2779307196@qq.com)![WikiBreeze交流群](https://img.shields.io/static/v1?label=WikiBreeze交流群&message=782668167&color=blue)
 
 WikiBreeze 是一款在线协同wiki内容编辑器，能够实现wiki代码编写🧑‍💻与内容填充✍️的完全分离，具有极高的适配性和极简操作性🦾，能够极大提高wiki开发效率🥰。
 
