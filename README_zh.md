@@ -1,4 +1,4 @@
-# WikiBreeze （[English](https://github.com/950288/WikiBreeze/blob/main/README.md))🛠️
+# WikiBreeze ([English](https://github.com/950288/WikiBreeze/blob/main/README.md)) 🛠️
 
 [![Email](https://img.shields.io/static/v1?label=Email&message=2779307196@qq.com&color=blue)](mailto:2779307196@qq.com) ![WikiBreeze交流群](https://img.shields.io/static/v1?label=WikiBreeze交流群&message=782668167&color=blue)
 
