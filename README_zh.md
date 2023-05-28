@@ -10,7 +10,7 @@ WikiBreeze 是一个用户友好的在线编辑器🧰，允许 iGEM 团队轻�
 
 使用 WikiBreeze，请按照以下步骤操作：
 
-1. 下载最新版的`WikiBreeze`压缩包([release](https://github.com/950288/WikiBreeze/releases))，将解压的 `WikiBreeze` 文件夹放入你的wiki项目目录中。
+1. 下载最新版的`WikiBreeze`压缩包(链接在这里👉[release](https://github.com/950288/WikiBreeze/releases))，将解压的 `WikiBreeze` 文件夹放入你的wiki项目目录中。
 ````bash
     project name
     ├── Wikibreeze
