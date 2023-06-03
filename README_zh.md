@@ -10,7 +10,7 @@ WikiBreeze 是一个用户友好的在线编辑器🧰，允许 iGEM 团队轻�
 
 使用 WikiBreeze，请按照以下步骤操作：
 
-1. 下载最新版的`WikiBreeze`压缩包([release](https://github.com/950288/WikiBreeze/releases))，将解压的 `WikiBreeze` 文件夹放入你的wiki项目目录中。
+1. 下载最新版的`WikiBreeze`压缩包(链接在这里👉[release](https://github.com/950288/WikiBreeze/releases))，将解压的 `WikiBreeze` 文件夹放入你的wiki项目目录中。
 ````bash
     project name
     ├── Wikibreeze
@@ -32,7 +32,7 @@ WikiBreeze 是一个用户友好的在线编辑器🧰，允许 iGEM 团队轻�
 </div>
 ```
 
-3. 在终端运行WikiBreeze目录中的WikiBreeze可执行文件启动该工具。然后你将在控制台中看到生成的 URL，如下所示。您可以通过生成的URL在浏览器中进行wiki编辑，WikiBreeze 还支持局域网(如个人热点、校园网等)内的协作编辑功能，同一局域网内的团队成员可通过第二链接访问编辑页面。
+3. 在终端运行WikiBreeze目录中的WikiBreeze可执行文件启动该工具(直接双击打开可能造成未知错误)。然后你将在控制台中看到生成的 URL，如下所示。您可以通过生成的URL在浏览器中进行wiki编辑，WikiBreeze 还支持局域网(如个人热点、校园网等)内的协作编辑功能，同一局域网内的团队成员可通过第二链接访问编辑页面。
 ```
    Server started on port 8080
     Local:           http://127.0.0.1:8080/
@@ -94,7 +94,7 @@ graph TB
     end
 ```
 
-前端 WebEditor 向后端发送 HTTP 请求以检索和更新编辑的内容。后端实时读写自动生成的数据文件，并将更改同步到wiki代码中去。
+前端 WebEditor 向后端发送 HTTP 请求以检索和更新编辑的内容。后端实时读写存储数据文件，并将更改同步到wiki代码中去。
 
 ## Technology 🛠️
 
