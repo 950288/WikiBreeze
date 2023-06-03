@@ -79,7 +79,7 @@
       <button id="button" class="button is-success " v-if="mounted && !(costum.otherConfigurations.imagePro == 'true' && costum.otherConfigurations.imageMustContainNote == 'true')" @click="setImageURL()">
         Image
       </button>
-      <button id="button" class="button is-success " v-if="mounted costum.otherConfigurations.imagePro == 'true'" @click="$event => setImageProURL()">
+      <button id="button" class="button is-success " v-if="mounted && costum.otherConfigurations.imagePro == 'true'" @click="$event => setImageProURL()">
         ImagePro
       </button>
       <div class="button textAlign" id="buttons-toggle">
