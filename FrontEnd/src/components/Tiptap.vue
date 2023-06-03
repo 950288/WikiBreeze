@@ -76,16 +76,12 @@
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().setHardBreak().run()">
         HardBreak
       </button>
-      <button id="button" class="button is-success " v-if="mounted" @click="setImageURL()">
+      <button id="button" class="button is-success " v-if="mounted && !(costum.otherConfigurations.imagePro == 'true' && costum.otherConfigurations.imageMustContainNote == 'true')" @click="setImageURL()">
         Image
       </button>
-      <button id="button" class="button is-success " v-if="mounted" @click="$event => setImageProURL()">
+      <button id="button" class="button is-success " v-if="mounted costum.otherConfigurations.imagePro == 'true'" @click="$event => setImageProURL()">
         ImagePro
       </button>
-      <!-- <button id="button" class="button is-success " v-if="mounted"
-        @click="$event => editor.chain().focus().deleteImagePro().run()">
-        deleteImagePro
-      </button> -->
       <div class="button textAlign" id="buttons-toggle">
         <div class="buttons-wrap">
           <button id="button" class="button is-success " v-if="mounted">
@@ -122,11 +118,6 @@
         @click="editor.chain().focus().insertTablePro({ rows: 3, cols: 3, withHeaderRow: true }).run()">
         TablePro
       </button>
-      <!-- <button id="button" class="button is-info "
-        v-if="mounted && TableToogle && costum.otherConfigurations.tablePro == 'true'"
-        @click="editor.chain().focus().deleteTablePro().run()">
-        deleteTablePro
-      </button> -->
       <button id="button" class="button is-info  " v-if="mounted && TableToogle"
         @click="editor.chain().focus().addColumnBefore().run()">
         addColBefore
@@ -151,10 +142,6 @@
         @click="editor.chain().focus().deleteRow().run()">
         delRow
       </button>
-      <!-- <button id="button" class="button is-info  " v-if="mounted && TableToogle"
-        @click="editor.chain().focus().deleteTable().run()">
-        deleteTable
-      </button> -->
       <button id="button" class="button is-info  " v-if="mounted && TableToogle"
         @click="editor.chain().focus().mergeCells().run()">
         mergeCells
@@ -251,7 +238,7 @@ let costum = props.renderConfigJson;
 Heading.configure({
   levels: costum.otherConfigurations ? costum.otherConfigurations.headingLevels : [1, 2, 3],
 })
-console.log(costum)
+// console.log(costum)
 const Code = code.extend({
 })
 Link.configure({
@@ -278,9 +265,6 @@ const TableCell = tableCell.extend({
   content: 'paragraph+',
 })
 let CodeBlock = codeBlock.extend({
-  // renderHTML({ node }) {
-  //   return `<pre><code class="language-${node.attrs.highlight || ''}">${node.textContent}</code></pre>`
-  // },
   isolating: true,
 })
 const extensions = [
@@ -327,7 +311,7 @@ const extensions = [
 ]
 let extensions_costum: any = extensions.slice();
 
-console.log(extensions_costum)
+// console.log(extensions_costum)
 extensions_costum.forEach((extension: any, index: number) => {
   if (costum[extension.name]) {
     if (costum[extension.name].tag || costum[extension.name].HTMLAttributes) {
@@ -343,7 +327,7 @@ extensions_costum.forEach((extension: any, index: number) => {
     extensions_costum[index] = extension
   }
 })
-console.log(extensions_costum)
+// console.log(extensions_costum)
 const editor: any = useEditor({
   extensions: extensions,
   content: props.contenetjson,
@@ -354,9 +338,9 @@ const editor: any = useEditor({
 
 onMounted(() => {
   mounted.value = true;
-  console.log(editor.value)
+  // console.log(editor.value)
 
-  console.log(editor.value.schema)
+  // console.log(editor.value.schema)
 
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && (e.key == 's' || e.key == 'S')) {
@@ -366,49 +350,49 @@ onMounted(() => {
   });
 })
 function save() {
-  console.log(JSON.stringify(view.value = editor.value.getJSON()))
+  // console.log(JSON.stringify(view.value = editor.value.getJSON()))
   let html = generateHTML(editor.value.getJSON(view.value), extensions_costum)
-  console.log(html)
-  console.log(costum.otherConfigurations.citation == "true")
+  // console.log(html)
+  // console.log(costum.otherConfigurations.citation == "true")
   if (costum.otherConfigurations.citation == "true") {
     html = html.replace(/<sup>\[(\d)\]<\/sup>/g, '<citation><sup>[<a  href="https://www.w3schools.com">$1</a>]</sup></citation>')
   }
-  console.log(html)
+  // console.log(html)
   emit('save', editor.value.getJSON(), html);
 }
 function setImageURL() {
-  console.log(app)
+  // console.log(app)
   let recall = app?.proxy.$input(
     "Set image",
     false
   );
-  console.log("input");
+  // console.log("input");
   watch(recall, (val) => {
-    console.log(val)
+    // console.log(val)
     editor.value.chain().focus().setImage({ src: val }).run()
   })
 }
 function setImageProURL() {
-  console.log(app)
+  // console.log(app)
   let recall = app?.proxy.$input(
     "Set image",
     false
   );
-  console.log("input");
+  // console.log("input");
   watch(recall, (val) => {
-    console.log(val)
+    // console.log(val)
     editor.value.chain().focus().insertImagePro(val).run()
   })
 }
 function setLink() {
-  console.log(app)
+  // console.log(app)
   let recall = app?.proxy.$input(
     "Set Link",
     false
   );
-  console.log("input");
+  // console.log("input");
   watch(recall, (val) => {
-    console.log(val)
+    // console.log(val)
     editor.value.chain().focus().setLink({ href: val, target: '_blank' }).run()
   })
 }

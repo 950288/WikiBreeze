@@ -25,7 +25,8 @@
         "headingLevels": [1,2,3,4],
         "citation": "false",
         "tablePro": "true",             //table with note
-        "tableMustContainNote": "false"  //table must contain note
-        
+        "tableMustContainNote": "false",  //table must contain note
+        "imagePro": "true",                 //table with note
+        "imageMustContainNote": "false"     //table must contain note 
     }
 }
