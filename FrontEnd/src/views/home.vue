@@ -41,32 +41,40 @@ function editcontent(index: string, content: string) {
 </script>
 <style lang="scss" scoped>
 .box {
-    height: 40px;
     margin: 0;
     padding: 10px;
+    display: flex;
     background-color: var(--has-background-white);
     box-shadow: none;
     border: 1px solid var(--has-background-light-grey);
     position: relative;
     margin-bottom: 15px;
+        
 
     h2 {
         display: block;
         height: 100%;
-        line-height: 100%;
+        line-height: 115%;
         margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 22%;
+        
     }
 
     .buttons {
-        display: block;
-        position: absolute;
+        display: flex;
+        justify-content: right;
         right: 10px;
         top: 10px;
+        margin-left: auto;
 
         .button {
             color: var(--has-text-primary);
             background: var(--has-background-primary);
-
+            margin-left: 0.5rem;
+            margin-right: 0;
             transition: ease 0.2s;
         }
 
