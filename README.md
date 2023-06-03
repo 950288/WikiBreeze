@@ -57,6 +57,8 @@ To use WikiBreeze, follow these steps:
 }
 ```
 
+7. see [Features](https://github.com/950288/WikiBreeze/wiki/Wikibreeze-Editor-Features) for some details.
+
 
 ## Project Building Guide 🧑‍💻 
 The following is for developers wishing to make improvements to the tool or build it by your self! 
