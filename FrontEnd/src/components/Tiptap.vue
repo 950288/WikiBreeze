@@ -2,13 +2,12 @@
   <div class="main content">
     <h3>You are editing <u>{{ state.content }}</u> on <u>{{ state.index }}</u> page.</h3>
     <div class="buttons">
-      <div class="button" id="buttons-toggle">
+      <div class="button Heading" id="buttons-toggle">
         <div class="buttons-wrap">
           <button v-for="(item) in costum.otherConfigurations ? costum.otherConfigurations.headingLevels : [1, 2, 3]"
             id="button" class="button is-success" v-if="mounted"
             @click="editor.chain().focus().toggleHeading({ level: item }).run()">
             H{{ item }}
-            <img :class="{ imghover: TableToogle }" src="@/assets/angle.svg" />
           </button>
         </div>
       </div>
@@ -44,7 +43,7 @@
         <div class="buttons-wrap">
           <button id="button" class="button is-success " v-if="mounted"
             @click="editor.chain().focus().toggleCodeBlock().run()">
-            CodeBlock<img :class="{ imghover: TableToogle }" src="@/assets/angle.svg" />
+            CodeBlock
           </button>
           <button id="button" class="button is-success " v-if="mounted"
             @click="editor.chain().focus().updateAttributes('codeBlock', { language: 'python' }).run()">
@@ -76,16 +75,19 @@
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().setHardBreak().run()">
         HardBreak
       </button>
-      <button id="button" class="button is-success " v-if="mounted && !(costum.otherConfigurations.imagePro == 'true' && costum.otherConfigurations.imageMustContainNote == 'true')" @click="setImageURL()">
+      <button id="button" class="button is-success "
+        v-if="mounted && !(costum.otherConfigurations.imagePro == 'true' && costum.otherConfigurations.imageMustContainNote == 'true')"
+        @click="setImageURL()">
         Image
       </button>
-      <button id="button" class="button is-success " v-if="mounted && costum.otherConfigurations.imagePro == 'true'" @click="$event => setImageProURL()">
+      <button id="button" class="button is-success " v-if="mounted && costum.otherConfigurations.imagePro == 'true'"
+        @click="$event => setImageProURL()">
         ImagePro
       </button>
       <div class="button textAlign" id="buttons-toggle">
         <div class="buttons-wrap">
           <button id="button" class="button is-success " v-if="mounted">
-            textAlign<img :class="{ imghover: TableToogle }" src="@/assets/angle.svg" />
+            Align
           </button>
           <button id="button" class="button is-success " v-if="mounted"
             @click="editor.chain().focus().setTextAlign('left').run()">
@@ -398,6 +400,18 @@ function setLink() {
 }
 </script>
 <style scoped lang="scss">
+html #button,
+html #buttons-toggle {
+  --buttons-height: 2.5rem;
+
+  @media (max-width: 1300px) {
+    --buttons-height: 1.7rem;
+  }
+
+}
+
+
+
 .main {
   background-color: var(--has-background-lightest-grey);
   padding: 0.3em;
@@ -418,9 +432,16 @@ function setLink() {
   #button {
     margin-right: 0rem;
     margin: 0 4px 4px 0;
+    height: var(--buttons-height);
     display: inline-block;
     opacity: 0.9;
     transition: ease 0.2s;
+  }
+
+  @media (max-width: 1300px) {
+    #button {
+      padding: 0.2rem;
+    }
   }
 
   #button:hover {
@@ -439,6 +460,11 @@ function setLink() {
       display: inline-block;
       padding-right: 1em;
     }
+  @media (max-width: 1300px) {
+    p {
+      padding-right: .2rem;
+    }
+  }
 
     img {
       height: 1.5em;
@@ -457,12 +483,11 @@ function setLink() {
   position: relative;
   margin: 0 4px 4px 0;
   padding: 0;
-  z-index: 1;
   flex-direction: column;
   justify-content: flex-start;
   border-width: 0px;
-  height: 2.5em;
-  width: 5em;
+  height: var(--buttons-height);
+  // width: 5em;
   opacity: 0.9;
 
   .buttons-wrap {
@@ -474,29 +499,56 @@ function setLink() {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    height: 2.5em;
+    height: var(--buttons-height);
     overflow: hidden;
     transition: ease 0.2s;
     opacity: 1;
     width: 100%;
 
 
-    .button {
+    #button {
       margin: 0;
       transition: ease 0.2s;
       transform: scale(1);
       opacity: 1;
-      display: inline-flex;
+      display: inline;
+      height: var(--buttons-height);
+      padding-bottom: calc(0.5em - 1px);
+      padding-top: calc(0.5em - 1px);
       width: 100%;
+    }
 
-      img {
-        height: 1.5em;
-        width: 1.5em;
-        transform: rotate(0deg);
-        transition: transform 0.5s ease;
-        margin-left: .5em;
-        display: none;
+    #button:first-child {
+      padding-right: 1.9em;
+
+    }
+
+
+
+    .button:first-child::after {
+      content: '';
+      height: 1.5em;
+      width: 1.5em;
+      transform: rotate(0deg);
+      transition: transform 0.5s ease;
+      margin-left: .5em;
+      display: block;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: .5rem;
+      background: url(@/assets/angle.svg);
+    }
+    @media (max-width: 1300px) {
+      #button {
+        padding: 0.2rem;
       }
+      .button:first-child::after {
+        right: .2rem;
+      }
+    }
+    .button:first-child:hover::after {
+      transform: translateY(-50%) rotate(360deg);
     }
   }
 
@@ -504,6 +556,7 @@ function setLink() {
     height: auto;
     transform: scale(1.1);
     opacity: 1;
+    // z-index: 2;
 
     .button:hover {
       opacity: 1;
@@ -517,14 +570,37 @@ function setLink() {
     }
   }
 }
-
+#buttons-toggle.Heading {
+  width: 5em;
+}
 #buttons-toggle.textAlign {
-  width: 8em;
+  width: 6em;
+}
+#buttons-toggle.CodeBlock {
+  width: 8.5em;
+}
+#buttons-toggle.textAlign:hover {
+  z-index: 2;
+}
+#buttons-toggle.CodeBlock:hover {
+  z-index: 2;
+}
+#buttons-toggle.Heading:hover{
+  z-index: 2;
+}
+@media (max-width: 1300px){
+  #buttons-toggle.Heading {
+  width: 4em;
+}
+#buttons-toggle.textAlign {
+  width: 4.5em;
 }
 
 #buttons-toggle.CodeBlock {
-  width: 7.5em;
+  width: 7em;
 }
+}
+
 
 button:hover {
   opacity: 1;
