@@ -549,7 +549,7 @@ html #buttons-toggle {
       }
     }
     .button:first-child:hover::after {
-      transform: translateY(-50%) rotate(360deg);
+      transform: translateY(-50%) rotate(180deg);
     }
   }
 
