@@ -54,16 +54,26 @@ func main() {
 
 	color.Magenta("Press CTRL+C to quit")
 
-	err = http.ListenAndServe("127.0.0.1:"+strconv.Itoa(port), nil)
-	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
-		return
-	}
-
 	err = http.ListenAndServe(":"+strconv.Itoa(port), nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 		return
 	}
 
+	// listener, err := net.Listen("tcp", ":"+strconv.Itoa(port))
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// server1 := http.Server{
+	// 	Addr:    "127.0.0.1:" + strconv.Itoa(port),
+	// 	Handler: nil,
+	// }
+	// go server1.Serve(listener)
+
+	// server0 := http.Server{
+	// 	Addr:    ":" + strconv.Itoa(port),
+	// 	Handler: nil,
+	// }
+	// server0.Serve(listener)
 }
