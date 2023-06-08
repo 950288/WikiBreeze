@@ -404,7 +404,7 @@ html #button,
 html #buttons-toggle {
   --buttons-height: 2.5rem;
 
-  @media (max-width: 1300px) {
+  @media (max-width: 1350px) {
     --buttons-height: 1.7rem;
   }
 
@@ -438,7 +438,7 @@ html #buttons-toggle {
     transition: ease 0.2s;
   }
 
-  @media (max-width: 1300px) {
+  @media (max-width: 1350px) {
     #button {
       padding: 0.2rem;
       line-height: 1.3rem;
@@ -461,7 +461,7 @@ html #buttons-toggle {
       display: inline-block;
       padding-right: 1em;
     }
-  @media (max-width: 1300px) {
+  @media (max-width: 1350px) {
     p {
       padding-right: .2rem;
     }
@@ -540,7 +540,7 @@ html #buttons-toggle {
       right: .5rem;
       background: url(@/assets/angle.svg);
     }
-    @media (max-width: 1300px) {
+    @media (max-width: 1350px) {
       #button {
         padding: 0.2rem;
       }
@@ -589,7 +589,7 @@ html #buttons-toggle {
 #buttons-toggle.Heading:hover{
   z-index: 2;
 }
-@media (max-width: 1300px){
+@media (max-width: 1350px){
   #buttons-toggle.Heading {
   width: 4em;
 }

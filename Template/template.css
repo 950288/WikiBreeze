@@ -21,10 +21,24 @@ p {
   font-size: 1rem;
 }
 
-image-pro>p,
-table-pro>p {
+image-pro{
+  width: 60%;
+}
+
+image-pro p,
+table-pro p {
   text-align: center;
-  margin-top: .5em;
+  margin-top: .2em;
+  margin-bottom: .2em;
+}
+
+image-pro, table-pro{
+  display: block;
+  margin: 1em auto;
+  padding: 0;
+}
+image-pro img, table-pro table{
+  margin-bottom: .5em;
 }
 
 ul,
