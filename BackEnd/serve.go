@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+
+	"github.com/fatih/color"
 )
 
 func main() {
@@ -50,9 +52,18 @@ func main() {
 		fmt.Println("Network:\t", utils.Cyanf("http://"+ip.String()+":"+strconv.Itoa(port)+"/"))
 	}
 
+	color.Magenta("Press CTRL+C to quit")
+
+	err = http.ListenAndServe("127.0.0.1:"+strconv.Itoa(port), nil)
+	if err != nil {
+		log.Fatal("ListenAndServe: ", err)
+		return
+	}
+
 	err = http.ListenAndServe(":"+strconv.Itoa(port), nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 		return
 	}
+
 }

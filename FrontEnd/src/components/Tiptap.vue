@@ -441,6 +441,7 @@ html #buttons-toggle {
   @media (max-width: 1300px) {
     #button {
       padding: 0.2rem;
+      line-height: 1.3rem;
     }
   }
 
@@ -467,8 +468,8 @@ html #buttons-toggle {
   }
 
     img {
-      height: 1.5em;
-      width: 1.5em;
+      height: 1.4em;
+      width: 1.4em;
       transform: rotate(-90deg);
       transition: transform 0.5s ease;
     }

@@ -34,9 +34,9 @@ To use WikiBreeze, follow these steps:
 
 3. Use terminals run the executable file WikiBreeze.exe in the WikiBreeze directory to start the tool. You will then see the generated URL in the console, as shown below. You can edit your wiki in the browser via the generated URL. WikiBreeze also supports collaborative editing within a LAN (e.g. personal hotspot, campus network, etc.), so team members within the same LAN can access the editing page through the second link.
 ```
-   Server started on port 8080
-    Local:           <http://127.0.0.1:8080/> 
-    Network:         <http://192.168.Xx.xx:8080/>
+   Server started on port 5001
+    Local:           <http://127.0.0.1:5001/> 
+    Network:         <http://192.168.Xx.xx:5001/>
 ```  
 
 4. The HTML source code after editing and saving will be automatically inserted into the relative position of the page. At the same time, the WikibreezeData folder will be generated to store the information of the edited page.
@@ -49,7 +49,7 @@ To use WikiBreeze, follow these steps:
     // Directory containing the page to be modified (e.g. "D:/github/web/src/pages/")
     "scanDirectory": "../",  
 
-    // Port to be used (e.g. "8080" or "auto")
+    // Port to be used (e.g. "5001" or "auto")
     "port": "auto",  
 
     // File type to be scanned (e.g. [".html",....])
@@ -65,7 +65,7 @@ The following is for developers wishing to make improvements to the tool or buil
 WikiBreeze is developed using Vue 3 and Go. The front-end is implemented using Vue 3 and TypeScript and built using the Vite build tool. The back-end is implemented using Go and provides a RESTful API for the front-end to interact with.
 To set up the development environment for WikiBreeze, you need to have [Node.js](https://nodejs.org/) and [Go](https://golang.org/) installed on your system. Then, follow these steps:
 1. Clone this repository and navigate to the root directory. 
-2. Run npm install to install the required dependencies for the front-end.
+2. Run `npm install` to install the required dependencies for the front-end.
  
 To build the front-end, run `npm run build:frontend`. 
 To build the back-end, run `npm run build:backend`. 
