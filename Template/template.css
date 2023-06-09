@@ -23,23 +23,50 @@ p {
 
 image-pro{
   width: 60%;
+  display: block;
+  padding: 0;
+  margin: 1em auto;
 }
 
-image-pro p,
-table-pro p {
+img{
+  width: 60%;
+  display: block;
+  margin: 1em auto;
+}
+
+image-pro > img{
+  width: 100%;
+  margin:0 0 .5em 0;
+}
+
+table-pro{
+  width: 90%;
+  display: block;
+  padding: 0;
+  margin: 1em auto;
+}
+
+table{
+  width: 90%;
+  margin: 1em auto;
+  border-collapse: collapse;
+}
+
+table-pro > table{
+  width: 100%;
+  margin:0 0 .5em 0;
+}
+
+image-pro > p,
+table-pro > p {
   text-align: center;
+}
+img p,
+table p {
   margin-top: .2em;
   margin-bottom: .2em;
 }
 
-image-pro, table-pro{
-  display: block;
-  margin: 1em auto;
-  padding: 0;
-}
-image-pro img, table-pro table{
-  margin-bottom: .5em;
-}
 
 ul,
 ol {
@@ -62,11 +89,6 @@ pre {
   background: #0D0D0D;
   padding: 1rem;
   overflow-x: auto;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
 }
 
 th,

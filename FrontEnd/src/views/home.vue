@@ -59,7 +59,6 @@ function editcontent(index: string, content: string) {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        max-width: 22%;
         
     }
 

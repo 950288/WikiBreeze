@@ -20,7 +20,7 @@
                 padding: 0.5rem;
                 border: 1px solid var(--has-border-dark);
                 border-width: 0 1px 1px;
-                text-align: center;
+                text-align: left;
             }
             th {
                 color: var(--has-text-black);
@@ -28,9 +28,11 @@
                 border: 1px solid var(--has-border-dark);
                 border-width: 0 1px 1px;
                 padding: 0.5rem;
-                text-align: center;
+                text-align: left;
                 border-color: var(--has-border-dark);
-                text-align: center;
+            }
+            td p, th p {
+                text-align: left;
             }
 
         }

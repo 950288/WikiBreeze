@@ -333,7 +333,7 @@ func ScanFiles(ScanDir string, FileTypes []string) (map[string]string, []byte, e
 func GetOutboundIP() net.IP {
 	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil {
-		PrintErr("Error getting local IP")
+		PrintErr("Error getting local IP, LAN editing not available")
 		return nil
 	}
 	defer conn.Close()

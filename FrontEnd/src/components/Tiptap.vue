@@ -73,7 +73,7 @@
         UnsetLink
       </button>
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().setHardBreak().run()">
-        HardBreak
+        Break
       </button>
       <button id="button" class="button is-success "
         v-if="mounted && !(costum.otherConfigurations.imagePro == 'true' && costum.otherConfigurations.imageMustContainNote == 'true')"
@@ -101,10 +101,10 @@
             @click="editor.chain().focus().setTextAlign('center').run()">
             Center
           </button>
-          <button id="button" class="button is-success " v-if="mounted"
+          <!-- <button id="button" class="button is-success " v-if="mounted"
             @click="editor.chain().focus().setTextAlign('justify').run()">
             Justify
-          </button>
+          </button> -->
         </div>
       </div>
       <button id="button" class="button is-info Table" v-if="mounted" @click="TableToogle = TableToogle ? false : true">
@@ -176,7 +176,7 @@
     </div>
     <editor-content :editor="editor" class="edit" />
     <br>
-    <div class="block">Click 'save' or press 'ctrl + s' to save !</div>
+    <div class="block">Press CTRL+S to save !</div>
   </div>
 </template>
   
@@ -488,8 +488,8 @@ html #buttons-toggle {
   justify-content: flex-start;
   border-width: 0px;
   height: var(--buttons-height);
-  // width: 5em;
   opacity: 0.9;
+  background-color: hsl(153, 53%, 53%);
 
   .buttons-wrap {
     position: absolute;
