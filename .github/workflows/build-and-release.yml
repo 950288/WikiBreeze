@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3 
+      
+      - name: Get latest tag 
+        uses: actions-ecosystem/action-get-latest-tag@v1
+        id: get_latest_tag
+      
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -24,11 +29,6 @@ jobs:
         
       - name: Build frontend  
         run: npm run build:frontend
-      - name: Get latest tag 
-        id: get_latest_tag
-        run: |
-          tag_name=$(curl -s https://api.github.com/repos/${{ github.repository }}/tags | jq -r 'map(select(.name |  test("^v[0-9]*.[0-9]*.[0-9]*"))) | joinsemver -> .[-1].name')
-          echo "::set-output name=tag_name::$tag_name"
     
       - name: Build for linux         
         run: |
