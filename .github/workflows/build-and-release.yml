@@ -21,6 +21,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16'
+          
       - name: Setup Go
         uses: actions/setup-go@v2
         with:
@@ -30,8 +31,7 @@ jobs:
         run: npm install 
         
       - name: Build frontend  
-        run: |
-          npm run build:frontend
+        run: npm run build:frontend
     
       - name: Build for linux         
         run: |
@@ -64,19 +64,19 @@ jobs:
         uses: actions/upload-artifact@v2 
         with:
           name: WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip
-          path: ./WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip  
+          path: ./WikiBreeze-linux/WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip  
 
       - name: Upload MacOS zip  
         uses: actions/upload-artifact@v2 
         with:
           name: WikiBreeze-macos-${{ steps.get_latest_tag.outputs.tag_name }}.zip
-          path: ./WikiBreeze-macos-${{ steps.get_latest_tag.outputs.tag_name }}.zip   
+          path: ./WikiBreeze-linux/WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip 
 
       - name: Upload Windows zip
         uses: actions/upload-artifact@v2    
         with:
           name: WikiBreeze-windows-${{ steps.get_latest_tag.outputs.tag_name }}.zip
-          path: ./WikiBreeze-windows-${{ steps.get_latest_tag.outputs.tag_name }}.zip
+          path: ./WikiBreeze-linux/WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip
 
             
           
