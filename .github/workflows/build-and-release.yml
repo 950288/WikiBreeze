@@ -1,4 +1,5 @@
-name: Build and Release WikiBreeze
+name: Build WikiBreeze
+# name: Build and Release WikiBreeze
 on:
   push:
     branches:
@@ -55,7 +56,7 @@ jobs:
           env GOOS=windows GOARCH=amd64 npm run build:backend
           mkdir ./WikiBreeze-windows
           cp -r ./Wikibreeze ./WikiBreeze-windows
-          rm ./Wikibreeze/WikiBreeze
+          rm ./Wikibreeze/WikiBreeze.exe
           cd ./WikiBreeze-windows
           zip -r WikiBreeze-windows-${{ steps.get_latest_tag.outputs.tag_name }}.zip Wikibreeze
         
