@@ -3,7 +3,7 @@ name: Build WikiBreeze
 on:
   push:
     branches:
-      - main
+      - "*"
     paths-ignore:
       - '**/README.md'
       - '**/README_zh.md'
