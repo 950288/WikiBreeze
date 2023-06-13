@@ -75,7 +75,7 @@ function save(contentjson: JSON, contenthtml: string) {
         page: history.state.index,
         content: history.state.content,
         Contentjson: contentjson,
-        Contenthtml: indentHTML(contenthtml)
+        Contenthtml: contenthtml
     });
     // console.log(contentjson);
     let { data: saveReturnMsg, error: saveError } = useFetch(requestUrl.value + "/savedata", {
