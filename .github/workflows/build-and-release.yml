@@ -21,7 +21,6 @@ jobs:
 
       - uses: actions-ecosystem/action-get-latest-tag@v1
         id: get-latest-tag
-        if: ${{ steps.release-label.outputs.level != null }}
 
       - name: Echo latest tag 
         run: echo ${{ steps.get-latest-tag.outputs.tag }} 
