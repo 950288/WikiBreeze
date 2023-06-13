@@ -200,7 +200,15 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 			fmt.Fprint(w, "{\"success\": \""+"Error seeking to beginning of file:"+err.Error()+"\"}")
 			return
 		}
-		_, err = jsonFile.Write([]byte(string(content.Contentjson)))
+		// Write the modified contents back to the file
+		// MarshalIndent
+		contentString := string(content.Contentjson)
+		contentString, err = ParseJson("./src/config.json", contentString)
+		if err != nil {
+			fmt.Println("MarshalIndent failed:", err.Error())
+		}
+		_, err = jsonFile.Write([]byte(contentString))
+
 		if err != nil {
 			fmt.Println(err)
 			fmt.Fprint(w, "{\"success\": \"false\"}")

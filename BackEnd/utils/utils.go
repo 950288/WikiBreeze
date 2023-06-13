@@ -29,7 +29,7 @@ func ParseJson(filename string, configString string) (string, error) {
 		return "", fmt.Errorf("error decoding %s: %w", filename, err)
 	}
 
-	//convert editorConfig to json string
+	//convert configString to json string
 	encoded, err := json.MarshalIndent(jsonMap, "", "    ")
 	if err != nil {
 		return "", fmt.Errorf("error encoding %s: %w", filename, err)
