@@ -60,14 +60,24 @@ jobs:
           cd ./WikiBreeze-windows
           zip -r WikiBreeze-windows-${{ steps.get_latest_tag.outputs.tag_name }}.zip Wikibreeze
         
-      - name: Create artifacts
-        uses: actions/upload-artifact@v2
+      - name: Upload Linux zip
+        uses: actions/upload-artifact@v2 
         with:
-          name: WikiBreeze
-          path: |
-            ./WikiBreeze-linux/WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip
-            ./WikiBreeze-macos/WikiBreeze-macos-${{ steps.get_latest_tag.outputs.tag_name }}.zip
-            ./WikiBreeze-windows/WikiBreeze-windows-${{ steps.get_latest_tag.outputs.tag_name }}.zip
+          name: WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip
+          path: ./WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip  
+
+      - name: Upload MacOS zip  
+        uses: actions/upload-artifact@v2 
+        with:
+          name: WikiBreeze-macos-${{ steps.get_latest_tag.outputs.tag_name }}.zip
+          path: ./WikiBreeze-macos-${{ steps.get_latest_tag.outputs.tag_name }}.zip   
+
+      - name: Upload Windows zip
+        uses: actions/upload-artifact@v2    
+        with:
+          name: WikiBreeze-windows-${{ steps.get_latest_tag.outputs.tag_name }}.zip
+          path: ./WikiBreeze-windows-${{ steps.get_latest_tag.outputs.tag_name }}.zip
+
             
           
 #   release:
