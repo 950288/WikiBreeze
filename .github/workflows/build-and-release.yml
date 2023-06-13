@@ -28,19 +28,14 @@ jobs:
       - name: Install dependencies
         run: npm install 
         
-      # - name: Build frontend  
-      #   run: |
-      #     npm run build:frontend
+      - name: Build frontend  
+        run: |
+          npm run build:frontend
     
       - name: Build for linux         
         run: |
-          npm run build:frontend
-          npm run build:backend 
-          mkdir ./WikiBreeze-linux
-          cp ./Wikibreeze ./WikiBreeze-linux
-          rm ./Wikibreeze/WikiBreeze
-          cd ./WikiBreeze-linux
-          zip -r WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip Wikibreeze         
+          env GOOS=linux GOARCH=amd64 npm run build:backend 
+       
         
       - name: Build for macos         
         run: |
