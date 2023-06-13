@@ -1,68 +1,100 @@
-name: Build and Release WikiBreeze 
-on: 
+name: Build and Release WikiBreeze
+on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '**.md/*.yml'
 jobs:
   build:
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.19
+          
       - name: Install dependencies
-        run: npm install
-      - name: Build
-        run: npm run build
-      - name: Archive project
+        run: npm install 
+        
+      - name: Build frontend  
+        run: npm run build:frontend
+      - name: Get latest tag 
+        id: get_latest_tag
         run: |
-          mkdir ./WikiBreeze-${{ matrix.os }}
-          mv ./Wikibreeze ./WikiBreeze-${{ matrix.os }}/
-          cd ./WikiBreeze-${{ matrix.os }}
-          tar -czf ../WikiBreeze.tar.gz *
+          tag_name=$(curl -s https://api.github.com/repos/${{ github.repository }}/tags | jq -r 'map(select(.name |  test("^v[0-9]*.[0-9]*.[0-9]*"))) | joinsemver -> .[-1].name')
+          echo "::set-output name=tag_name::$tag_name"
+    
+      - name: Build for linux         
+        run: |
+          env GOOS=linux GOARCH=amd64 npm run build:backend 
+          mkdir ./WikiBreeze-linux
+          cp ./Wikibreeze ./WikiBreeze-linux
+          rm ./Wikibreeze/WikiBreeze
+          cd ./WikiBreeze-linux
+          zip -r WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip Wikibreeze         
+        
+      - name: Build for macos         
+        run: |
+          env GOOS=darwin GOARCH=amd64 npm run build:backend
+          mkdir ./WikiBreeze-macos
+          cp ./Wikibreeze ./WikiBreeze-macos
+          rm ./Wikibreeze/WikiBreeze
+        
+      - name: Build for Windows         
+        run: |
+          env GOOS=windows GOARCH=amd64 npm run build:backend
+          mkdir ./WikiBreeze-Windows
+          cp ./Wikibreeze ./WikiBreeze-Windows
+        
       - name: Create artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: WikiBreeze-${{ matrix.os }}-build
-          path: ./WikiBreeze-${{ matrix.os }}
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      # Download Windows artifact  
-      - name: Download Windows built artifact 
-        if: contains(needs.build.outputs.os, 'windows-latest')
-        uses: actions/download-artifact@v2
-        with: 
-          name: WikiBreeze-windows-latest-build
-      # Upload Windows release asset  
-      - name: Upload Windows Release Asset
-        if: contains(needs.build.outputs.os, 'windows-latest')
-        uses: actions/upload-release-asset@v1
+          name: WikiBreeze-linux
+          path: ./WikiBreeze-linux/WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip
+          
+      - name: Create artifacts
+        uses: actions/upload-artifact@v3
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}  
-          asset_path: ./WikiBreeze-windows-latest-build/WikiBreeze.zip  
-          asset_name: WikiBreeze-Windows.zip  
-          asset_content_type: application/zip 
-      # Download Linux artifact
-      - name: Download Linux built binaries
-        if: contains(needs.build.outputs.os, 'ubuntu-latest') 
-        uses: actions/download-artifact@v2
-        with: 
-          name: WikiBreeze-ubuntu-latest-build
-          path: ./
-      # Upload Linux release asset  
-      - name: Upload Linux Release Asset
-        if: contains(needs.build.outputs.os, 'ubuntu-latest')
-        uses: actions/upload-release-asset@v1
+          name: WikiBreeze-macos
+          path: ./WikiBreeze-macos/Wikibreeze  
+          
+      - name: Create artifacts
+        uses: actions/upload-artifact@v3
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}  
-          asset_path: ./WikiBreeze-ubuntu-latest-build/WikiBreeze.tar.gz     
-          asset_name: WikiBreeze-Linux.zip  
-          asset_content_type: application/gzip 
+          name: WikiBreeze-windows
+          path: ./WikiBreeze-windows/Wikibreeze  
+          
+#   release:
+#     needs: build
+#     runs-on: ubuntu-latest
+#     steps:   
+#       # Upload Linux release asset 
+#       - name: Upload Linux Release Asset     
+#         uses: actions/upload-release-asset@v1
+#         with:
+#           upload_url: ${{ steps.create_release.outputs.upload_url }} 
+#           asset_path: ./WikiBreeze-linux/Wikibreeze
+#           asset_name: WikiBreeze-Linux.zip
+#           asset_content_type: application/zip         
+#       # Upload MacOS release asset 
+#       - name: Upload MacOS Release Asset     
+#         uses: actions/upload-release-asset@v1
+#         with:
+#           upload_url: ${{ steps.create_release.outputs.upload_url }} 
+#           asset_path: ./WikiBreeze-macos/Wikibreeze  
+#           asset_name: WikiBreeze-MacOS.zip
+#           asset_content_type: application/zip         
+#       # Upload Windows release asset 
+#       - name: Upload Windows Release Asset     
+#         uses: actions/upload-release-asset@v1
+#         with:
+#           upload_url: ${{ steps.create_release.outputs.upload_url }} 
+#           asset_path: ./WikiBreeze-windows/Wikibreeze  
+#           asset_name: WikiBreeze-Windows.exe
+#           asset_content_type: application/x-msdownload
