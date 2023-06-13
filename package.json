@@ -4,7 +4,7 @@
     "scripts": {
         "prepare": "node -v",
         "build": "rimraf ./Wikibreeze && npm run build:backend && npm run build:frontend",
-        "cp:src": "ncp ./BackEnd/src ./Wikibreeze/src && ncp ./BackEnd/testContent.json ./Wikibreeze/testContent.json",
+        "cp:src": "mkdirp  Wikibreeze/src && ncp ./BackEnd/src ./Wikibreeze/src && ncp ./BackEnd/testContent.json ./Wikibreeze/testContent.json",
         "build:backend": "cd BackEnd && go build -ldflags \"-s -w\" -o ../Wikibreeze/ && npm run cp:src",
         "cp:template": "mkdirp  Wikibreeze/src && ncp ./Template/template.css ./Wikibreeze/src/template.css",
         "build:frontend": "cd FrontEnd && npm run build && cd ../ && npm run cp:template",

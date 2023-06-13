@@ -34,7 +34,7 @@ jobs:
     
       - name: Build for linux         
         run: |
-          npm run build:backend 
+          env GOOS=linux GOARCH=amd64 npm run build:backend 
           mkdir ./WikiBreeze-linux
           cp ./Wikibreeze ./WikiBreeze-linux
           rm ./Wikibreeze/WikiBreeze
