@@ -22,32 +22,41 @@ jobs:
       - name: Install dependencies
         run: npm install 
         
-      - name: Build for Linux         
-        run: env GOOS=linux GOARCH=amd64 npm run build   
+      - name: Build for linux         
+        run: |
+          env GOOS=linux GOARCH=amd64 npm run build  
+          mkdir ./WikiBreeze-linux
+          mv ./Wikibreeze ./WikiBreeze-linux
         
-      - name: Build for macOS         
-        run: env GOOS=darwin GOARCH=amd64 npm run build  
+      - name: Build for macos         
+        run: |
+          env GOOS=darwin GOARCH=amd64 npm run build  
+          mkdir ./WikiBreeze-macos
+          mv ./Wikibreeze ./WikiBreeze-macos
         
       - name: Build for Windows         
-        run: env GOOS=windows GOARCH=amd64 npm run build   
+        run: |
+          env GOOS=windows GOARCH=amd64 npm run build  
+          mkdir ./WikiBreeze-Windows
+          mv ./Wikibreeze ./WikiBreeze-Windows
         
       - name: Create artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: WikiBreeze-linux-build
-          path: ./dist/wikiBreeze-linux
+          name: WikiBreeze-linux
+          path: ./WikiBreeze-linux/Wikibreeze
           
       - name: Create artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: WikiBreeze-macos-build
-          path: ./dist/wikiBreeze-darwin   
+          name: WikiBreeze-macos
+          path: ./WikiBreeze-macos/Wikibreeze  
           
       - name: Create artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: WikiBreeze-windows-build
-          path: ./dist/wikiBreeze-windows.exe  
+          name: WikiBreeze-windows
+          path: ./WikiBreeze-windows/Wikibreeze  
           
   release:
     needs: build
