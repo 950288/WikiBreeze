@@ -1,6 +1,6 @@
 {
   "name": "wikibreeze",
-  "version": "0.3.3",
+  "version": "0.9.1",
   "private": true,
   "scripts": {
     "dev": "vite",
