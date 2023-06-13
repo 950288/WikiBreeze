@@ -3,7 +3,8 @@
         <br>
         <tiptap v-if="contenetJson && renderConfigJson" @save="save" :contenetjson="contenetJson"
             :renderConfigJson="renderConfigJson" />
-        <progress v-if="!(contenetJson && renderConfigJson) && !error" class="progress is-large is-info" max="100">60%</progress>
+        <progress v-if="!(contenetJson && renderConfigJson) && !error" class="progress is-large is-info"
+            max="100">60%</progress>
         <br>
         <article v-if="error" class="message is-warning is-large">
             <div class="message-body">
@@ -27,9 +28,9 @@ const app = <any>getCurrentInstance();
 let error = ref<string>();
 
 onMounted(() => {
-    if(!history.state.content){
+    if (!history.state.content) {
         router.push({
-            name:"Home"
+            name: "Home"
         })
         return
     }
@@ -74,7 +75,7 @@ function save(contentjson: JSON, contenthtml: string) {
         page: history.state.index,
         content: history.state.content,
         Contentjson: contentjson,
-        Contenthtml: contenthtml
+        Contenthtml: indentHTML(contenthtml)
     });
     // console.log(contentjson);
     let { data: saveReturnMsg, error: saveError } = useFetch(requestUrl.value + "/savedata", {
@@ -93,7 +94,7 @@ function save(contentjson: JSON, contenthtml: string) {
                     resolve({ success: true, notify: "saved successful!" });
                 } else {
                     console.log("saved failed!");
-                    resolve({ success: false, notify: saveError.value ?  saveError.value : "saved failed!"});
+                    resolve({ success: false, notify: saveError.value ? saveError.value : "saved failed!" });
                 }
             });
         });

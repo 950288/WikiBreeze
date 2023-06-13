@@ -40,7 +40,7 @@ jobs:
           cp -r ./Wikibreeze ./WikiBreeze-linux
           rm ./Wikibreeze/WikiBreeze
           cd ./WikiBreeze-linux
-          zip -r WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip Wikibreeze         
+          zip -r WikiBreeze-linux-${{ steps.get-latest-tag.outputs.tag }}.zip Wikibreeze         
         
       - name: Build for macos         
         run: |
@@ -49,7 +49,7 @@ jobs:
           cp -r ./Wikibreeze ./WikiBreeze-macos
           rm ./Wikibreeze/WikiBreeze
           cd ./WikiBreeze-macos
-          zip -r WikiBreeze-macos-${{ steps.get_latest_tag.outputs.tag_name }}.zip Wikibreeze
+          zip -r WikiBreeze-macos-${{ steps.get-latest-tag.outputs.tag }}.zip Wikibreeze
         
       - name: Build for Windows         
         run: |
@@ -58,25 +58,25 @@ jobs:
           cp -r ./Wikibreeze ./WikiBreeze-windows
           rm ./Wikibreeze/WikiBreeze.exe
           cd ./WikiBreeze-windows
-          zip -r WikiBreeze-windows-${{ steps.get_latest_tag.outputs.tag_name }}.zip Wikibreeze
+          zip -r WikiBreeze-windows-${{ steps.get-latest-tag.outputs.tag }}.zip Wikibreeze
         
       - name: Upload Linux zip
         uses: actions/upload-artifact@v2 
         with:
-          name: WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip
-          path: ./WikiBreeze-linux/WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip  
+          name: WikiBreeze-linux-${{ steps.get-latest-tag.outputs.tag }}.zip
+          path: ./WikiBreeze-linux/WikiBreeze-linux-${{ steps.get-latest-tag.outputs.tag }}.zip  
 
       - name: Upload MacOS zip  
         uses: actions/upload-artifact@v2 
         with:
-          name: WikiBreeze-macos-${{ steps.get_latest_tag.outputs.tag_name }}.zip
-          path: ./WikiBreeze-linux/WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip 
+          name: WikiBreeze-macos-${{ steps.get-latest-tag.outputs.tag }}.zip
+          path: ./WikiBreeze-linux/WikiBreeze-linux-${{ steps.get-latest-tag.outputs.tag }}.zip 
 
       - name: Upload Windows zip
         uses: actions/upload-artifact@v2    
         with:
-          name: WikiBreeze-windows-${{ steps.get_latest_tag.outputs.tag_name }}.zip
-          path: ./WikiBreeze-linux/WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip
+          name: WikiBreeze-windows-${{ steps.get-latest-tag.outputs.tag }}.zip
+          path: ./WikiBreeze-linux/WikiBreeze-linux-${{ steps.get-latest-tag.outputs.tag }}.zip
 
             
           

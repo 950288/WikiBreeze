@@ -461,11 +461,12 @@ html #buttons-toggle {
       display: inline-block;
       padding-right: 1em;
     }
-  @media (max-width: 1350px) {
-    p {
-      padding-right: .2rem;
+
+    @media (max-width: 1350px) {
+      p {
+        padding-right: .2rem;
+      }
     }
-  }
 
     img {
       height: 1.4em;
@@ -540,14 +541,17 @@ html #buttons-toggle {
       right: .5rem;
       background: url(@/assets/angle.svg);
     }
+
     @media (max-width: 1350px) {
       #button {
         padding: 0.2rem;
       }
+
       .button:first-child::after {
         right: .2rem;
       }
     }
+
     .button:first-child:hover::after {
       transform: translateY(-50%) rotate(180deg);
     }
@@ -571,35 +575,43 @@ html #buttons-toggle {
     }
   }
 }
+
 #buttons-toggle.Heading {
   width: 5em;
 }
+
 #buttons-toggle.textAlign {
   width: 6em;
 }
+
 #buttons-toggle.CodeBlock {
   width: 8.5em;
 }
+
 #buttons-toggle.textAlign:hover {
   z-index: 2;
 }
+
 #buttons-toggle.CodeBlock:hover {
   z-index: 2;
 }
-#buttons-toggle.Heading:hover{
+
+#buttons-toggle.Heading:hover {
   z-index: 2;
 }
-@media (max-width: 1350px){
-  #buttons-toggle.Heading {
-  width: 4em;
-}
-#buttons-toggle.textAlign {
-  width: 4.5em;
-}
 
-#buttons-toggle.CodeBlock {
-  width: 7em;
-}
+@media (max-width: 1350px) {
+  #buttons-toggle.Heading {
+    width: 4em;
+  }
+
+  #buttons-toggle.textAlign {
+    width: 4.5em;
+  }
+
+  #buttons-toggle.CodeBlock {
+    width: 7em;
+  }
 }
 
 
@@ -635,5 +647,4 @@ sub {
 
 a {
   color: var(--has-text-link);
-}
-</style>
+}</style>
