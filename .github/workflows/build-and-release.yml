@@ -14,29 +14,41 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16'
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.19
+          
       - name: Install dependencies
         run: npm install 
+        
       - name: Build for Linux         
-        run: env GOOS=linux GOARCH=amd64 npm run build         
+        run: env GOOS=linux GOARCH=amd64 npm run build   
+        
       - name: Build for macOS         
-        run: env GOOS=darwin GOARCH=amd64 npm run build    
+        run: env GOOS=darwin GOARCH=amd64 npm run build  
+        
       - name: Build for Windows         
-        run: env GOOS=windows GOARCH=amd64 npm run build       
+        run: env GOOS=windows GOARCH=amd64 npm run build   
+        
       - name: Create artifacts
         uses: actions/upload-artifact@v3
         with:
           name: WikiBreeze-linux-build
           path: ./dist/wikiBreeze-linux
+          
       - name: Create artifacts
         uses: actions/upload-artifact@v3
         with:
           name: WikiBreeze-macos-build
-          path: ./dist/wikiBreeze-darwin         
+          path: ./dist/wikiBreeze-darwin   
+          
       - name: Create artifacts
         uses: actions/upload-artifact@v3
         with:
           name: WikiBreeze-windows-build
           path: ./dist/wikiBreeze-windows.exe  
+          
   release:
     needs: build
     runs-on: ubuntu-latest
