@@ -13,9 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3 
       
-      - name: Get latest tag 
-        uses: actions-ecosystem/action-get-latest-tag@v1
-        id: get_latest_tag
+      - name: Get latest tag   
+      - uses: actions-ecosystem/action-get-latest-tag@v1
+        id: get-latest-tag
+        if: ${{ steps.release-label.outputs.level != null }}
       
       - name: Set up Node.js
         uses: actions/setup-node@v3
