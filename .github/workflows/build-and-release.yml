@@ -4,7 +4,8 @@ on:
     branches:
       - main
     paths-ignore:
-      - '**.md/*.yml'
+      - '**/README.md'
+      - '**/README_zh.md'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -45,30 +46,27 @@ jobs:
           mkdir ./WikiBreeze-macos
           cp ./Wikibreeze ./WikiBreeze-macos
           rm ./Wikibreeze/WikiBreeze
+          cd ./WikiBreeze-macos
+          zip -r WikiBreeze-macos-${{ steps.get_latest_tag.outputs.tag_name }}.zip Wikibreeze
         
       - name: Build for Windows         
         run: |
           env GOOS=windows GOARCH=amd64 npm run build:backend
-          mkdir ./WikiBreeze-Windows
-          cp ./Wikibreeze ./WikiBreeze-Windows
+          mkdir ./WikiBreeze-windows
+          cp ./Wikibreeze ./WikiBreeze-windows
+          rm ./Wikibreeze/WikiBreeze
+          cd ./WikiBreeze-windows
+          zip -r WikiBreeze-windows-${{ steps.get_latest_tag.outputs.tag_name }}.zip Wikibreeze
         
       - name: Create artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
-          name: WikiBreeze-linux
-          path: ./WikiBreeze-linux/WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip
-          
-      - name: Create artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: WikiBreeze-macos
-          path: ./WikiBreeze-macos/Wikibreeze  
-          
-      - name: Create artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: WikiBreeze-windows
-          path: ./WikiBreeze-windows/Wikibreeze  
+          name: WikiBreeze
+          path: |
+            ./WikiBreeze-linux/WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip
+            ./WikiBreeze-macos/WikiBreeze-macos-${{ steps.get_latest_tag.outputs.tag_name }}.zip
+            ./WikiBreeze-windows/WikiBreeze-windows-${{ steps.get_latest_tag.outputs.tag_name }}.zip
+            
           
 #   release:
 #     needs: build
