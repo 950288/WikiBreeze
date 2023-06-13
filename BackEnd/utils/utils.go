@@ -193,7 +193,7 @@ func ScanPort(Port string) int {
 			log.Fatal(fmt.Errorf("error parsing port: %w", err))
 		}
 		// check if port is available
-		ln, err := net.Listen("tcp", "127.0.0.1:"+strconv.Itoa(port))
+		ln, err := net.Listen("tcp", ":"+strconv.Itoa(port))
 		if err != nil {
 			log.Fatal(fmt.Errorf("error listening to port: %w", err))
 		}
@@ -202,8 +202,9 @@ func ScanPort(Port string) int {
 		// scan available port
 		for i := 5001; i <= 65535; i++ {
 			fmt.Println("scanning port " + strconv.Itoa(i))
-			ln, err := net.Listen("tcp", "127.0.0.1:"+strconv.Itoa(i))
+			ln, err := net.Listen("tcp", ":"+strconv.Itoa(i))
 			if err != nil {
+				fmt.Println("port " + strconv.Itoa(i) + " is not available")
 				continue
 			}
 			ln.Close()
