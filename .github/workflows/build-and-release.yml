@@ -35,7 +35,11 @@ jobs:
       - name: Build for linux         
         run: |
           env GOOS=linux GOARCH=amd64 npm run build:backend 
-       
+          mkdir ./WikiBreeze-linux
+          cp -r ./Wikibreeze ./WikiBreeze-linux
+          rm ./Wikibreeze/WikiBreeze
+          cd ./WikiBreeze-linux
+          zip -r WikiBreeze-linux-${{ steps.get_latest_tag.outputs.tag_name }}.zip Wikibreeze         
         
       - name: Build for macos         
         run: |
