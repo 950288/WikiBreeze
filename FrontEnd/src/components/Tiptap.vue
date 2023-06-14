@@ -217,7 +217,7 @@ import python from 'highlight.js/lib/languages/python'
 import { lowlight } from 'lowlight'
 import { generateHTML } from '@tiptap/html'
 import Gapcursor from '@tiptap/extension-gapcursor'
-import { onMounted, ref, defineEmits, getCurrentInstance, watch } from 'vue'
+import { onMounted, ref, getCurrentInstance, watch } from 'vue'
 
 const app = <any>getCurrentInstance();
 

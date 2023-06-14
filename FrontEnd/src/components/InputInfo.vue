@@ -34,7 +34,6 @@
 
 import { anyTypeAnnotation } from '@babel/types';
 import { ref, onMounted } from 'vue'
-import { defineProps } from 'vue'
 
 const url = ref("")
 const props = defineProps({
