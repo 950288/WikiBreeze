@@ -57,7 +57,7 @@ To use WikiBreeze, follow these steps:
 }
 ```
 
-7. see [Features](https://github.com/950288/WikiBreeze/wiki/Wikibreeze-Editor-Features) for more details.
+7. see [Features](https://github.com/950288/WikiBreeze/wiki/Wikibreeze-Editor-Features) for more detailed usage.
 
 
 ## Project Building Guide 🧑‍💻 
@@ -106,7 +106,7 @@ The front-end WebEditor sends HTTP requests to the back-end to retrieve and upda
 -  ✔️ table with note 🦉
 -  ✔️ img with note 🌌
 -  v1.0.0
--  ✔️ custom tag names 🗽
+-  ✔️ customize the HTML 🗽
 -  ✔️ citation 🐰
 -  v1.1.0
 -  accessCode

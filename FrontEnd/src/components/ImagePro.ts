@@ -2,17 +2,17 @@ import { mergeAttributes, Node, findParentNodeClosestToPos,NodeView } from '@tip
 import { Editor, type NodeViewRenderer } from '@tiptap/vue-3'
 
 /**
- * @name ImagePro
-  * @description The ImagePro extension allows you to insert an image with a
+ * @name imagePro
+  * @description The imagePro extension allows you to insert an image with a
   * note into the editor. The note is displayed below the image and can be
   * used to provide context or additional information about the image.
   * @example
-  * insertImagePro()
+  * insertimagePro()
  */
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
-    ImagePro: {
+    imagePro: {
       insertImagePro: (url: String) => ReturnType,
       deleteImagePro: () => ReturnType,
     }
@@ -20,11 +20,11 @@ declare module '@tiptap/core' {
 }
 
 export default Node.create({
-  name: 'ImagePro',
+  name: 'imagePro',
 
   group: 'block',
 
-  content: 'imageX note',
+  content: 'image paragraph',
 
   // allowGapCursor: true,
 
@@ -37,7 +37,8 @@ export default Node.create({
   },
 
   renderHTML() {
-    return ['image-pro', { 'data-gapcursor': 'ImageProCursor' }, 0]
+    // return ['image-pro', { 'data-gapcursor': 'ImageProCursor' }, 0]
+    return ['image-pro', 0]
   },
   
   addAttributes() {
@@ -55,15 +56,15 @@ export default Node.create({
         if (!url) {
           return false
         }
-        const image = editor.schema.nodes.imageX.createChecked(
+        const image = editor.schema.nodes.image.createChecked(
           { 
             src: url
           }
         )
         console.log(image)
-        const note = editor.schema.nodes.note.createChecked(
+        const tableNote = editor.schema.nodes.paragraph.createChecked(
           {
-            class: "note"
+            class: "paragraph"
           } 
           , 
           [
@@ -71,12 +72,12 @@ export default Node.create({
           ]
         )
         console.log(JSON.stringify(image))
-        const imagePro = editor.schema.nodes.ImagePro.createChecked(
+        const imagePro = editor.schema.nodes.imagePro.createChecked(
           { class: "imagePro" }
           , 
           [
             image,
-            note
+            tableNote
           ]
         )
         tr.replaceSelectionWith(imagePro)
@@ -85,7 +86,7 @@ export default Node.create({
       },
       deleteImagePro: () => ({ commands, editor, tr }) => {
         const { $from } = tr.selection
-        const imagePro = findParentNodeClosestToPos($from, (node) => node.type === editor.schema.nodes.ImagePro)
+        const imagePro = findParentNodeClosestToPos($from, (node) => node.type === editor.schema.nodes.imagePro)
         if (imagePro) {
           tr.deleteRange(imagePro.pos, imagePro.pos + imagePro.node.nodeSize)
           return true

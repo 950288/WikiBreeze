@@ -198,11 +198,11 @@ import Heading from '@tiptap/extension-heading'
 import Bulletlist from '@tiptap/extension-bullet-list'
 import Listitem from '@tiptap/extension-list-item'
 import Image from '@tiptap/extension-image'
-import { ImageX } from './ImageX'
+// import { ImageX } from './ImageX'
 import Link from '@tiptap/extension-link'
-import strike from '@tiptap/extension-strike'
-import hardBreak from '@tiptap/extension-hard-break'
-import TablePre from './TablePro'
+import Strike from '@tiptap/extension-strike'
+import HardBreak from '@tiptap/extension-hard-break'
+import TablePro from './TablePro'
 import ImagePro from './ImagePro'
 import Table from '@tiptap/extension-table'
 import TextAlign from '@tiptap/extension-text-align'
@@ -283,7 +283,7 @@ const extensions = [
     defaultLanguage: null,
     lowlight,
   }),
-  ImageX,
+  // ImageX,
   Underline,
   Heading,
   Bulletlist,
@@ -296,18 +296,18 @@ const extensions = [
   }),
   ImagePro,
   Link,
-  hardBreak,
+  HardBreak,
   TextAlign.configure({
     types: ['heading', 'paragraph'],
   }),
   Table.configure({
     // resizable: true,
   }),
-  TablePre,
+  TablePro,
   TableRow,
   TableHeader,
   TableCell,
-  strike,
+  Strike,
   History,
   Gapcursor
 ]
@@ -409,9 +409,6 @@ html #buttons-toggle {
   }
 
 }
-
-
-
 .main {
   background-color: var(--has-background-lightest-grey);
   padding: 0.3em;

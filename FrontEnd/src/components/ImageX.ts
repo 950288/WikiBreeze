@@ -1,3 +1,5 @@
+//useless file
+
 import Image from '@tiptap/extension-image'
 import { findParentNodeClosestToPos } from '@tiptap/vue-3'
 
@@ -19,6 +21,3 @@ export const ImageX = Image.extend({
         }
     }
 })
-
-console.log(Image)
-console.log(ImageX)

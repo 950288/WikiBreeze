@@ -3,8 +3,8 @@ import { createTable } from '@tiptap/extension-table'
 
 
 /**
- * @name TablePro
- * @description The TablePro extension allows you to insert a table with a 
+ * @name tablePro
+ * @description The tablePro extension allows you to insert a table with a 
  * note into the editor. The note is displayed above the table and can be 
  * used to provide context or additional information about the table.
  * @example
@@ -31,7 +31,7 @@ declare module '@tiptap/core' {
 }
 
 export default Node.create({
-  name: 'TablePro',
+  name: 'tablePro',
 
   group: 'block',
 
@@ -77,14 +77,14 @@ export default Node.create({
           return false
         }
 
-        const tableWithNoteNode = editor.schema.nodes.TablePro.createChecked({}, [table, noteNode])
+        const tableWithNoteNode = editor.schema.nodes.tablePro.createChecked({}, [table, noteNode])
         tr.insert(tr.selection.from - 1, tableWithNoteNode)
         console.log(JSON.stringify(tableWithNoteNode))
         return true
       },
       deleteTablePro: () => ({ commands, editor, tr }) => {
         const { $from } = tr.selection;
-        const tablePro = findParentNodeClosestToPos($from, (node) => node.type === editor.schema.nodes.TablePro);
+        const tablePro = findParentNodeClosestToPos($from, (node) => node.type === editor.schema.nodes.tablePro);
         if (tablePro) {
           tr.delete(tablePro.pos, tablePro.pos + tablePro.node.nodeSize)
           return true;

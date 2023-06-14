@@ -58,6 +58,8 @@ WikiBreeze 是一个用户友好的在线编辑器🧰，允许 iGEM 团队轻�
 }
 ```
 
+7. 有关更详细的使用说明，请参阅[Features](https://github.com/950288/WikiBreeze/wiki/Wikibreeze-Editor-Features)。
+
 ## 构建指南 🧑‍💻
 
 以下内容适用于希望对该工具进行改进开发人员或想要自行打包者！
