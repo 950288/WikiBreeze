@@ -9,7 +9,6 @@
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-console.log('notification')
 const trsY = ref(100);
 const notifyType = ref("info")
 setTimeout(() => { trsY.value = 0; }, 1)
@@ -39,29 +38,20 @@ const props = defineProps({
         default: 0
     }
 })
-const title = ref(props.title)
+
 const msg = ref(props.msg)
-console.log(props)
-console.log(props.duration)
-async function java(a: number) {
-    console.log(a + 1)
-    return a + 1
-}
-java(1).then((a) => {
-    console.log(a)
-})
 const duration = props.duration
 onMounted(() => {
-    console.log(duration)
+    // console.log(duration)
     if (duration != 0) {
         destory(duration)
     } else {
         props.promise?.then((value) => {
-            console.log(value)
+            // console.log(value)
             if (value.notify) {
                 msg.value = value.notify
             } else {
-                console.log('no notify')
+                // console.log('Notify')
             }
             if(value.success){
                 notifyType.value = "success"
@@ -74,12 +64,12 @@ onMounted(() => {
 })
 
 function destory(duration: number = 2500) {
-    console.log('translate' + '.notification' + props.count)
+    // console.log('translate' + '.notification' + props.count)
     setTimeout(() => {
         trsY.value = 100;
         setTimeout(() => {
-            console.log('destory' + '.notification' + props.count)
-            const notification = document.querySelector('.notification' + props.count)
+            // console.log('destory' + '.notification' + props.count)
+            const notification = document.querySelector('.notification' + props.count)?.parentElement
             if (notification) {
                 notification.remove()
             }
@@ -94,26 +84,21 @@ function destory(duration: number = 2500) {
     bottom: 0;
     width: 60%;
     left: 50%;
-    // transform: translateX(-50%) translateY(100%);
     transition: all .2s ease;
 
     .body {
         height: 60px;
         width: 100%;
-        // background: #d5e157;
         margin: 0 auto 20px auto;
         border-radius: 10px;
         transition: background-color .2s linear;
 
         .infoContent {
             width: 100%;
-            // background: #000000;
             border-radius: 10px 10px 0 0;
-            // color: #fff;
             font-size: 2em;
             line-height: 60px;
             text-align: center;
-            // transform: translateY(50%);
         }
     }
 }

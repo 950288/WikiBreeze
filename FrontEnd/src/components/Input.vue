@@ -32,7 +32,6 @@
 </template>
 <script lang="ts" setup>
 
-import { anyTypeAnnotation } from '@babel/types';
 import { ref, onMounted } from 'vue'
 
 const url = ref("")
@@ -59,7 +58,7 @@ function confirm(){
     props.recall.value = url.value;
 }
 function destory() {
-    const notification = document.querySelector('.Input')
+    const notification = document.querySelector('.Input')?.parentElement
     if (notification) {
         notification.remove()
     }

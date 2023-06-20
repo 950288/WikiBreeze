@@ -17,7 +17,7 @@
                 <p>{{ error }}</p>
             </div>
         </article>
-        <progress v-if="!data && !error" class="progress is-large is-info" max="100">60%</progress>
+        <progress v-if="!data && !error" class="progress is-large is-info" max="100">Loading</progress>
         <!-- <div>
             {{ data }}<br>
         </div> -->

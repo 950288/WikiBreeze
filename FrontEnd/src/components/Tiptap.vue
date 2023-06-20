@@ -184,8 +184,7 @@
 import { mergeAttributes } from '@tiptap/core'
 import { useEditor, EditorContent, findParentNodeClosestToPos } from '@tiptap/vue-3'
 import Document from '@tiptap/extension-document'
-import Paragraph from '@tiptap/extension-paragraph'
-import { Note } from './Note'
+import Paragraph from './Note'
 import Italic from '@tiptap/extension-italic'
 import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
@@ -198,7 +197,6 @@ import Heading from '@tiptap/extension-heading'
 import Bulletlist from '@tiptap/extension-bullet-list'
 import Listitem from '@tiptap/extension-list-item'
 import Image from '@tiptap/extension-image'
-// import { ImageX } from './ImageX'
 import Link from '@tiptap/extension-link'
 import Strike from '@tiptap/extension-strike'
 import HardBreak from '@tiptap/extension-hard-break'
@@ -228,13 +226,14 @@ lowlight.registerLanguage('python', python)
 
 
 const emit = defineEmits(['save'])
-const view = ref("click save!")
 const TableToogle = ref(false)
 const state = ref({
   index: history.state.index,
   content: history.state.content
 })
+
 const props = defineProps(['contenetjson', "renderConfigJson"])
+
 const mounted = ref(false);
 let costum = props.renderConfigJson;
 Heading.configure({
@@ -269,10 +268,10 @@ const TableCell = tableCell.extend({
 let CodeBlock = codeBlock.extend({
   isolating: true,
 })
+
 const extensions = [
   Document,
   Paragraphs,
-  Note,
   Text,
   Bold,
   Italic,
@@ -283,7 +282,6 @@ const extensions = [
     defaultLanguage: null,
     lowlight,
   }),
-  // ImageX,
   Underline,
   Heading,
   Bulletlist,
@@ -300,9 +298,7 @@ const extensions = [
   TextAlign.configure({
     types: ['heading', 'paragraph'],
   }),
-  Table.configure({
-    // resizable: true,
-  }),
+  Table,
   TablePro,
   TableRow,
   TableHeader,
@@ -313,7 +309,6 @@ const extensions = [
 ]
 let extensions_costum: any = extensions.slice();
 
-// console.log(extensions_costum)
 extensions_costum.forEach((extension: any, index: number) => {
   if (costum[extension.name]) {
     if (costum[extension.name].tag || costum[extension.name].HTMLAttributes) {
@@ -329,7 +324,7 @@ extensions_costum.forEach((extension: any, index: number) => {
     extensions_costum[index] = extension
   }
 })
-// console.log(extensions_costum)
+
 const editor: any = useEditor({
   extensions: extensions,
   content: props.contenetjson,
@@ -340,10 +335,6 @@ const editor: any = useEditor({
 
 onMounted(() => {
   mounted.value = true;
-  // console.log(editor.value)
-
-  // console.log(editor.value.schema)
-
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && (e.key == 's' || e.key == 'S')) {
       e.preventDefault();
@@ -352,54 +343,42 @@ onMounted(() => {
   });
 })
 function save() {
-  // console.log(JSON.stringify(view.value = editor.value.getJSON()))
-  let html = generateHTML(editor.value.getJSON(view.value), extensions_costum)
-  // console.log(html)
-  // console.log(costum.otherConfigurations.citation == "true")
-  if (costum.otherConfigurations.citation == "true") {
-    html = html.replace(/<sup>\[(\d)\]<\/sup>/g, '<citation><sup>[<a  href="https://www.w3schools.com">$1</a>]</sup></citation>')
-  }
-  // console.log(html)
+  let html = generateHTML(editor.value.getJSON(), extensions_costum)
+  // if (costum.otherConfigurations.citation == "true") {
+  //   html = html.replace(/<sup>\[(\d)\]<\/sup>/g, '<citation><sup>[<a  href="https://www.w3schools.com">$1</a>]</sup></citation>')
+  // }
   emit('save', editor.value.getJSON(), html);
 }
 function setImageURL() {
-  // console.log(app)
   let recall = app?.proxy.$input(
     "Set image",
     false
   );
-  // console.log("input");
   watch(recall, (val) => {
-    // console.log(val)
     editor.value.chain().focus().setImage({ src: val }).run()
   })
 }
 function setImageProURL() {
-  // console.log(app)
   let recall = app?.proxy.$input(
     "Set image",
     false
   );
-  // console.log("input");
   watch(recall, (val) => {
-    // console.log(val)
     editor.value.chain().focus().insertImagePro(val).run()
   })
 }
 function setLink() {
-  // console.log(app)
   let recall = app?.proxy.$input(
     "Set Link",
     false
   );
-  // console.log("input");
   watch(recall, (val) => {
-    // console.log(val)
     editor.value.chain().focus().setLink({ href: val, target: '_blank' }).run()
   })
 }
 </script>
 <style scoped lang="scss">
+
 html #button,
 html #buttons-toggle {
   --buttons-height: 2.5rem;
@@ -644,4 +623,5 @@ sub {
 
 a {
   color: var(--has-text-link);
-}</style>
+}
+</style>

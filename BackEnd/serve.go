@@ -44,8 +44,8 @@ func main() {
 		// fmt.Println("Running in development mode")
 		http.Handle("/", http.FileServer(http.Dir("../Wikibreeze")))
 	}
-	utils.PrintSuccess("Server started on port " + strconv.Itoa(port))
-	fmt.Println("Local:\t\t", utils.Cyanf("http://127.0.0.1:"+strconv.Itoa(port)+"/"))
+	utils.PrintSuccess("Server started on port " + strconv.Itoa(port) + "successfully")
+	fmt.Println("Local:\t\t", utils.Cyanf("http://localhost:"+strconv.Itoa(port)+"/"))
 
 	//Get local ip
 	if ip := utils.GetOutboundIP(); ip != nil {
@@ -66,7 +66,7 @@ func main() {
 	// }
 
 	// server1 := http.Server{
-	// 	Addr:    "127.0.0.1:" + strconv.Itoa(port),
+	// 	Addr:    "localhost:" + strconv.Itoa(port),
 	// 	Handler: nil,
 	// }
 	// go server1.Serve(listener)

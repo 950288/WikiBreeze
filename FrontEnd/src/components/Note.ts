@@ -1,13 +1,11 @@
 import Paragraph from '@tiptap/extension-paragraph'
 import { findParentNodeClosestToPos } from '@tiptap/vue-3'
-export const Note = Paragraph.extend({
-    name: "note",
-    content: "text*",
+export default Paragraph.extend({
     addKeyboardShortcuts() {
         return {
             'Backspace': function ({ editor }) {
                 let tr = editor.state.tr
-                console.log("Backspace")
+                // console.log("Backspace")
                 const { $from } = tr.selection
                 let imagePro = <any>findParentNodeClosestToPos($from, (node) => node.type === editor.schema.nodes.imagePro)
                 let tablePro = <any>findParentNodeClosestToPos($from, (node) => node.type === editor.schema.nodes.tablePro)

@@ -36,7 +36,7 @@ WikiBreeze 是一个用户友好的在线编辑器🧰，允许 iGEM 团队轻�
 3. 在终端运行WikiBreeze目录中的WikiBreeze可执行文件启动该工具(直接双击打开可能造成未知错误)。然后你将在控制台中看到生成的 URL，如下所示。您可以通过生成的URL在浏览器中进行wiki编辑，WikiBreeze 还支持局域网(如个人热点、校园网等)内的协作编辑功能，同一局域网内的团队成员可通过第二链接访问编辑页面。
 ```
    Server started on port 5001
-    Local:           http://127.0.0.1:5001/
+    Local:           http://localhost.1:5001/
     Network:         http://192.168.Xx.xx:5001/
 ```
 

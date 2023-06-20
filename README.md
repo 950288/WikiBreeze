@@ -35,7 +35,7 @@ To use WikiBreeze, follow these steps:
 3. Use terminals run the executable file WikiBreeze.exe in the WikiBreeze directory to start the tool. You will then see the generated URL in the console, as shown below. You can edit your wiki in the browser via the generated URL. WikiBreeze also supports collaborative editing within a LAN (e.g. personal hotspot, campus network, etc.), so team members within the same LAN can access the editing page through the second link.
 ```
    Server started on port 5001
-    Local:           <http://127.0.0.1:5001/> 
+    Local:           <http://localhost:5001/> 
     Network:         <http://192.168.Xx.xx:5001/>
 ```  
 
