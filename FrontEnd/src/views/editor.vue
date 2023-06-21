@@ -67,7 +67,7 @@ onMounted(() => {
     }).get().json();
     watch(PageDate, (val) => {
         let content = val;
-        // replaceJson(content)
+        replaceJson(content)
         console.log(content);
         contenetJson.value = content;
     });
@@ -92,7 +92,15 @@ onMounted(() => {
         // console.log(val);
     });
 });
+
+let debounceDelay: boolean = false;
 function save(contentjson: JSON, contenthtml: string) {
+    if (debounceDelay) return;
+    debounceDelay = true;
+    setTimeout(() => {
+        debounceDelay = false;
+    }, 1000);
+
     let RequestBody = JSON.stringify({
         page: history.state.index,
         content: history.state.content,
@@ -111,7 +119,6 @@ function save(contentjson: JSON, contenthtml: string) {
     }).get().json();
     async function recall() {
         return new Promise((resolve) => {
-            // console.log(timeout/1000 + "s");
             setTimeout(() => {
                 resolve({ success: false, notify: "timeout!" });
             }, timeout);
@@ -121,12 +128,12 @@ function save(contentjson: JSON, contenthtml: string) {
                     resolve({ success: true, notify: "saved successful!" });
                 } else {
                     console.log("saved failed!");
-                    resolve({ success: false, notify: saveError.value ? saveError.value : "saved failed!" });
+                    resolve({ success: false, notify: saveError.value ? "saved failed: " + saveError.value : "saved failed!" });
                 }
             });
             watch(saveError, (val) => {
                 console.log("saved failed!");
-                resolve({ success: false, notify: val ? val : "saved failed!" });
+                resolve({ success: false, notify: val ? "saved failed: " + val : "saved failed!" });
             }   );
         });
     }

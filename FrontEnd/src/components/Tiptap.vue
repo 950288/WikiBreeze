@@ -1,6 +1,6 @@
 <template>
   <div class="main content">
-    <h3>You are editing <u>{{ state.content }}</u> on <u>{{ state.index }}</u> page.</h3>
+    <h3 class="reminder">You are editing <u>{{ state.content }}</u> on <u>{{ state.index }}</u> page.</h3>
     <div class="buttons">
       <div class="button Heading" id="buttons-toggle">
         <div class="buttons-wrap">
@@ -393,6 +393,9 @@ html #buttons-toggle {
   padding: 0.3em;
   border-radius: 4px;
   margin: 0 0 0 0;
+  .reminder{
+    margin-bottom: .3em;
+  }
 }
 
 .bold {
