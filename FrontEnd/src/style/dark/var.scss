@@ -1,0 +1,37 @@
+// dark mode
+
+$var: (
+    has-text-primary: hsl(171, 100%, 96%),
+    has-text-link: hsl(219, 70%, 96%),
+    has-text-info: hsl(206, 70%, 96%),
+    has-text-success: hsl(142, 52%, 96%),
+    has-text-warning: hsl(48, 100%, 96%),
+    has-text-danger: hsl(347, 90%, 96%),
+
+    has-background-primary: hsl(171, 100%, 29%),
+    has-background-link: hsl(217, 71%, 45%),
+    has-background-info: hsl(204, 71%, 39%),
+    has-background-success: hsl(141, 53%, 31%),
+    has-background-warning: hsl(48, 100%, 29%),
+    has-background-danger: hsl(348, 86%, 43%),
+
+    has-text-black: hsl(0, 0%, 96%),
+    has-text-grey: hsl(0, 0%, 86%),
+    has-text-dark-grey: hsl(0, 0%, 71%),
+    has-text-light-grey: hsl(0, 0%, 29%),
+    has-text-lighter-grey: hsl(0, 0%, 14%),
+    has-text-lightest-grey: hsl(0, 0%, 7%),
+    has-text-white: hsl(0, 0%, 3%),
+
+    has-shadow-dark: hsl(0, 0%, 100%, 0.25),
+    has-border-dark: hsl(0, 0%, 100%, 0.5),
+
+    has-background-black: hsl(0, 0%, 96%),
+    has-background-grey: hsl(0, 0%, 86%),
+    has-background-dark-grey: hsl(0, 0%, 71%),
+    has-background-light-grey: hsl(0, 0%, 29%),
+    has-background-lighter-grey: hsl(0, 0%, 14%),
+    has-background-lightest-grey: hsl(0, 0%, 7%),
+    has-background-white: hsl(0, 0%, 3%),
+    is-warning-gb: #0f0f0e,
+);

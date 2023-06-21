@@ -1,0 +1,30 @@
+# data
+dist/
+WikibreezeData/
+Wikibreeze/
+
+# FrontEnd directories and files
+FrontEnd/node_modules
+FrontEnd/dist
+
+# BackEnd directories and files
+BackEnd/*.exe
+BackEnd/testPage.html
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Logs
+logs
+*.log
+*.local
+testPage.html
+
+node_modules

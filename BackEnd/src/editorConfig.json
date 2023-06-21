@@ -1,0 +1,32 @@
+// This file is the template for editorConfig.json.
+// It is not intended for manual editing.
+// Edit WikibreezeData/config/editorConfig.json instead.
+{
+    "paragraph": {
+        "HTMLAttributes": {
+            // "class": {
+            //     "default": "table"
+            // }
+        },
+        "tag": "p"
+    },
+    "table" : {
+        "HTMLAttributes": {
+            // "class": {
+            //     "default": "table"
+            // },
+            // ":tablenote": {
+            //     "default": "table"
+            // }
+        },
+        "tag": "table"
+    },
+    "otherConfigurations":{
+        "headingLevels": [1,2,3,4],
+        "citation": "false",
+        "tablePro": "true",             //table with note
+        "tableMustContainNote": "false",  //table must contain note
+        "imagePro": "true",                 //table with note
+        "imageMustContainNote": "false"     //table must contain note 
+    }
+}
