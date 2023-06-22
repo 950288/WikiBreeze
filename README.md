@@ -10,18 +10,13 @@ WikiBreeze is a user-friendly LAN editor 🧰 that allows iGEM team members to e
 
 To use WikiBreeze, follow these steps:
 
-1. Download the latest [release](https://github.com/950288/WikiBreeze/releases) of the `WikiBreeze` zip archive and unzip it. Put the `WikiBreeze` folder into the root directory of your wiki project.  
-````bash
-    project name
+1. Download the latest [release](https://github.com/950288/WikiBreeze/releases) of the zip archive and unzip it. Put the `WikiBreeze` folder into the root directory of your wiki project.  
+````
+    <directory name>
     ├── Wikibreeze
-    │   ├── WikibreezeData
     │   ├── WikiBreeze.exe
     │   └── ...
-    ├── home.html
     ├── xxx.html
-    ├── pages
-    │   ├── xxx.html
-    │   └── ...
     └── ...
 ````
 
@@ -105,11 +100,8 @@ The front-end WebEditor sends HTTP requests to the back-end to retrieve and upda
 -  ...
 -  ✔️ table with note 🦉
 -  ✔️ img with note 🌌
--  v1.0.0
 -  ✔️ customize the HTML 🗽
--  ✔️ citation 🐰
--  v1.1.0
--  accessCode
+-  v1.0.0
 -  auto git commit
--  custom account login
+-  upload image
 -  ......
