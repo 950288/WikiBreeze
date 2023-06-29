@@ -4,6 +4,8 @@
 
 WikiBreeze is a collaborative LAN wiki content editor that enables complete separation of wiki code writing🧑‍💻 and content filling ✍️ with concise operability 🦾, which can greatly improve wiki development efficiency 🥰.
 
+Here is a tutorials for iGEMers to get started: [Intuitive illustrated Wikibreeze tutorials for iGEMers](https://github.com/950288/WikiBreeze/wiki/Intuitive-illustrated-Wikibreeze-tutorials-for-iGEMers)
+
 ## Introduction🧑‍💼
 
 WikiBreeze is a user-friendly LAN editor 🧰 that allows iGEM team members to easily edit wikis. it provides a simple interface for editing wiki content pages. And only one person from the whole team needs to install it to enable collaborative editing for the whole team. With WikiBreeze, wiki content editors can focus on quality content without having to think about the technical details of HTML and CSS.
@@ -29,9 +31,9 @@ To use WikiBreeze, follow these steps:
 
 3. Use terminals run the executable file WikiBreeze.exe in the WikiBreeze directory to start the tool. You will then see the generated URL in the console, as shown below. You can edit your wiki in the browser via the generated URL. WikiBreeze also supports collaborative editing within a LAN (e.g. personal hotspot, campus network, etc.), so team members within the same LAN can access the editing page through the second link.
 ```
-   Server started on port 5001
-    Local:           <http://localhost:5001/> 
-    Network:         <http://192.168.Xx.xx:5001/>
+Server started on port 5001
+    Local:           http://localhost:5001
+    Network:         http://192.168.Xx.xx:5001
 ```  
 
 4. The HTML source code after editing and saving will be automatically inserted into the relative position of the page. At the same time, the WikibreezeData folder will be generated to store the information of the edited page.
