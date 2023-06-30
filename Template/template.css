@@ -14,6 +14,23 @@ h1 {
   font-weight: bold;
 }
 
+/* This code adds a horizontal rule to the bottom of all h2 elements. */
+h2::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background-color: #666;
+  margin-top: 0.5rem;
+  opacity: .25;
+  margin-bottom: 0.5rem;
+}
+
+
+hr{
+  display: none;
+}
+
 h2 {
   font-size: 1.5rem;
   font-weight: bold;
