@@ -4,22 +4,21 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"net"
+	"net/http"
+	"net/http/cookiejar"
+	"net/url"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/fatih/color"
 )
-
-type Config struct {
-	ScanDir   string   `json:"scanDirectory"`
-	Port      string   `json:"port"`
-	FileTypes []string `json:"fileType"`
-}
 
 func ParseJson(filename string, configString string) (string, error) {
 	jsonMap := make(map[string]interface{})
@@ -84,9 +83,9 @@ func ReadDefaultEditorConfig() string {
 	return EditorConfigString
 }
 
-func ReadConfig() (Config, error) {
+func ReadConfig() map[string]interface{} {
 	var configDataString string
-	var configData Config
+	var configData map[string]interface{}
 	configDir := "../WikibreezeData/config/config.json"
 	fmt.Println("reading config.json")
 	configFile, err := os.Open(configDir)
@@ -133,9 +132,9 @@ func ReadConfig() (Config, error) {
 		log.Fatal(fmt.Errorf("error parsing config.json: %w", err))
 	}
 	fmt.Println("config:\t", configData)
-	return configData, nil
+	return configData
 }
-func ReadEditorConfig() (string, error) {
+func ReadEditorConfig() string {
 	var editorConfigString string
 	configDir := "../WikibreezeData/config/editorConfig.json"
 	fmt.Println("reading editorConfig.json")
@@ -182,7 +181,7 @@ func ReadEditorConfig() (string, error) {
 	configFile.Close()
 
 	fmt.Println("editorConfig:\n" + editorConfigString)
-	return editorConfigString, nil
+	return editorConfigString
 }
 func ScanPort(Port string) int {
 	var port int
@@ -221,7 +220,7 @@ func ScanPort(Port string) int {
 	}
 	return port
 }
-func ScanFiles(ScanDir string, FileTypes []string) (map[string]string, []byte, error) {
+func ScanFiles(ScanDir string, FileTypes []interface{}) (map[string]string, []byte) {
 	fmt.Println("scanning files in " + ScanDir)
 	// Create a editor dataMap
 	dataMap := make(map[string][]string)
@@ -246,7 +245,7 @@ func ScanFiles(ScanDir string, FileTypes []string) (map[string]string, []byte, e
 				if err != nil {
 					return err
 				}
-				fileName := strings.TrimSuffix(filepath.Base(path), fileType)
+				fileName := strings.TrimSuffix(filepath.Base(path), fileType.(string))
 				// Extract content name from file contents
 				matches := reConfig.FindAllStringSubmatch(string(b), -1)
 				contents := make([]string, len(matches))
@@ -293,44 +292,122 @@ func ScanFiles(ScanDir string, FileTypes []string) (map[string]string, []byte, e
 		contents[0] = "content"
 		dataMap["testPage"] = contents
 		dirs["testPage?content"] = "../testPage.html"
-		// // copy testContent.json to WikibreezeData directory
-		// err = os.MkdirAll("../WikibreezeData/WikiData/testPage", 0755)
-		// if err != nil {
-		// 	log.Fatal(fmt.Errorf("error creating ../WikibreezeData/WikiData/testPage directory: %w", err))
-		// }
-
-		// src := "./testContent.json"
-		// dst := "../WikibreezeData/WikiData/testPage/testContent.json"
-		// fin, err := os.Open(src)
-		// if err != nil {
-		// 	log.Fatal(fmt.Errorf("error open to testContent.json: %w", err))
-		// }
-		// defer fin.Close()
-
-		// fout, err := os.Create(dst)
-		// if err != nil {
-		// 	log.Fatal(fmt.Errorf("error creating ../WikibreezeData/WikiData/testPage/testContent.json: %w", err))
-		// }
-		// defer fout.Close()
-
-		// _, err = io.Copy(fout, fin)
-
-		// if err != nil {
-		// 	log.Fatal(fmt.Errorf("copy testContent.json to WikibreezeData directory: %w", err))
-		// }
-
-		// fmt.Println("created testContent.json")
-
 	}
 	// Serialize map to JSON string
 	dataMapByte, err := json.MarshalIndent(dataMap, "", "    ")
 	if err != nil {
-		return nil, nil, fmt.Errorf("error serializing dataMap: %w", err)
+		log.Fatal("error serializing dataMap: %w", err)
+		return nil, nil
 	}
 	fmt.Println("dataMap:\t" + string(dataMapByte))
 	fmt.Println("dirs:\t" + fmt.Sprint(dirs))
-	return dirs, dataMapByte, nil
+	return dirs, dataMapByte
 }
+
+func CheckRedirect(req *http.Request, via []*http.Request) error {
+	u, err := url.Parse(req.URL.String())
+	if err != nil {
+		return err
+	}
+
+	q := u.Query()
+	q.Set("redirected", "true")
+	u.RawQuery = q.Encode()
+
+	req.URL = u
+
+	fmt.Print("..")
+
+	return nil
+}
+func GetCookie(account map[string]interface{}) (*cookiejar.Jar, string, error) {
+
+	jar, err := cookiejar.New(nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	username := account["username"].(string)
+	password := account["password"].(string)
+
+	client := &http.Client{
+		// Transport: ,
+		CheckRedirect: CheckRedirect, //disable redirect
+		Jar:           jar,
+	}
+
+	req, err := http.NewRequest("POST", "https://old.igem.org/Login2", strings.NewReader("return_to=&username="+username+"&password="+password+"&Login=Login"))
+	if err != nil {
+		return nil, "", err
+	}
+
+	fmt.Print("trying to login..")
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, "", err
+	}
+	defer resp.Body.Close()
+
+	fmt.Println()
+	teamsStatus, _ := ioutil.ReadAll(resp.Body)
+
+	if !strings.Contains(string(teamsStatus), "successfully") {
+		return nil, "", fmt.Errorf("error logging in, please check your username and password")
+	}
+	PrintSuccess("login successfully")
+
+	// request team id
+	req, err = http.NewRequest("GET", "https://old.igem.org/aj/session_info?use_my_cookie=1", nil)
+	if err != nil {
+		return nil, "", err
+	}
+
+	resp, err = client.Do(req)
+	if err != nil {
+		return nil, "", err
+	}
+	defer resp.Body.Close()
+
+	teamsStatus, _ = ioutil.ReadAll(resp.Body)
+
+	teamsStatusMarshalIndent, _ := ParseJson("teamname", string(teamsStatus))
+
+	jsonMap := make(map[string]interface{})
+
+	err = json.Unmarshal(teamsStatus, &jsonMap)
+	if err != nil {
+		return nil, "", fmt.Errorf("error decoding team id: %w", err)
+	}
+	if err != nil {
+		return nil, "", fmt.Errorf("error parsing team id: %w", err)
+	}
+	teams, ok := jsonMap["teams"].([]interface{})
+	if !ok {
+		return nil, "", fmt.Errorf("error getting team id")
+	}
+	var maxYear time.Time
+	var teamID string
+	for _, team := range teams {
+		teamData := team.(map[string]interface{})
+		teamYear := teamData["team_year"].(string)
+		teamRoleStatus := teamData["team_role_status"].(string)
+
+		t, err := time.Parse("2006", teamYear)
+		if err != nil {
+			continue
+		}
+		if t.After(maxYear) && teamRoleStatus == "Accepted" {
+			teamID = teamData["team_id"].(string)
+			maxYear = t
+		}
+	}
+	if teamID == "" {
+		return nil, "", fmt.Errorf("error getting team id form :" + teamsStatusMarshalIndent + "\nplease check your account")
+	}
+	PrintSuccess("got team id: " + teamID + " successfully")
+	return jar, "https://" + maxYear.Format("2006") + ".igem.org/Team:" + teamID + "/upload", nil
+}
+
 func GetOutboundIP() net.IP {
 	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil {

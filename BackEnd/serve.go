@@ -12,22 +12,31 @@ import (
 )
 
 func main() {
-	config, err := utils.ReadConfig()
-	if err != nil {
-		log.Fatal(err)
-	}
-	RenderConfigString, err := utils.ReadEditorConfig()
-	if err != nil {
-		log.Fatal(err)
-	}
+	config := utils.ReadConfig()
 
-	port := utils.ScanPort(config.Port)
+	RenderConfigString := utils.ReadEditorConfig()
+
+	port := utils.ScanPort(config["port"].(string))
 
 	// Get the list of file directories to be edit
-	// using [fileName+"?"content] as key
-	dirs, dataMapByte, err := utils.ScanFiles(config.ScanDir, config.FileTypes)
-	if err != nil {
-		log.Fatal(err)
+	// using [fileName+"?"+content] as key
+	dirs, dataMapByte := utils.ScanFiles(config["scanDirectory"].(string), config["fileType"].([]interface{}))
+
+	uploadImage, ok := config["uploadImage"]
+	if ok {
+		upload, ok := uploadImage.(bool)
+		if !ok {
+			utils.PrintErr("uploadImage should be bool type(e.g. \"uploadImage\": true)")
+		} else if upload {
+			_, requsetUrl, err := utils.GetCookie(config["account"].(map[string]interface{}))
+			if err != nil {
+				utils.PrintErr(err.Error())
+			} else {
+				fmt.Println(requsetUrl)
+				// http.HandleFunc("/upload", utils.HandlerUploadImage(config["account"]))
+				// log.Fatal("test")
+			}
+		}
 	}
 
 	http.HandleFunc("/list", utils.HandlerFetchContentList(dataMapByte))
@@ -55,7 +64,7 @@ func main() {
 
 	color.Magenta("Press CTRL+C to quit")
 
-	err = http.ListenAndServe(":"+strconv.Itoa(port), nil)
+	err := http.ListenAndServe(":"+strconv.Itoa(port), nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 		return

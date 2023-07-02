@@ -180,16 +180,12 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 
 		r.Body.Close()
 
-		// fmt.Fprint(w, "{\"success\": \"true\"}")
-		// return
-
 		// Open file and write JSON
 		dir := StoreDir + "/" + content.Page + "/" + content.Content + ".json"
 		jsonFile, err := os.OpenFile(dir, os.O_RDWR|os.O_CREATE, 0644)
 		if err != nil {
 			PrintErr("Error opening " + dir + ": " + err.Error())
 			fmt.Fprint(w, "{\"success\": \""+"Error opening "+dir+": "+err.Error()+"\"}")
-
 			return
 		}
 		// Remove previous data

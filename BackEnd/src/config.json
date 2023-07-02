@@ -5,9 +5,16 @@
 	// Directory containing the page to be modified (e.g. "D:/github/web/src/pages")
 	"scanDirectory": "../",
 
-	//Port to be used (e.g. "5001" or "auto")
+	// Port to be used (e.g. "5001" or "auto")
 	"port": "auto",
 
-	//file type to be scan (e.g. [".html",....])
-	"fileType":[".html",".vue"]
+	// File type to be scan (e.g. [".html",....])
+	"fileType":[".html",".vue"],
+
+	// Uploads image
+	"uploadImage": true,
+	"account": {
+		"username": "username",
+		"password": "password"
+	}
 }
