@@ -26,7 +26,7 @@ h2::after {
   margin-bottom: 0.5rem;
 }
 
-
+/* This unsets the horizontal rule for the hr element. */
 hr{
   display: none;
 }
