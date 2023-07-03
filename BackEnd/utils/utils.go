@@ -352,6 +352,7 @@ func GetCookie(account map[string]interface{}) (*cookiejar.Jar, string, error) {
 	teamsStatus, _ := ioutil.ReadAll(resp.Body)
 
 	if !strings.Contains(string(teamsStatus), "successfully") {
+		fmt.Println()
 		return nil, "", fmt.Errorf("error logging in, please check your username and password")
 	}
 	PrintSuccess("login successfully")
@@ -359,11 +360,13 @@ func GetCookie(account map[string]interface{}) (*cookiejar.Jar, string, error) {
 	// request team id
 	req, err = http.NewRequest("GET", "https://old.igem.org/aj/session_info?use_my_cookie=1", nil)
 	if err != nil {
+		fmt.Println()
 		return nil, "", err
 	}
 
 	resp, err = client.Do(req)
 	if err != nil {
+		fmt.Println()
 		return nil, "", err
 	}
 	defer resp.Body.Close()
@@ -402,6 +405,7 @@ func GetCookie(account map[string]interface{}) (*cookiejar.Jar, string, error) {
 		}
 	}
 	if teamID == "" {
+		fmt.Println()
 		return nil, "", fmt.Errorf("error getting team id form :" + teamsStatusMarshalIndent + "\nplease check your account")
 	}
 	PrintSuccess("got team id: " + teamID + " successfully")

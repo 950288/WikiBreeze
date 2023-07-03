@@ -17,30 +17,54 @@
             <div class="confirm">
                 <button class="button is-primary" @click="confirm()">{{ "confirm" }}</button>
             </div>
-            <div v-if="upload">
+            <div v-if="uploadEnable">
                 <div class="upload">
-                    <p>{{ 'Or upload the image' }}</p>
-                    <input type="file" />
+                    <p>{{ 'Or upload the image(png jpeg jpg svg)' }}</p>
+                    <input type="file" @change="handleUploadImage"
+                    accept="image/png, image/jpeg, image/jpg, image/svg" />
                 </div>
             </div>
-            <div class="confirm" v-if="upload">
-                <button class="button is-primary">{{ "upload" }}</button>
+            <div class="confirm" v-if="uploadEnable">
+                <button class="button is-primary" @click="upload()">{{ "upload" }}</button>
                 <!-- <button class="button is-danger" @click="destory()">{{ "cancel" }}</button> -->
             </div>
         </div>
     </div>
 </template>
 <script lang="ts" setup>
+import { ref, getCurrentInstance, onMounted, createVNode, render, h } from 'vue'
+import notification from "@/components/Notification.vue";
 
-import { ref, onMounted } from 'vue'
+
+let notifyCount = 10240;
+const app = <any>getCurrentInstance();
+    console.log(app)
+app.config.globalProperties.$notify = (duration: Number, title:string ,msg: string, type: string, recall: Promise<{ success: boolean, notify: string | undefined }>) => {
+  const notificationInstance = h(<any>notification, {
+    duration:duration,
+    msg,
+    title,
+    type,
+    promise: recall,
+    count: notifyCount++,
+  });
+  // Render the notification component
+  const vnode = createVNode(notificationInstance);
+  // Mount the VNode to an element outside of the app root
+  const container = document.createElement('div');
+  document.body.appendChild(container);
+  render(vnode, container);
+};
+const upload = ref(() => {})
 
 const url = ref("")
+const file = ref()
 const props = defineProps({
     title: {
         type: String,
         // default: "Title"
     },
-    upload:{
+    uploadEnable:{
         type: Boolean,
         // default: falses
     },
@@ -63,6 +87,27 @@ function destory() {
         notification.remove()
     }
 }
+const handleUploadImage = async (e: any) => {
+    file.value = e.target.files
+}
+
+onMounted(() => {
+    upload.value = () => {
+        console.log("uuuuuuuuuuuuuuuuuuuuuuupload   ")
+        console.log(app?.proxy)
+        console.log(app?.proxy?.$notify)
+        if (!file.value) {
+            app?.proxy?.$notify(
+            0,      // 0 means the notification will not be destoryed automatically after recall()
+            'uploads',
+            'No file selected !',
+            'info',
+            null
+        );
+        }
+
+    }
+})
 </script>
 <style lang="scss" scoped>
 .Input {

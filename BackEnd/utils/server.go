@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/http/cookiejar"
 	"os"
 	"regexp"
 )
@@ -274,10 +275,27 @@ func HandlergetRenderconfig(RenderConfigString string) http.HandlerFunc {
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		//If request is Preflight, return
 		if r.Method == "OPTIONS" {
+			r.Body.Close()
 			return
 		}
 		fmt.Println()
 
 		fmt.Fprint(w, string(RenderConfigString))
+	}
+}
+func HandlerUploadImage(cookie *cookiejar.Jar, requsetUrl string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		//If request is Preflight, return
+		if r.Method == "OPTIONS" || r.ContentLength <= 2 {
+			r.Body.Close()
+			fmt.Fprint(w, "{\"enabled\": \"true\"}")
+			return
+		}
+
+		fmt.Fprint(w, "{\"success\": \"true\"}")
+
 	}
 }

@@ -232,7 +232,7 @@ const state = ref({
   content: history.state.content
 })
 
-const props = defineProps(['contenetjson', "renderConfigJson"])
+const props = defineProps(['contenetjson', "renderConfigJson", "uploadEnable"])
 
 const mounted = ref(false);
 let costum = props.renderConfigJson;
@@ -352,7 +352,7 @@ function save() {
 function setImageURL() {
   let recall = app?.proxy.$input(
     "Set image",
-    false
+    props.uploadEnable
   );
   watch(recall, (val) => {
     editor.value.chain().focus().setImage({ src: val }).run()
@@ -361,7 +361,7 @@ function setImageURL() {
 function setImageProURL() {
   let recall = app?.proxy.$input(
     "Set image",
-    false
+    props.uploadEnable
   );
   watch(recall, (val) => {
     editor.value.chain().focus().insertImagePro(val).run()

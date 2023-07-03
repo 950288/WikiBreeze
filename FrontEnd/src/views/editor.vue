@@ -2,7 +2,8 @@
     <div class="content is-large">
         <br>
         <tiptap v-if="contenetJson && renderConfigJson" @save="save" :contenetjson="contenetJson"
-            :renderConfigJson="renderConfigJson" />
+            :renderConfigJson="renderConfigJson"
+            :uploadEnable="uploadEnable" />
         <progress v-if="!(contenetJson && renderConfigJson) && !error" class="progress is-large is-info"
             max="100">Loading</progress>
         <br>
@@ -24,6 +25,7 @@ import { router } from "@/main";
 
 const contenetJson = ref<JSON>();
 const renderConfigJson = ref<JSON>();
+const uploadEnable = ref<boolean>(false);
 const app = <any>getCurrentInstance();
 let error = ref<string>();
 
@@ -86,10 +88,28 @@ onMounted(() => {
     }).get().json();
     watch(renderData, (val) => {
         renderConfigJson.value = val;
-        // console.log(val);
     });
     watch(getRenderDataError, (val) => {
-        // console.log(val);
+    });
+    let { data: uploadReturnMsg, error: uploadError } = useFetch(requestUrl.value + "/upload", {
+        method: 'POST',
+        body: JSON.stringify({
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).get().json();
+    watch(uploadReturnMsg, (val) => {
+        console.log(val);
+        if (val && val.enabled == 'true') {
+            console.log("upload is enable!");
+            uploadEnable.value = true
+        } else {
+            console.log("upload not enabled!");
+        }
+    });
+    watch( uploadError , (val) => {
+        console.log("upload not enabled:" + val);
     });
 });
 
@@ -137,6 +157,7 @@ function save(contentjson: JSON, contenthtml: string) {
             }   );
         });
     }
+    console.log(app)
     app?.proxy.$notify(
         0,      // 0 means the notification will not be destoryed automatically after recall()
         'save',

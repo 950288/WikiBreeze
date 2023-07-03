@@ -28,13 +28,12 @@ func main() {
 		if !ok {
 			utils.PrintErr("uploadImage should be bool type(e.g. \"uploadImage\": true)")
 		} else if upload {
-			_, requsetUrl, err := utils.GetCookie(config["account"].(map[string]interface{}))
+			cookie, requsetUrl, err := utils.GetCookie(config["account"].(map[string]interface{}))
 			if err != nil {
 				utils.PrintErr(err.Error())
 			} else {
 				fmt.Println(requsetUrl)
-				// http.HandleFunc("/upload", utils.HandlerUploadImage(config["account"]))
-				// log.Fatal("test")
+				http.HandleFunc("/upload", utils.HandlerUploadImage(cookie, requsetUrl))
 			}
 		}
 	}
