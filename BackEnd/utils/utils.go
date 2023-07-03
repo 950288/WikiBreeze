@@ -327,8 +327,18 @@ func GetCookie(account map[string]interface{}) (*cookiejar.Jar, string, error) {
 		log.Fatal(err)
 	}
 
-	username := account["username"].(string)
-	password := account["password"].(string)
+	username, ok_username := account["username"]
+	password, ok_password := account["password"]
+	if !ok_username || !ok_password {
+		PrintErr("error reading username or password")
+		log.Fatal()
+	}
+	usernameString, ok_username := username.(string)
+	passwordString, ok_password := password.(string)
+	if !ok_username || !ok_password {
+		PrintErr("username or password is not string")
+		log.Fatal()
+	}
 
 	client := &http.Client{
 		// Transport: ,
@@ -336,7 +346,7 @@ func GetCookie(account map[string]interface{}) (*cookiejar.Jar, string, error) {
 		Jar:           jar,
 	}
 
-	req, err := http.NewRequest("POST", "https://old.igem.org/Login2", strings.NewReader("return_to=&username="+username+"&password="+password+"&Login=Login"))
+	req, err := http.NewRequest("POST", "https://old.igem.org/Login2", strings.NewReader("return_to=&username="+usernameString+"&password="+passwordString+"&Login=Login"))
 	if err != nil {
 		return nil, "", err
 	}
@@ -429,6 +439,9 @@ func PrintErr(err string) {
 func PrintSuccess(msg string) {
 	// fmt.Println("\033[32m", msg, "\033[0m")
 	color.Green(msg)
+}
+func PrintInfo(msg string) {
+	color.Yellow(msg)
 }
 func Cyanf(msg string) string {
 	return color.New(color.FgCyan).SprintfFunc()(msg)

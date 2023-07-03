@@ -22,6 +22,7 @@ func main() {
 	// using [fileName+"?"+content] as key
 	dirs, dataMapByte := utils.ScanFiles(config["scanDirectory"].(string), config["fileType"].([]interface{}))
 
+	fmt.Println()
 	uploadImage, ok := config["uploadImage"]
 	if ok {
 		upload, ok := uploadImage.(bool)
@@ -30,12 +31,17 @@ func main() {
 		} else if upload {
 			cookie, requestUrl, err := utils.GetCookie(config["account"].(map[string]interface{}))
 			if err != nil {
-				utils.PrintErr(err.Error())
+				utils.PrintErr("error to login:" + err.Error())
 			} else {
-				fmt.Println(requestUrl)
+				fmt.Println("upload link:", requestUrl)
 				http.HandleFunc("/WikiBreezeUpload/", utils.HandlerUploadImage(cookie, requestUrl))
 			}
+		} else {
+			fmt.Println("upload image is not enabled, to enable it, set 'uploadImage' to true in WikibreezeData/config/editorConfig.json")
 		}
+	} else {
+		utils.PrintInfo("\nto enable upload image, you should update WikibreezeData/config/editorConfig.json with following:")
+		fmt.Println(utils.Cyanf("\"uploadImage\": true,\n\"account\":   {\n\t\"username\": \"Your username\",\n\t\"password\": \"Your password\"\n}"))
 	}
 
 	http.HandleFunc("/list", utils.HandlerFetchContentList(dataMapByte))
@@ -53,7 +59,7 @@ func main() {
 		http.Handle("/", http.FileServer(http.Dir("../Wikibreeze")))
 	}
 	fmt.Println("")
-	utils.PrintSuccess("WikiBreeze(v1.0.0) started on port " + strconv.Itoa(port) + " successfully")
+	utils.PrintSuccess("WikiBreeze(v1.1.0-alpha) started on port " + strconv.Itoa(port) + " successfully")
 	fmt.Println("Local:\t\t", utils.Cyanf("http://localhost:"+strconv.Itoa(port)+"/"))
 
 	//Get local ip
