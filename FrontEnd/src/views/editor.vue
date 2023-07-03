@@ -100,7 +100,6 @@ onMounted(() => {
         }
     }).get().json();
     watch(uploadReturnMsg, (val) => {
-        console.log(val);
         if (val && val.enabled == 'true') {
             console.log("upload is enable!");
             uploadEnable.value = true

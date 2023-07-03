@@ -85,6 +85,8 @@ function destory(duration: number = 2500) {
     width: 60%;
     left: 50%;
     transition: all .2s ease;
+    z-index: 101;
+
 
     .body {
         height: 60px;
@@ -99,6 +101,7 @@ function destory(duration: number = 2500) {
             font-size: 2em;
             line-height: 60px;
             text-align: center;
+            overflow: hidden;
         }
     }
 }

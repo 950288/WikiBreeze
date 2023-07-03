@@ -37,9 +37,8 @@ import notification from "@/components/Notification.vue";
 
 
 let notifyCount = 10240;
-const app = <any>getCurrentInstance();
-    console.log(app)
-app.config.globalProperties.$notify = (duration: Number, title:string ,msg: string, type: string, recall: Promise<{ success: boolean, notify: string | undefined }>) => {
+
+const notify = (duration: Number, title:string ,msg: string, type: string, recall: Promise<{ success: boolean, notify: string | undefined }> | any) => {
   const notificationInstance = h(<any>notification, {
     duration:duration,
     msg,
@@ -73,7 +72,7 @@ const props = defineProps({
         default: 0
     },
     recall: {
-        type: ref
+        type: Object
     }
 })
 function confirm(){
@@ -88,26 +87,56 @@ function destory() {
     }
 }
 const handleUploadImage = async (e: any) => {
+    console.log(e.target)
+    console.log(e.target.files)
     file.value = e.target.files
 }
 
 onMounted(() => {
     upload.value = () => {
-        console.log("uuuuuuuuuuuuuuuuuuuuuuupload   ")
-        console.log(app?.proxy)
-        console.log(app?.proxy?.$notify)
         if (!file.value) {
-            app?.proxy?.$notify(
-            0,      // 0 means the notification will not be destoryed automatically after recall()
+            notify(
+            1500,      // 0 means the notification will not be destoryed automatically after recall()
             'uploads',
             'No file selected !',
             'info',
-            null
-        );
+            null);
+            return
         }
 
+        console.log(file.value)
+        console.log(file.value[0].name)
+        console.log(file.value[0].size)
+        console.log(file.value[0].type)
+        if (!checkFileType(file.value[0].type)) return
+
+
+
+        notify(
+            5000,      // 0 means the notification will not be destoryed automatically after recall()
+            'uploads',
+            'Uploading ' + file.value[0].name + '...',
+            'info',
+            null);
+        destory()
+        return
     }
 })
+const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/svg+xml"];
+
+function checkFileType(file :string) {
+  if (!allowedTypes.includes(file)) {
+    notify(
+        1500,      // 0 means the notification will not be destoryed automatically after recall()
+        'Tpye error',
+        'Only PNG, JPG, JPEG and SVG images are allowed !',
+        'info',
+        null);
+    return false;
+  }
+  
+  return true;
+}
 </script>
 <style lang="scss" scoped>
 .Input {
