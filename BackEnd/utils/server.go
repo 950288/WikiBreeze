@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -283,7 +284,7 @@ func HandlergetRenderconfig(RenderConfigString string) http.HandlerFunc {
 		fmt.Fprint(w, string(RenderConfigString))
 	}
 }
-func HandlerUploadImage(cookie *cookiejar.Jar, requsetUrl string) http.HandlerFunc {
+func HandlerUploadImage(cookie *cookiejar.Jar, requestUrl string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET")
@@ -295,7 +296,50 @@ func HandlerUploadImage(cookie *cookiejar.Jar, requsetUrl string) http.HandlerFu
 			return
 		}
 
-		fmt.Fprint(w, "{\"success\": \"true\"}")
+		fmt.Println("unloading files")
+		var b []byte
+		r.Body.Read(b)
 
+		// reading request body
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			PrintErr(err.Error())
+			fmt.Print(r)
+			return
+		}
+
+		// Build a forward request
+		req, err := http.NewRequest(r.Method, requestUrl, bytes.NewBuffer(body))
+		if err != nil {
+			PrintErr(err.Error())
+			fmt.Print(r)
+			return
+		}
+		req.Header = r.Header
+
+		client := &http.Client{
+			CheckRedirect: CheckRedirect, //disable redirect
+			Jar:           cookie,
+		}
+
+		// Synchronous forward request
+		res, err := client.Do(req)
+		if err != nil {
+			PrintErr(err.Error())
+			fmt.Print(r)
+			return
+		}
+		defer res.Body.Close()
+
+		// write the response
+		io.Copy(w, res.Body)
+
+		// set response headers
+		for k, v := range res.Header {
+			w.Header()[k] = v
+		}
+		w.WriteHeader(res.StatusCode)
+
+		fmt.Println("upload successful")
 	}
 }

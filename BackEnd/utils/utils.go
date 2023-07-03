@@ -409,7 +409,7 @@ func GetCookie(account map[string]interface{}) (*cookiejar.Jar, string, error) {
 		return nil, "", fmt.Errorf("error getting team id form :" + teamsStatusMarshalIndent + "\nplease check your account")
 	}
 	PrintSuccess("got team id: " + teamID + " successfully")
-	return jar, "https://" + maxYear.Format("2006") + ".igem.org/Team:" + teamID + "/upload", nil
+	return jar, "https://shim-s3.igem.org/v1/teams/" + teamID + "/wiki", nil
 }
 
 func GetOutboundIP() net.IP {

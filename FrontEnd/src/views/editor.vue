@@ -91,7 +91,7 @@ onMounted(() => {
     });
     watch(getRenderDataError, (val) => {
     });
-    let { data: uploadReturnMsg, error: uploadError } = useFetch(requestUrl.value + "/upload", {
+    let { data: uploadReturnMsg, error: uploadError } = useFetch(requestUrl.value + "/WikiBreezeUpload/", {
         method: 'POST',
         body: JSON.stringify({
         }),
@@ -136,8 +136,14 @@ function save(contentjson: JSON, contenthtml: string) {
             'Connection': 'close'
         }
     }).get().json();
-    async function recall() {
-        return new Promise((resolve) => {
+        
+    console.log(app)
+    app?.proxy.$notify(
+        0,      // 0 means the notification will not be destoryed automatically after recall()
+        'save',
+        'saving...',
+        'info',
+        new Promise((resolve) => {
             setTimeout(() => {
                 resolve({ success: false, notify: "timeout!" });
             }, timeout);
@@ -154,15 +160,7 @@ function save(contentjson: JSON, contenthtml: string) {
                 console.log("saved failed!");
                 resolve({ success: false, notify: val ? "saved failed: " + val : "saved failed!" });
             }   );
-        });
-    }
-    console.log(app)
-    app?.proxy.$notify(
-        0,      // 0 means the notification will not be destoryed automatically after recall()
-        'save',
-        'saving...',
-        'info',
-        recall()
+        })
     );
 }
 </script>

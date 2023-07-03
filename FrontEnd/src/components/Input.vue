@@ -20,8 +20,7 @@
             <div v-if="uploadEnable">
                 <div class="upload">
                     <p>{{ 'Or upload the image(png jpeg jpg svg)' }}</p>
-                    <input type="file" @change="handleUploadImage"
-                    accept="image/png, image/jpeg, image/jpg, image/svg" />
+                    <input type="file" @change="handleUploadImage" accept="image/png, image/jpeg, image/jpg, image/svg" />
                 </div>
             </div>
             <div class="confirm" v-if="uploadEnable">
@@ -32,29 +31,31 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { ref, getCurrentInstance, onMounted, createVNode, render, h } from 'vue'
+import { ref, getCurrentInstance, onMounted, createVNode, render, h, watch } from 'vue'
 import notification from "@/components/Notification.vue";
+import { useFetch } from '@vueuse/core';
+import { requestUrl } from '@/App.vue';
 
 
 let notifyCount = 10240;
 
-const notify = (duration: Number, title:string ,msg: string, type: string, recall: Promise<{ success: boolean, notify: string | undefined }> | any) => {
-  const notificationInstance = h(<any>notification, {
-    duration:duration,
-    msg,
-    title,
-    type,
-    promise: recall,
-    count: notifyCount++,
-  });
-  // Render the notification component
-  const vnode = createVNode(notificationInstance);
-  // Mount the VNode to an element outside of the app root
-  const container = document.createElement('div');
-  document.body.appendChild(container);
-  render(vnode, container);
+const notify = (duration: Number, title: string, msg: string, type: string, recall: Promise<{ success: boolean, notify: string | undefined }> | any) => {
+    const notificationInstance = h(<any>notification, {
+        duration: duration,
+        msg,
+        title,
+        type,
+        promise: recall,
+        count: notifyCount++,
+    });
+    // Render the notification component
+    const vnode = createVNode(notificationInstance);
+    // Mount the VNode to an element outside of the app root
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    render(vnode, container);
 };
-const upload = ref(() => {})
+const upload = ref(() => { })
 
 const url = ref("")
 const file = ref()
@@ -63,7 +64,7 @@ const props = defineProps({
         type: String,
         // default: "Title"
     },
-    uploadEnable:{
+    uploadEnable: {
         type: Boolean,
         // default: falses
     },
@@ -75,10 +76,10 @@ const props = defineProps({
         type: Object
     }
 })
-function confirm(){
+function confirm() {
     destory()
-    if(props.recall)
-    props.recall.value = url.value;
+    if (props.recall)
+        props.recall.value = url.value;
 }
 function destory() {
     const notification = document.querySelector('.Input')?.parentElement
@@ -96,11 +97,11 @@ onMounted(() => {
     upload.value = () => {
         if (!file.value) {
             notify(
-            1500,      // 0 means the notification will not be destoryed automatically after recall()
-            'uploads',
-            'No file selected !',
-            'info',
-            null);
+                1500,      // 0 means the notification will not be destoryed automatically after recall()
+                'uploads',
+                'No file selected !',
+                'info',
+                null);
             return
         }
 
@@ -110,32 +111,59 @@ onMounted(() => {
         console.log(file.value[0].type)
         if (!checkFileType(file.value[0].type)) return
 
-
+        const fd = new FormData()
+        fd.append('file', file.value[0])
+        fd.append('directory', "WikiBreezeUpload/" + history.state.index + "/" + history.state.content)
 
         notify(
-            5000,      // 0 means the notification will not be destoryed automatically after recall()
+            0,      // 0 means the notification will not be destoryed automatically after recall()
             'uploads',
             'Uploading ' + file.value[0].name + '...',
             'info',
-            null);
+            new Promise((resolve) => {
+                let { data: fileURL, error: uploadError } = useFetch(requestUrl.value + "/WikiBreezeUpload/", {
+                    method: 'POST',
+                    body: fd,
+                    headers: {
+                        'Content-Length': file.value[0].size.toString()
+                    }
+                }).get().json();
+                watch(fileURL, (val) => {
+                    if (val && val.location) {
+                        console.log("upload " + file.value[0].name + "successful");
+                        console.log("URL:" + val.location)
+                        if (props.recall)
+                            props.recall.value = val.location;
+                        resolve({ success: true, notify: "upload successful!"})
+                    } else {
+                        console.log(val)
+                        resolve({ success: false, notify: val})
+                    }
+                })
+                watch(uploadError, (val) => {
+                    console.log("upload failed :" + uploadError)
+                    resolve({ success: false, notify: val})
+                })
+            })
+        );
         destory()
         return
     }
 })
 const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/svg+xml"];
 
-function checkFileType(file :string) {
-  if (!allowedTypes.includes(file)) {
-    notify(
-        1500,      // 0 means the notification will not be destoryed automatically after recall()
-        'Tpye error',
-        'Only PNG, JPG, JPEG and SVG images are allowed !',
-        'info',
-        null);
-    return false;
-  }
-  
-  return true;
+function checkFileType(file: string) {
+    if (!allowedTypes.includes(file)) {
+        notify(
+            1500,      // 0 means the notification will not be destoryed automatically after recall()
+            'Tpye error',
+            'Only PNG, JPG, JPEG and SVG images are allowed !',
+            'info',
+            null);
+        return false;
+    }
+
+    return true;
 }
 </script>
 <style lang="scss" scoped>
@@ -202,13 +230,14 @@ function checkFileType(file :string) {
 
                 button {
                     position: absolute;
-                    top:0;
+                    top: 0;
                     width: 100%;
                     height: 100%;
                     border: none;
                     outline: none;
                     background-color: transparent;
                     cursor: pointer;
+
                     img {
                         width: 100%;
                         height: 100%;
@@ -277,9 +306,11 @@ function checkFileType(file :string) {
                 width: 100px;
                 transition: ease 0.2s;
             }
-            button:hover{
+
+            button:hover {
                 transform: scale(1.2);
             }
         }
     }
-}</style>
+}
+</style>
