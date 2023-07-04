@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
@@ -347,7 +346,7 @@ func GetCookie(username string, password string) (*cookiejar.Jar, string, error)
 	defer resp.Body.Close()
 
 	fmt.Println()
-	teamsStatus, _ := ioutil.ReadAll(resp.Body)
+	teamsStatus, _ := io.ReadAll(resp.Body)
 
 	if !strings.Contains(string(teamsStatus), "successfully") {
 		fmt.Println()
@@ -369,7 +368,7 @@ func GetCookie(username string, password string) (*cookiejar.Jar, string, error)
 	}
 	defer resp.Body.Close()
 
-	teamsStatus, _ = ioutil.ReadAll(resp.Body)
+	teamsStatus, _ = io.ReadAll(resp.Body)
 
 	teamsStatusMarshalIndent, _ := ParseJson("teamname", string(teamsStatus))
 

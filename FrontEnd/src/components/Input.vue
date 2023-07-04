@@ -92,7 +92,13 @@ const handleUploadImage = async (e: any) => {
     console.log(e.target.files)
     file.value = e.target.files
 }
-
+function checkFileName(fileName: string) {
+  const reg = /^[\w\d_\-.]+$/;
+  if (!reg.test(fileName)) {
+    return false;  
+  }
+  return true;
+}
 onMounted(() => {
     upload.value = () => {
         if (!file.value) {
@@ -105,14 +111,23 @@ onMounted(() => {
             return
         }
 
-        console.log(file.value)
+        console.log(file.value[0])
         console.log(file.value[0].name)
         console.log(file.value[0].size)
         console.log(file.value[0].type)
-        if (!checkFileType(file.value[0].type)) return
-
         const fd = new FormData()
-        fd.append('file', file.value[0])
+        if (!checkFileType(file.value[0].type)) return
+        if (!checkFileName(file.value[0].name)) {
+            console.log("rename file")
+            var renamedFile = new File([file.value[0]],`${new Date().getTime().toString()}.${file.value[0].name.split('.').pop()}`,{type:file.value[0].type});
+            console.log(renamedFile)
+            console.log(renamedFile.name)
+            console.log(renamedFile.type)
+            fd.append("file", renamedFile);
+        } else {
+            fd.append('file', file.value[0])
+        }
+
         fd.append('directory', "WikiBreezeUpload/" + history.state.index + "/" + history.state.content)
 
         notify(
