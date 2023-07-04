@@ -1,0 +1,72 @@
+.content .table, .content table{
+    font-size: 1.5rem;
+    border: 2px solid var(--has-border-dark);
+    border-spacing: 0;
+
+    thead {
+        background-color: var(--has-background-lighter-grey);
+        border-width: 0 0 2px;
+    }
+
+    tbody,thead {
+        text-align: center;
+        tr {
+            background-color: var(--has-background-lightest-grey);
+            // border-width: 0 0 1px;
+
+            td {
+                color: var(--has-text-grey);
+                text-align: center;
+                padding: 0.5rem;
+                border: 1px solid var(--has-border-dark);
+                border-width: 0 1px 1px;
+                text-align: left;
+            }
+            th {
+                color: var(--has-text-black);
+                background-color: var(--has-background-lighter-grey);
+                border: 1px solid var(--has-border-dark);
+                border-width: 0 1px 1px;
+                padding: 0.5rem;
+                text-align: left;
+                border-color: var(--has-border-dark);
+            }
+            td p, th p {
+                text-align: left;
+            }
+
+        }
+
+        tr:nth-child(2n) {
+            // background-color: var(--has-background-white);
+        }
+
+        tr:hover {
+            // background-color: var(--has-background-lighter-grey);
+        }
+    }
+    .selectedCell{
+        background-color: var(--has-text-light-grey);
+    }
+
+}
+.content table-pro{
+    display: block;
+    //outline with rounded corners on top
+    border: 2px solid var(--has-border-dark);
+    border-radius: 5px 5px 5px 5px;
+    padding: 0;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    
+    table , table:not(:last-child){
+        margin-bottom: 0;
+    }
+    p.tableNote ,table-pro > p{
+        // font-weight: 600;
+        // margin-top: -.6em;
+        margin-top: 0.2em;
+        margin-bottom: 0.3em;
+        text-align: center;
+    }
+}

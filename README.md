@@ -1,43 +1,107 @@
-# Team ZJUT-China 2023 Software Tool
+# WikiBreeze ([简体中文](https://github.com/950288/WikiBreeze/blob/main/README_zh.md)) 🛠️
 
-If you team competes in the [**Software & AI** village](https://competition.igem.org/participation/villages) or wants to
-apply for the [**Best Software Tool** prize](https://competition.igem.org/judging/awards), you **MUST** host all the
-code of your team's software tool in this repository, `main` branch. By the **Wiki Freeze**, a
-[release](https://docs.gitlab.com/ee/user/project/releases/) will be automatically created as the judging artifact of
-this software tool. You will be able to keep working on your software after the Grand Jamboree.
+[![Email](https://img.shields.io/static/v1?label=Email&message=950288s@gmail.com&color=blue)](mailto:950288s@gmail.com)
 
-> If your team does not have any software tool, you can totally ignore this repository. If left unchanged, this
-repository will be automatically deleted by the end of the season.
+WikiBreeze is a collaborative LAN wiki content editor that enables complete separation of wiki code writing🧑‍💻 and content filling ✍️ with concise operability 🦾, which can greatly improve wiki development efficiency 🥰.
+
+## Introduction🧑‍💼
+
+WikiBreeze is a user-friendly LAN editor 🧰 that allows iGEM team members to easily edit wikis. it provides a simple interface for editing wiki content pages. And only one person from the whole team needs to install it to enable collaborative editing for the whole team. With WikiBreeze, wiki content editors can focus on quality content without having to think about the technical details of HTML and CSS.
+
+To use WikiBreeze, follow these steps:
+
+1. Download the latest [release](https://github.com/950288/WikiBreeze/releases) of the zip archive and unzip it. Put the `WikiBreeze` folder into the root directory of your wiki project.  
+````
+    <directory name>
+    ├── Wikibreeze
+    │   ├── WikiBreeze.exe
+    │   └── ...
+    ├── xxx.html
+    └── ...
+````
+
+2. Insert the following special tag into each `.html` file or other file type where you want to edit: `<!-- WikiBreeze {{CONTENT}} start-->`. Replace `{{CONTENT}}` with an arbitrary custom name. (Note: A page can contain multiple differently named tags, and each part corresponding to a tag can be edited independently.) If no file containing this tag is found in the project directory, a sample file `testPage.html` will be generated automatically.
+```html
+<div> 
+    <!-- WikiBreeze test1 start-->
+</div>
+```
+
+3. Use terminals run the executable file WikiBreeze.exe in the WikiBreeze directory to start the tool. You will then see the generated URL in the console, as shown below. You can edit your wiki in the browser via the generated URL. WikiBreeze also supports collaborative editing within a LAN (e.g. personal hotspot, campus network, etc.), so team members within the same LAN can access the editing page through the second link.
+```
+   Server started on port 5001
+    Local:           <http://localhost:5001/> 
+    Network:         <http://192.168.Xx.xx:5001/>
+```  
+
+4. The HTML source code after editing and saving will be automatically inserted into the relative position of the page. At the same time, the WikibreezeData folder will be generated to store the information of the edited page.
+
+5. Add `Wikibreeze/` directory into .gitignore file.  
+
+6. We also provide a configuration file WikibreezeData/config/config.json, which will be automatically generated upon the first run of the application. It allows you to customize certain parameters such as the directory containing the pages to be modified, the port to be used, and the file types. The default values for these parameters can be seen in the example configuration file below:
+```
+{
+    // Directory containing the page to be modified (e.g. "D:/github/web/src/pages/")
+    "scanDirectory": "../",  
+
+    // Port to be used (e.g. "5001" or "auto")
+    "port": "auto",  
+
+    // File type to be scanned (e.g. [".html",....])
+    "fileType":[".html",".vue"]
+}
+```
+
+7. see [Features](https://github.com/950288/WikiBreeze/wiki/Wikibreeze-Editor-Features) for more detailed usage.
 
 
+## Project Building Guide 🧑‍💻 
+The following is for developers wishing to make improvements to the tool or build it by your self! 
+WikiBreeze is developed using Vue 3 and Go. The front-end is implemented using Vue 3 and TypeScript and built using the Vite build tool. The back-end is implemented using Go and provides a RESTful API for the front-end to interact with.
+To set up the development environment for WikiBreeze, you need to have [Node.js](https://nodejs.org/) and [Go](https://golang.org/) installed on your system. Then, follow these steps:
+1. Clone this repository and navigate to the root directory. 
+2. Run `npm install` to install the required dependencies for the front-end.
+ 
+To build the front-end, run `npm run build:frontend`. 
+To build the back-end, run `npm run build:backend`. 
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might
-be unfamiliar with (for example your team wiki). A list of Features or a Background subsection can also be added here.
-If there are alternatives to your project, this is a good place to list differentiating factors.
+To build both front-end and back-end, run `npm run build`. 
+The target program generated by the compilation is under the `Wikibreeze` folder.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew.
-However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing
-specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a
-specific context like a particular programming language version or operating system or has dependencies that have to be
-installed manually, also add a Requirements subsection.
+To develop this project simultaneously in Vue 3 and Go, you need to run the following commands in two different terminals:
+`cd frontend && npm run dev`
+`cd backend && go run` .
+This will start the front-end development server and the back-end development server. You can access the link in the front-end console to view the page.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of
-usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably
-include in the README.
+## Working Principle 📝
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+The working principle of WikiBreeze can be summarized in the following diagram:
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started.
-Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps
-explicit. These instructions could also be useful to your future self.
+```mermaid
+graph TB
+    user1 --edit content1--> WebEditor
+    user2 --edit content2--> WebEditor 
+    subgraph WikiBreeze
+        WebEditor(WebEditor) <--track changes--> backend(backend)
+        backend <--read/write local data files--> data(page datas)
+        backend --insert web page source code--> pages(your .html files)
+    end
+```
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce
-the likelihood that the changes inadvertently break something. Having instructions for running tests is especially
-helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+The front-end WebEditor sends HTTP requests to the back-end to retrieve and update the edited content. The back-end reads and writes automatically generated data files in real time and synchronizes the changes to the wiki code.
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+## Technologies 🛠️
+
+- FrontEnd: Vue 3, TypeScript, Vite, tiptap
+- BackEnd: Go 
+- Build tool: Vite, go build
+
+## To-Do List 🤫
+-  ...
+-  ✔️ table with note 🦉
+-  ✔️ img with note 🌌
+-  ✔️ customize the HTML 🗽
+-  v1.0.0
+-  auto git commit
+-  upload image
+-  ......

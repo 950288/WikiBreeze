@@ -1,0 +1,114 @@
+body {
+  font-family: sans-serif;
+}
+
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+  background-color: aliceblue;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+h3{
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+h4{
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+p {
+  font-size: 1rem;
+}
+
+image-pro{
+  width: 60%;
+  display: block;
+  padding: 0;
+  margin: 1em auto;
+}
+
+img{
+  width: 60%;
+  display: block;
+  margin: 1em auto;
+}
+
+image-pro > img{
+  width: 100%;
+  margin:0 0 .5em 0;
+}
+
+table-pro{
+  width: 90%;
+  display: block;
+  padding: 0;
+  margin: 1em auto;
+}
+
+table{
+  width: 90%;
+  margin: 1em auto;
+  border-collapse: collapse;
+}
+
+table-pro > table{
+  width: 100%;
+  margin:0 0 .5em 0;
+}
+
+image-pro > p,
+table-pro > p {
+  text-align: center;
+}
+img p,
+table p {
+  margin-top: .2em;
+  margin-bottom: .2em;
+}
+
+
+ul,
+ol {
+  padding-left: 1.5rem;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+code {
+  background: #0D0D0D;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.9rem;
+  line-height: 1.3rem;
+  color: #fff;
+}
+
+pre {
+  background: #0D0D0D;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+th,
+td {
+  padding: 0.5rem;
+  border: 1px solid #333;
+}
+
+img {
+  max-width: 100%;
+}

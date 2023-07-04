@@ -1,0 +1,428 @@
+{
+    "content": [
+        {
+            "attrs": {
+                "level": 1,
+                "textAlign": "center"
+            },
+            "content": [
+                {
+                    "text": "WikiBreeze🛠️",
+                    "type": "text"
+                }
+            ],
+            "type": "heading"
+        },
+        {
+            "attrs": {
+                "class": null,
+                "textAlign": "left"
+            },
+            "content": [
+                {
+                    "marks": [
+                        {
+                            "type": "bold"
+                        }
+                    ],
+                    "text": "WikiBreeze",
+                    "type": "text"
+                },
+                {
+                    "text": " is a LAN collaborative wiki content editor that enables complete separation of wiki code writing🧑‍💻 and content filling ✍️ with high adaptability and extremely concise operability 🦾, which can greatly improve wiki development efficiency 🥰.",
+                    "type": "text"
+                }
+            ],
+            "type": "paragraph"
+        },
+        {
+            "attrs": {
+                "class": "imagePro"
+            },
+            "content": [
+                {
+                    "attrs": {
+                        "alt": null,
+                        "src": "https://github-production-user-asset-6210df.s3.amazonaws.com/92421445/240284944-0942dc4c-c6d9-432a-bfce-d1aaf7dbb368.png",
+                        "title": null
+                    },
+                    "type": "image"
+                },
+                {
+                    "content": [
+                        {
+                            "marks": [
+                                {
+                                    "type": "bold"
+                                }
+                            ],
+                            "text": "Fig 1.",
+                            "type": "text"
+                        },
+                        {
+                            "text": " Edit your image note here",
+                            "type": "text"
+                        }
+                    ],
+                    "type": "paragraph"
+                }
+            ],
+            "type": "imagePro"
+        },
+        {
+            "attrs": {
+                "level": 2,
+                "textAlign": "left"
+            },
+            "content": [
+                {
+                    "text": "Technology Stack 🛠️",
+                    "type": "text"
+                }
+            ],
+            "type": "heading"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "attrs": {
+                                "class": null,
+                                "textAlign": "left"
+                            },
+                            "content": [
+                                {
+                                    "text": "FrontEnd: Vue 3, TypeScript, Vite, tiptap",
+                                    "type": "text"
+                                }
+                            ],
+                            "type": "paragraph"
+                        }
+                    ],
+                    "type": "listItem"
+                },
+                {
+                    "content": [
+                        {
+                            "attrs": {
+                                "class": null,
+                                "textAlign": "left"
+                            },
+                            "content": [
+                                {
+                                    "text": "BackEnd: Go",
+                                    "type": "text"
+                                }
+                            ],
+                            "type": "paragraph"
+                        }
+                    ],
+                    "type": "listItem"
+                },
+                {
+                    "content": [
+                        {
+                            "attrs": {
+                                "class": null,
+                                "textAlign": "left"
+                            },
+                            "content": [
+                                {
+                                    "text": "Build tool: Vite, go build",
+                                    "type": "text"
+                                }
+                            ],
+                            "type": "paragraph"
+                        }
+                    ],
+                    "type": "listItem"
+                }
+            ],
+            "type": "bulletList"
+        },
+        {
+            "attrs": {
+                "allowGapCursor": null
+            },
+            "content": [
+                {
+                    "content": [
+                        {
+                            "content": [
+                                {
+                                    "attrs": {
+                                        "colspan": 1,
+                                        "colwidth": null,
+                                        "rowspan": 1
+                                    },
+                                    "content": [
+                                        {
+                                            "attrs": {
+                                                "class": null,
+                                                "textAlign": "center"
+                                            },
+                                            "content": [
+                                                {
+                                                    "text": "Company",
+                                                    "type": "text"
+                                                }
+                                            ],
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "type": "tableHeader"
+                                },
+                                {
+                                    "attrs": {
+                                        "colspan": 1,
+                                        "colwidth": null,
+                                        "rowspan": 1
+                                    },
+                                    "content": [
+                                        {
+                                            "attrs": {
+                                                "class": null,
+                                                "textAlign": "center"
+                                            },
+                                            "content": [
+                                                {
+                                                    "text": "Contact",
+                                                    "type": "text"
+                                                }
+                                            ],
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "type": "tableHeader"
+                                },
+                                {
+                                    "attrs": {
+                                        "colspan": 1,
+                                        "colwidth": null,
+                                        "rowspan": 1
+                                    },
+                                    "content": [
+                                        {
+                                            "attrs": {
+                                                "class": null,
+                                                "textAlign": "center"
+                                            },
+                                            "content": [
+                                                {
+                                                    "text": "        Country        ",
+                                                    "type": "text"
+                                                }
+                                            ],
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "type": "tableHeader"
+                                }
+                            ],
+                            "type": "tableRow"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "attrs": {
+                                        "colspan": 1,
+                                        "colwidth": null,
+                                        "rowspan": 1
+                                    },
+                                    "content": [
+                                        {
+                                            "attrs": {
+                                                "class": null,
+                                                "textAlign": "center"
+                                            },
+                                            "content": [
+                                                {
+                                                    "text": "Alfreds Futterkiste",
+                                                    "type": "text"
+                                                }
+                                            ],
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "type": "tableCell"
+                                },
+                                {
+                                    "attrs": {
+                                        "colspan": 1,
+                                        "colwidth": null,
+                                        "rowspan": 1
+                                    },
+                                    "content": [
+                                        {
+                                            "attrs": {
+                                                "class": null,
+                                                "textAlign": "center"
+                                            },
+                                            "content": [
+                                                {
+                                                    "text": "        Maria Anders        ",
+                                                    "type": "text"
+                                                }
+                                            ],
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "type": "tableCell"
+                                },
+                                {
+                                    "attrs": {
+                                        "colspan": 1,
+                                        "colwidth": null,
+                                        "rowspan": 1
+                                    },
+                                    "content": [
+                                        {
+                                            "attrs": {
+                                                "class": null,
+                                                "textAlign": "center"
+                                            },
+                                            "content": [
+                                                {
+                                                    "text": "Germany",
+                                                    "type": "text"
+                                                }
+                                            ],
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "type": "tableCell"
+                                }
+                            ],
+                            "type": "tableRow"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "attrs": {
+                                        "colspan": 1,
+                                        "colwidth": null,
+                                        "rowspan": 1
+                                    },
+                                    "content": [
+                                        {
+                                            "attrs": {
+                                                "class": null,
+                                                "textAlign": "center"
+                                            },
+                                            "content": [
+                                                {
+                                                    "text": "Centro comercial Moctezuma",
+                                                    "type": "text"
+                                                }
+                                            ],
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "type": "tableCell"
+                                },
+                                {
+                                    "attrs": {
+                                        "colspan": 1,
+                                        "colwidth": null,
+                                        "rowspan": 1
+                                    },
+                                    "content": [
+                                        {
+                                            "attrs": {
+                                                "class": null,
+                                                "textAlign": "center"
+                                            },
+                                            "content": [
+                                                {
+                                                    "text": "        Francisco Chang        ",
+                                                    "type": "text"
+                                                }
+                                            ],
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "type": "tableCell"
+                                },
+                                {
+                                    "attrs": {
+                                        "colspan": 1,
+                                        "colwidth": null,
+                                        "rowspan": 1
+                                    },
+                                    "content": [
+                                        {
+                                            "attrs": {
+                                                "class": null,
+                                                "textAlign": "center"
+                                            },
+                                            "content": [
+                                                {
+                                                    "text": "Mexico",
+                                                    "type": "text"
+                                                }
+                                            ],
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "type": "tableCell"
+                                }
+                            ],
+                            "type": "tableRow"
+                        }
+                    ],
+                    "type": "table"
+                },
+                {
+                    "attrs": {
+                        "class": "tableNote",
+                        "textAlign": "left"
+                    },
+                    "content": [
+                        {
+                            "marks": [
+                                {
+                                    "type": "bold"
+                                }
+                            ],
+                            "text": "Table 1.",
+                            "type": "text"
+                        },
+                        {
+                            "text": " Also wokrs well for table with note",
+                            "type": "text"
+                        }
+                    ],
+                    "type": "paragraph"
+                }
+            ],
+            "type": "tablePro"
+        },
+        {
+            "attrs": {
+                "language": "js"
+            },
+            "content": [
+                {
+                    "text": "const fib = n =\u003e \n  // Create an array of n zeros\n  Array(n).fill(0)  \n    // Use .reduce() to build the Fibonacci sequence\n    .reduce((acc, _, i) =\u003e {  \n      // If index is less than 2, push 1, otherwise push the sum of previous two elements  \n      acc.push(i \u003c 2 ? 1 : acc[i - 1] + acc[i - 2]);  \n      // Return the accumulated array \n      return acc;\n    }, []);\n\nfib(6); // [1, 1, 2, 3, 5, 8]",
+                    "type": "text"
+                }
+            ],
+            "type": "codeBlock"
+        },
+        {
+            "attrs": {
+                "class": null,
+                "textAlign": "left"
+            },
+            "content": [
+                {
+                    "text": "Hope you enjoy WikiBreeze !",
+                    "type": "text"
+                }
+            ],
+            "type": "paragraph"
+        }
+    ],
+    "type": "doc"
+}
