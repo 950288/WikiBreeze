@@ -12,9 +12,5 @@
 	"fileType":[".html",".vue"],
 
 	// Uploads image
-	"uploadImage": true,
-	"account": {
-		"username": "username",
-		"password": "password"
-	}
+	"uploadImage": true
 }

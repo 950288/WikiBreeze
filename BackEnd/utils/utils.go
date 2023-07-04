@@ -22,7 +22,7 @@ import (
 
 func ParseJson(filename string, configString string) (string, error) {
 	jsonMap := make(map[string]interface{})
-	// decode json to struct
+	// decode json to jsonMap
 	err := json.Unmarshal([]byte(configString), &jsonMap)
 	if err != nil {
 		return "", fmt.Errorf("error decoding %s: %w", filename, err)
@@ -320,24 +320,12 @@ func CheckRedirect(req *http.Request, via []*http.Request) error {
 
 	return nil
 }
-func GetCookie(account map[string]interface{}) (*cookiejar.Jar, string, error) {
+
+func GetCookie(username string, password string) (*cookiejar.Jar, string, error) {
 
 	jar, err := cookiejar.New(nil)
 	if err != nil {
 		log.Fatal(err)
-	}
-
-	username, ok_username := account["username"]
-	password, ok_password := account["password"]
-	if !ok_username || !ok_password {
-		PrintErr("error reading username or password")
-		log.Fatal()
-	}
-	usernameString, ok_username := username.(string)
-	passwordString, ok_password := password.(string)
-	if !ok_username || !ok_password {
-		PrintErr("username or password is not string")
-		log.Fatal()
 	}
 
 	client := &http.Client{
@@ -346,7 +334,7 @@ func GetCookie(account map[string]interface{}) (*cookiejar.Jar, string, error) {
 		Jar:           jar,
 	}
 
-	req, err := http.NewRequest("POST", "https://old.igem.org/Login2", strings.NewReader("return_to=&username="+usernameString+"&password="+passwordString+"&Login=Login"))
+	req, err := http.NewRequest("POST", "https://old.igem.org/Login2", strings.NewReader("return_to=&username="+username+"&password="+password+"&Login=Login"))
 	if err != nil {
 		return nil, "", err
 	}
@@ -363,7 +351,7 @@ func GetCookie(account map[string]interface{}) (*cookiejar.Jar, string, error) {
 
 	if !strings.Contains(string(teamsStatus), "successfully") {
 		fmt.Println()
-		return nil, "", fmt.Errorf("error logging in, please check your username and password")
+		return nil, "", fmt.Errorf("error logging in, please check your username and password in Wikibreeze/account.json")
 	}
 	PrintSuccess("login successfully")
 
@@ -420,6 +408,70 @@ func GetCookie(account map[string]interface{}) (*cookiejar.Jar, string, error) {
 	}
 	PrintSuccess("got team id: " + teamID + " successfully")
 	return jar, "https://shim-s3.igem.org/v1/teams/" + teamID + "/wiki", nil
+}
+func GetAccount() (string, string) {
+	fileDir := "./account.json"
+	fmt.Println("reading account.json")
+	accountFile, err := os.Open(fileDir)
+	if err != nil {
+		fmt.Println("account.json doesn't exist, creating it")
+		//create account.json
+		accountFile, err = os.Create(fileDir)
+		if err != nil {
+			log.Fatal(fmt.Errorf("error creating account.json: %w", err))
+		}
+		//imput username and password
+		PrintInfo("please input your username:")
+		var username string
+		fmt.Scanln(&username)
+		PrintInfo("please input your password:")
+		var password string
+		fmt.Scanln(&password)
+		_, err = accountFile.Write([]byte("{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}"))
+		if err != nil {
+			log.Fatal(fmt.Errorf("error writing to account.json: %w", err))
+		}
+		fmt.Println("created account.json")
+		return username, password
+	}
+
+	defer accountFile.Close()
+	// read json file
+	jsonBytes, err := io.ReadAll(accountFile)
+	if err != nil {
+		log.Fatal(fmt.Errorf("error reading account.json: %w", err))
+	}
+	accountString := string(jsonBytes)
+	jsonMap := make(map[string]interface{})
+	// decode json to jsonMap
+	err = json.Unmarshal([]byte(accountString), &jsonMap)
+	if err != nil {
+		log.Fatal(fmt.Errorf("error decoding %s: %w", fileDir, err))
+	}
+	return jsonMap["username"].(string), jsonMap["password"].(string)
+}
+func ReadUploadConfig_HandleUpload(config map[string]interface{}) {
+	uploadImage, ok := config["uploadImage"]
+	if ok {
+		upload, ok := uploadImage.(bool)
+		if !ok {
+			PrintErr("uploadImage should be bool type(e.g. \"uploadImage\": true)")
+		} else if upload {
+			username, password := GetAccount()
+			cookie, requestUrl, err := GetCookie(username, password)
+			if err != nil {
+				PrintErr("error to login:" + err.Error())
+			} else {
+				fmt.Println("upload link:", requestUrl)
+				http.HandleFunc("/WikiBreezeUpload/", HandlerUploadImage(cookie, requestUrl))
+			}
+		} else {
+			fmt.Println("upload image is not enabled, to enable it, set 'uploadImage' to true in WikibreezeData/config/editorConfig.json")
+		}
+	} else {
+		PrintInfo("\nto enable upload image, you should update WikibreezeData/config/editorConfig.json with following:")
+		fmt.Println(Cyanf("\"uploadImage\": true"))
+	}
 }
 
 func GetOutboundIP() net.IP {
