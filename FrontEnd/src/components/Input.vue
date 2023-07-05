@@ -37,7 +37,7 @@ import { useFetch } from '@vueuse/core';
 import { requestUrl } from '@/App.vue';
 
 
-let notifyCount = 10240;
+let notifyCount = 95028;
 
 const notify = (duration: Number, title: string, msg: string, type: string, recall: Promise<{ success: boolean, notify: string | undefined }> | any) => {
     const notificationInstance = h(<any>notification, {
@@ -46,7 +46,7 @@ const notify = (duration: Number, title: string, msg: string, type: string, reca
         title,
         type,
         promise: recall,
-        count: notifyCount++,
+        count: (notifyCount++).toString + "uploads",
     });
     // Render the notification component
     const vnode = createVNode(notificationInstance);
@@ -148,7 +148,7 @@ onMounted(() => {
                         console.log("upload " + file.value[0].name + " successful\nURL:" + val.location);
                         if (props.recall)
                             props.recall.value = val.location;
-                        resolve({ success: true, notify: "upload successful!"})
+                        resolve({ success: true, notify: "upload successful !"})
                     } else {
                         console.log(val)
                         resolve({ success: false, notify: val})

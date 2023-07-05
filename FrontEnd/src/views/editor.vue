@@ -150,7 +150,7 @@ function save(contentjson: JSON, contenthtml: string) {
             watch(saveReturnMsg, (val) => {
                 if (val && val.success == 'true') {
                     console.log("saved success!");
-                    resolve({ success: true, notify: "saved successful!" });
+                    resolve({ success: true, notify: "saved successful !" });
                 } else {
                     console.log("saved failed!");
                     resolve({ success: false, notify: saveError.value ? "saved failed: " + saveError.value : "saved failed!" });
