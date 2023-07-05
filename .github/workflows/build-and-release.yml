@@ -7,6 +7,8 @@ on:
     paths-ignore:
       - '**/README.md'
       - '**/README_zh.md'
+env:
+  TAG: v1.1.0-beta
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,9 +18,7 @@ jobs:
       # - uses: actions-ecosystem/action-get-latest-tag@v1
       #   id: get-latest-tag
 
-
-      env:
-        TAG: v1.1.0-beta
+      
       
       - name: Echo tag
         run: echo ${{ env.TAG }}
