@@ -51,7 +51,7 @@ app.config.globalProperties.$input = (
   let recall = ref();
   const inputInstance = h(<any>input ,{
     title,
-    upload,
+    uploadEnable: upload,
     count: inputCount++,
     recall
   });

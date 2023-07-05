@@ -2,7 +2,8 @@
     <div class="content is-large">
         <br>
         <tiptap v-if="contenetJson && renderConfigJson" @save="save" :contenetjson="contenetJson"
-            :renderConfigJson="renderConfigJson" />
+            :renderConfigJson="renderConfigJson"
+            :uploadEnable="uploadEnable" />
         <progress v-if="!(contenetJson && renderConfigJson) && !error" class="progress is-large is-info"
             max="100">Loading</progress>
         <br>
@@ -24,6 +25,7 @@ import { router } from "@/main";
 
 const contenetJson = ref<JSON>();
 const renderConfigJson = ref<JSON>();
+const uploadEnable = ref<boolean>(false);
 const app = <any>getCurrentInstance();
 let error = ref<string>();
 
@@ -86,10 +88,27 @@ onMounted(() => {
     }).get().json();
     watch(renderData, (val) => {
         renderConfigJson.value = val;
-        // console.log(val);
     });
     watch(getRenderDataError, (val) => {
-        // console.log(val);
+    });
+    let { data: uploadReturnMsg, error: uploadError } = useFetch(requestUrl.value + "/WikiBreezeUpload/", {
+        method: 'POST',
+        body: JSON.stringify({
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).get().json();
+    watch(uploadReturnMsg, (val) => {
+        if (val && val.enabled == 'true') {
+            console.log("upload is enable!");
+            uploadEnable.value = true
+        } else {
+            console.log("upload not enabled!");
+        }
+    });
+    watch( uploadError , (val) => {
+        console.log("upload not enabled:" + val);
     });
 });
 
@@ -117,15 +136,21 @@ function save(contentjson: JSON, contenthtml: string) {
             'Connection': 'close'
         }
     }).get().json();
-    async function recall() {
-        return new Promise((resolve) => {
+        
+    console.log(app)
+    app?.proxy.$notify(
+        0,      // 0 means the notification will not be destoryed automatically after recall()
+        'save',
+        'saving...',
+        'info',
+        new Promise((resolve) => {
             setTimeout(() => {
                 resolve({ success: false, notify: "timeout!" });
             }, timeout);
             watch(saveReturnMsg, (val) => {
                 if (val && val.success == 'true') {
                     console.log("saved success!");
-                    resolve({ success: true, notify: "saved successful!" });
+                    resolve({ success: true, notify: "saved successful !" });
                 } else {
                     console.log("saved failed!");
                     resolve({ success: false, notify: saveError.value ? "saved failed: " + saveError.value : "saved failed!" });
@@ -135,14 +160,7 @@ function save(contentjson: JSON, contenthtml: string) {
                 console.log("saved failed!");
                 resolve({ success: false, notify: val ? "saved failed: " + val : "saved failed!" });
             }   );
-        });
-    }
-    app?.proxy.$notify(
-        0,      // 0 means the notification will not be destoryed automatically after recall()
-        'save',
-        'saving...',
-        'info',
-        recall()
+        })
     );
 }
 </script>
