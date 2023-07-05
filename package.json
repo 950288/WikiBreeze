@@ -1,6 +1,6 @@
 {
     "name": "wikibreeze",
-    "version": "1.0.0",
+    "version": "v1.1.0-beta",
     "scripts": {
         "prepare": "node -v",
         "build": "rimraf ./Wikibreeze && npm run build:backend && npm run build:frontend",
@@ -13,6 +13,6 @@
     "dependencies": {
         "mkdirp": "^3.0.1",
         "ncp": "^2.0.0",
-        "rimraf": "^5.0.0"
+        "rimraf": "^5.0.1"
     }
 }
