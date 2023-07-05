@@ -12,7 +12,6 @@ export const requestUrl = ref(process.env.NODE_ENV === 'development' ? "http://l
 <template>
   <Menu  :routes="routes" />
   <router-view />
-  <!-- <InputInfo /> -->
 </template>
 
 <style lang="scss">

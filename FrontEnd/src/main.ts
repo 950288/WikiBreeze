@@ -33,7 +33,7 @@ app.config.globalProperties.$notify = (duration: Number, title:string ,msg: stri
     title,
     type,
     promise: recall,
-    count: notifyCount++,
+    count: (notifyCount++).toString(),
   });
   // Render the notification component
   const vnode = createVNode(notificationInstance);

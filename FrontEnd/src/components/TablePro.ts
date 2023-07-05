@@ -64,7 +64,7 @@ export default Node.create({
         const table = createTable(editor.schema, rows, cols, withHeaderRow)
         // use createChecked to create a table node without checking the schema
         // const noteNode = editor.schema.nodes.paragraph.createChecked(null, [
-        console.log(editor.schema.marks)
+
         const noteNode = editor.schema.nodes.paragraph.createChecked(
           { class: "tableNote" }
           ,
@@ -72,14 +72,12 @@ export default Node.create({
             editor.schema.text('add table note here'),
           ])
 
-        console.log(JSON.stringify(noteNode))
         if (!noteNode) {
           return false
         }
 
         const tableWithNoteNode = editor.schema.nodes.tablePro.createChecked({}, [table, noteNode])
         tr.insert(tr.selection.from - 1, tableWithNoteNode)
-        console.log(JSON.stringify(tableWithNoteNode))
         return true
       },
       deleteTablePro: () => ({ commands, editor, tr }) => {

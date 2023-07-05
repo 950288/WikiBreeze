@@ -31,7 +31,7 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { ref, getCurrentInstance, onMounted, createVNode, render, h, watch } from 'vue'
+import { ref, onMounted, createVNode, render, h, watch } from 'vue'
 import notification from "@/components/Notification.vue";
 import { useFetch } from '@vueuse/core';
 import { requestUrl } from '@/App.vue';
@@ -46,7 +46,7 @@ const notify = (duration: Number, title: string, msg: string, type: string, reca
         title,
         type,
         promise: recall,
-        count: (notifyCount++).toString + "uploads",
+        count: `${(notifyCount++).toString}uploads`,
     });
     // Render the notification component
     const vnode = createVNode(notificationInstance);
