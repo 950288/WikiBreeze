@@ -13,12 +13,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3 
       
-      - uses: actions-ecosystem/action-get-latest-tag@v1
-        id: get-latest-tag
+      # - uses: actions-ecosystem/action-get-latest-tag@v1
+      #   id: get-latest-tag
 
-      - name: Echo latest tag 
-        run: echo ${{ steps.get-latest-tag.outputs.tag }} 
+
+      env:
+        TAG: v1.1.0-beta
       
+      - name: Echo tag
+        run: echo ${{ env.TAG }}
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -35,44 +39,44 @@ jobs:
       - name: Build frontend  
         run: npm run build:frontend
     
-      - name: Build for linux         
+      - name: Build backend for linux         
         run: |
           env GOOS=linux GOARCH=amd64 npm run build:backend 
-          mkdir ./WikiBreeze-linux-${{ steps.get-latest-tag.outputs.tag }}
-          cp -r ./Wikibreeze ./WikiBreeze-linux-${{ steps.get-latest-tag.outputs.tag }}
+          mkdir ./WikiBreeze-linux-${{ env.TAG }}
+          cp -r ./Wikibreeze ./WikiBreeze-linux-${{ env.TAG }}
           rm ./Wikibreeze/WikiBreeze        
         
-      - name: Build for macos         
+      - name: Build backend for macos         
         run: |
           env GOOS=darwin GOARCH=amd64 npm run build:backend
-          mkdir ./WikiBreeze-macos-${{ steps.get-latest-tag.outputs.tag }}
-          cp -r ./Wikibreeze ./WikiBreeze-macos-${{ steps.get-latest-tag.outputs.tag }}
+          mkdir ./WikiBreeze-macos-${{ env.TAG }}
+          cp -r ./Wikibreeze ./WikiBreeze-macos-${{ env.TAG }}
           rm ./Wikibreeze/WikiBreeze
         
-      - name: Build for Windows         
+      - name: Build backend for Windows         
         run: |
           env GOOS=windows GOARCH=amd64 npm run build:backend
-          mkdir ./WikiBreeze-windows-${{ steps.get-latest-tag.outputs.tag }}
-          cp -r ./Wikibreeze ./WikiBreeze-windows-${{ steps.get-latest-tag.outputs.tag }}
+          mkdir ./WikiBreeze-windows-${{ env.TAG }}
+          cp -r ./Wikibreeze ./WikiBreeze-windows-${{ env.TAG }}
           rm ./Wikibreeze/WikiBreeze.exe
         
       - name: Upload Linux zip
         uses: actions/upload-artifact@v2 
         with:
-          name: WikiBreeze-linux-${{ steps.get-latest-tag.outputs.tag }}
-          path: ./WikiBreeze-linux-${{ steps.get-latest-tag.outputs.tag }}  
+          name: WikiBreeze-linux-${{ env.TAG }}
+          path: ./WikiBreeze-linux-${{ env.TAG }}  
 
       - name: Upload MacOS zip  
         uses: actions/upload-artifact@v2 
         with:
-          name: WikiBreeze-macos-${{ steps.get-latest-tag.outputs.tag }}
-          path: ./WikiBreeze-macos-${{ steps.get-latest-tag.outputs.tag }}  
+          name: WikiBreeze-macos-${{ env.TAG }}
+          path: ./WikiBreeze-macos-${{ env.TAG }}  
 
       - name: Upload Windows zip
         uses: actions/upload-artifact@v2    
         with:
-          name: WikiBreeze-windows-${{ steps.get-latest-tag.outputs.tag }}
-          path: ./WikiBreeze-windows-${{ steps.get-latest-tag.outputs.tag }}  
+          name: WikiBreeze-windows-${{ env.TAG }}
+          path: ./WikiBreeze-windows-${{ env.TAG }}  
 
 
             
