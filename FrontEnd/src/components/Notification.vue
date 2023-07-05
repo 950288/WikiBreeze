@@ -42,7 +42,7 @@ const props = defineProps({
 const msg = ref(props.msg)
 const duration = props.duration
 onMounted(() => {
-    // console.log(duration)
+    // console.log(props.count)
     if (duration != 0) {
         destory(duration)
     } else {

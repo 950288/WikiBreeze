@@ -46,7 +46,7 @@ const notify = (duration: Number, title: string, msg: string, type: string, reca
         title,
         type,
         promise: recall,
-        count: `${(notifyCount++).toString}uploads`,
+        count: `${(notifyCount++).toString()}uploads`,
     });
     // Render the notification component
     const vnode = createVNode(notificationInstance);
