@@ -6,24 +6,22 @@ import (
 	"io"
 	"log"
 	"net"
+	"net/http"
+	"net/http/cookiejar"
+	"net/url"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/fatih/color"
 )
 
-type Config struct {
-	ScanDir   string   `json:"scanDirectory"`
-	Port      string   `json:"port"`
-	FileTypes []string `json:"fileType"`
-}
-
 func ParseJson(filename string, configString string) (string, error) {
 	jsonMap := make(map[string]interface{})
-	// decode json to struct
+	// decode json to jsonMap
 	err := json.Unmarshal([]byte(configString), &jsonMap)
 	if err != nil {
 		return "", fmt.Errorf("error decoding %s: %w", filename, err)
@@ -84,9 +82,9 @@ func ReadDefaultEditorConfig() string {
 	return EditorConfigString
 }
 
-func ReadConfig() (Config, error) {
+func ReadConfig() map[string]interface{} {
 	var configDataString string
-	var configData Config
+	var configData map[string]interface{}
 	configDir := "../WikibreezeData/config/config.json"
 	fmt.Println("reading config.json")
 	configFile, err := os.Open(configDir)
@@ -133,9 +131,9 @@ func ReadConfig() (Config, error) {
 		log.Fatal(fmt.Errorf("error parsing config.json: %w", err))
 	}
 	fmt.Println("config:\t", configData)
-	return configData, nil
+	return configData
 }
-func ReadEditorConfig() (string, error) {
+func ReadEditorConfig() string {
 	var editorConfigString string
 	configDir := "../WikibreezeData/config/editorConfig.json"
 	fmt.Println("reading editorConfig.json")
@@ -182,7 +180,7 @@ func ReadEditorConfig() (string, error) {
 	configFile.Close()
 
 	fmt.Println("editorConfig:\n" + editorConfigString)
-	return editorConfigString, nil
+	return editorConfigString
 }
 func ScanPort(Port string) int {
 	var port int
@@ -221,7 +219,7 @@ func ScanPort(Port string) int {
 	}
 	return port
 }
-func ScanFiles(ScanDir string, FileTypes []string) (map[string]string, []byte, error) {
+func ScanFiles(ScanDir string, FileTypes []interface{}) (map[string]string, []byte) {
 	fmt.Println("scanning files in " + ScanDir)
 	// Create a editor dataMap
 	dataMap := make(map[string][]string)
@@ -246,7 +244,7 @@ func ScanFiles(ScanDir string, FileTypes []string) (map[string]string, []byte, e
 				if err != nil {
 					return err
 				}
-				fileName := strings.TrimSuffix(filepath.Base(path), fileType)
+				fileName := strings.TrimSuffix(filepath.Base(path), fileType.(string))
 				// Extract content name from file contents
 				matches := reConfig.FindAllStringSubmatch(string(b), -1)
 				contents := make([]string, len(matches))
@@ -293,44 +291,189 @@ func ScanFiles(ScanDir string, FileTypes []string) (map[string]string, []byte, e
 		contents[0] = "content"
 		dataMap["testPage"] = contents
 		dirs["testPage?content"] = "../testPage.html"
-		// // copy testContent.json to WikibreezeData directory
-		// err = os.MkdirAll("../WikibreezeData/WikiData/testPage", 0755)
-		// if err != nil {
-		// 	log.Fatal(fmt.Errorf("error creating ../WikibreezeData/WikiData/testPage directory: %w", err))
-		// }
-
-		// src := "./testContent.json"
-		// dst := "../WikibreezeData/WikiData/testPage/testContent.json"
-		// fin, err := os.Open(src)
-		// if err != nil {
-		// 	log.Fatal(fmt.Errorf("error open to testContent.json: %w", err))
-		// }
-		// defer fin.Close()
-
-		// fout, err := os.Create(dst)
-		// if err != nil {
-		// 	log.Fatal(fmt.Errorf("error creating ../WikibreezeData/WikiData/testPage/testContent.json: %w", err))
-		// }
-		// defer fout.Close()
-
-		// _, err = io.Copy(fout, fin)
-
-		// if err != nil {
-		// 	log.Fatal(fmt.Errorf("copy testContent.json to WikibreezeData directory: %w", err))
-		// }
-
-		// fmt.Println("created testContent.json")
-
 	}
 	// Serialize map to JSON string
 	dataMapByte, err := json.MarshalIndent(dataMap, "", "    ")
 	if err != nil {
-		return nil, nil, fmt.Errorf("error serializing dataMap: %w", err)
+		log.Fatal("error serializing dataMap: %w", err)
+		return nil, nil
 	}
 	fmt.Println("dataMap:\t" + string(dataMapByte))
 	fmt.Println("dirs:\t" + fmt.Sprint(dirs))
-	return dirs, dataMapByte, nil
+	return dirs, dataMapByte
 }
+
+func CheckRedirect(req *http.Request, via []*http.Request) error {
+	u, err := url.Parse(req.URL.String())
+	if err != nil {
+		return err
+	}
+
+	q := u.Query()
+	q.Set("redirected", "true")
+	u.RawQuery = q.Encode()
+
+	req.URL = u
+
+	fmt.Print("..")
+
+	return nil
+}
+
+func GetCookie(username string, password string) (*cookiejar.Jar, string, error) {
+
+	jar, err := cookiejar.New(nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	client := &http.Client{
+		// Transport: ,
+		CheckRedirect: CheckRedirect, //disable redirect
+		Jar:           jar,
+	}
+
+	req, err := http.NewRequest("POST", "https://old.igem.org/Login2", strings.NewReader("return_to=&username="+username+"&password="+password+"&Login=Login"))
+	if err != nil {
+		return nil, "", err
+	}
+
+	fmt.Print("trying to login..")
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, "", err
+	}
+	defer resp.Body.Close()
+
+	fmt.Println()
+	teamsStatus, _ := io.ReadAll(resp.Body)
+
+	if !strings.Contains(string(teamsStatus), "successfully") {
+		fmt.Println()
+		return nil, "", fmt.Errorf("error logging in, please check your username and password in Wikibreeze/account.json")
+	}
+	PrintSuccess("login successfully")
+
+	// request team id
+	req, err = http.NewRequest("GET", "https://old.igem.org/aj/session_info?use_my_cookie=1", nil)
+	if err != nil {
+		fmt.Println()
+		return nil, "", err
+	}
+
+	resp, err = client.Do(req)
+	if err != nil {
+		fmt.Println()
+		return nil, "", err
+	}
+	defer resp.Body.Close()
+
+	teamsStatus, _ = io.ReadAll(resp.Body)
+
+	teamsStatusMarshalIndent, _ := ParseJson("teamname", string(teamsStatus))
+
+	jsonMap := make(map[string]interface{})
+
+	err = json.Unmarshal(teamsStatus, &jsonMap)
+	if err != nil {
+		return nil, "", fmt.Errorf("error decoding team id: %w", err)
+	}
+	if err != nil {
+		return nil, "", fmt.Errorf("error parsing team id: %w", err)
+	}
+	teams, ok := jsonMap["teams"].([]interface{})
+	if !ok {
+		return nil, "", fmt.Errorf("error getting team id")
+	}
+	var maxYear time.Time
+	var teamID string
+	for _, team := range teams {
+		teamData := team.(map[string]interface{})
+		teamYear := teamData["team_year"].(string)
+		teamRoleStatus := teamData["team_role_status"].(string)
+
+		t, err := time.Parse("2006", teamYear)
+		if err != nil {
+			continue
+		}
+		if t.After(maxYear) && teamRoleStatus == "Accepted" {
+			teamID = teamData["team_id"].(string)
+			maxYear = t
+		}
+	}
+	if teamID == "" {
+		fmt.Println()
+		return nil, "", fmt.Errorf("error getting team id form :" + teamsStatusMarshalIndent + "\nplease check your account")
+	}
+	PrintSuccess("got team id: " + teamID + " successfully")
+	return jar, "https://shim-s3.igem.org/v1/teams/" + teamID + "/wiki", nil
+}
+func GetAccount() (string, string) {
+	fileDir := "./account.json"
+	fmt.Println("reading account.json")
+	accountFile, err := os.Open(fileDir)
+	if err != nil {
+		fmt.Println("account.json doesn't exist, creating it")
+		//create account.json
+		accountFile, err = os.Create(fileDir)
+		if err != nil {
+			log.Fatal(fmt.Errorf("error creating account.json: %w", err))
+		}
+		//input username and password
+		PrintInfo("please input your iGEM username:")
+		var username string
+		fmt.Scanln(&username)
+		PrintInfo("please input your iGEM password:")
+		var password string
+		fmt.Scanln(&password)
+		_, err = accountFile.Write([]byte("{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}"))
+		if err != nil {
+			log.Fatal(fmt.Errorf("error writing to account.json: %w", err))
+		}
+		fmt.Println("created account.json")
+		return username, password
+	}
+
+	defer accountFile.Close()
+	// read json file
+	jsonBytes, err := io.ReadAll(accountFile)
+	if err != nil {
+		log.Fatal(fmt.Errorf("error reading account.json: %w", err))
+	}
+	accountString := string(jsonBytes)
+	jsonMap := make(map[string]interface{})
+	// decode json to jsonMap
+	err = json.Unmarshal([]byte(accountString), &jsonMap)
+	if err != nil {
+		log.Fatal(fmt.Errorf("error decoding %s: %w", fileDir, err))
+	}
+	return jsonMap["username"].(string), jsonMap["password"].(string)
+}
+func ReadUploadConfig_HandleUpload(config map[string]interface{}) {
+	uploadImage, ok := config["uploadImage"]
+	if ok {
+		upload, ok := uploadImage.(bool)
+		fmt.Println("you have enabled upload image feature, to disable it, set 'uploadImage' to false in WikibreezeData/config/config.json")
+		if !ok {
+			PrintErr("uploadImage should be bool type(e.g. \"uploadImage\": true)")
+		} else if upload {
+			username, password := GetAccount()
+			cookie, requestUrl, err := GetCookie(username, password)
+			if err != nil {
+				PrintErr("error to login:" + err.Error())
+			} else {
+				fmt.Println("upload link:", requestUrl)
+				http.HandleFunc("/WikiBreezeUpload/", HandlerUploadImage(cookie, requestUrl))
+			}
+		} else {
+			fmt.Println("upload image is not enabled, to enable it, set 'uploadImage' to true in WikibreezeData/config/config.json")
+		}
+	} else {
+		PrintInfo("\nto enable upload image, you should update WikibreezeData/config/config.json with following:")
+		fmt.Println(Cyanf("\"uploadImage\": true"))
+	}
+}
+
 func GetOutboundIP() net.IP {
 	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil {
@@ -348,6 +491,9 @@ func PrintErr(err string) {
 func PrintSuccess(msg string) {
 	// fmt.Println("\033[32m", msg, "\033[0m")
 	color.Green(msg)
+}
+func PrintInfo(msg string) {
+	color.Yellow(msg)
 }
 func Cyanf(msg string) string {
 	return color.New(color.FgCyan).SprintfFunc()(msg)

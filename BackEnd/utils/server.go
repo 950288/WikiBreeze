@@ -1,11 +1,13 @@
 package utils
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"net/http/cookiejar"
 	"os"
 	"regexp"
 )
@@ -31,7 +33,7 @@ func HandlerFetchContentList(getContentByte []byte) http.HandlerFunc {
 			return
 		}
 		fmt.Println()
-		fmt.Println("some one fetched content list")
+		fmt.Println("content list fetched")
 
 		fmt.Fprint(w, string(getContentByte))
 	}
@@ -176,12 +178,9 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 		}
 
 		// Use content...
-		fmt.Println("Saving to", content.Content, "on", content.Page, "(", count, ")")
+		fmt.Println("\nSaving to", content.Content, "on", content.Page, "(", count, ")")
 
 		r.Body.Close()
-
-		// fmt.Fprint(w, "{\"success\": \"true\"}")
-		// return
 
 		// Open file and write JSON
 		dir := StoreDir + "/" + content.Page + "/" + content.Content + ".json"
@@ -189,7 +188,6 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 		if err != nil {
 			PrintErr("Error opening " + dir + ": " + err.Error())
 			fmt.Fprint(w, "{\"success\": \""+"Error opening "+dir+": "+err.Error()+"\"}")
-
 			return
 		}
 		// Remove previous data
@@ -278,10 +276,77 @@ func HandlergetRenderconfig(RenderConfigString string) http.HandlerFunc {
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		//If request is Preflight, return
 		if r.Method == "OPTIONS" {
+			r.Body.Close()
 			return
 		}
 		fmt.Println()
 
 		fmt.Fprint(w, string(RenderConfigString))
+	}
+}
+func HandlerUploadImage(cookie *cookiejar.Jar, requestUrl string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		//If request is Preflight, return
+		if r.Method == "OPTIONS" || r.ContentLength <= 2 {
+			r.Body.Close()
+			fmt.Fprint(w, "{\"enabled\": \"true\"}")
+			return
+		}
+
+		fmt.Println("\nunloading files")
+		var b []byte
+		r.Body.Read(b)
+
+		// reading request body
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			PrintErr(err.Error())
+			fmt.Print(r)
+			return
+		}
+
+		// Build a forward request
+		req, err := http.NewRequest(r.Method, requestUrl, bytes.NewBuffer(body))
+		if err != nil {
+			PrintErr(err.Error())
+			fmt.Print(r)
+			return
+		}
+		req.Header = r.Header
+
+		client := &http.Client{
+			CheckRedirect: CheckRedirect, //disable redirect
+			Jar:           cookie,
+		}
+
+		// Synchronous forward request
+		res, err := client.Do(req)
+		if err != nil {
+			PrintErr(err.Error())
+			// fmt.Print(req)
+			return
+		}
+		defer res.Body.Close()
+
+		if res.StatusCode == 201 {
+			PrintSuccess("upload pictue successful !")
+		} else {
+			PrintErr("upload pictue failed :" + res.Status)
+		}
+
+		// write the response
+		_, err = io.Copy(w, res.Body)
+		if err != nil {
+			PrintErr(err.Error())
+			return
+		}
+
+		// set response headers
+		for k, v := range res.Header {
+			w.Header()[k] = v
+		}
 	}
 }
