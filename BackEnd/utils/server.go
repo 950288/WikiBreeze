@@ -33,7 +33,7 @@ func HandlerFetchContentList(getContentByte []byte) http.HandlerFunc {
 			return
 		}
 		fmt.Println()
-		fmt.Println("some one fetched content list")
+		fmt.Println("content list fetched")
 
 		fmt.Fprint(w, string(getContentByte))
 	}
@@ -178,7 +178,7 @@ func HandlerSaveContent(StoreDir string, dirs map[string]string) http.HandlerFun
 		}
 
 		// Use content...
-		fmt.Println("Saving to", content.Content, "on", content.Page, "(", count, ")")
+		fmt.Println("\nSaving to", content.Content, "on", content.Page, "(", count, ")")
 
 		r.Body.Close()
 
@@ -296,7 +296,7 @@ func HandlerUploadImage(cookie *cookiejar.Jar, requestUrl string) http.HandlerFu
 			return
 		}
 
-		fmt.Println("unloading files")
+		fmt.Println("\nunloading files")
 		var b []byte
 		r.Body.Read(b)
 
@@ -326,20 +326,27 @@ func HandlerUploadImage(cookie *cookiejar.Jar, requestUrl string) http.HandlerFu
 		res, err := client.Do(req)
 		if err != nil {
 			PrintErr(err.Error())
-			fmt.Print(r)
+			// fmt.Print(req)
 			return
 		}
 		defer res.Body.Close()
 
+		if res.StatusCode == 201 {
+			PrintSuccess("upload pictue successful !")
+		} else {
+			PrintErr("upload pictue failed :" + res.Status)
+		}
+
 		// write the response
-		io.Copy(w, res.Body)
+		_, err = io.Copy(w, res.Body)
+		if err != nil {
+			PrintErr(err.Error())
+			return
+		}
 
 		// set response headers
 		for k, v := range res.Header {
 			w.Header()[k] = v
 		}
-		w.WriteHeader(res.StatusCode)
-
-		fmt.Println("upload successful")
 	}
 }

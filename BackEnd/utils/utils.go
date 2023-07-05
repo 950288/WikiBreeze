@@ -420,10 +420,10 @@ func GetAccount() (string, string) {
 			log.Fatal(fmt.Errorf("error creating account.json: %w", err))
 		}
 		//imput username and password
-		PrintInfo("please input your username:")
+		PrintInfo("please input your iGEM username:")
 		var username string
 		fmt.Scanln(&username)
-		PrintInfo("please input your password:")
+		PrintInfo("please input your iGEM password:")
 		var password string
 		fmt.Scanln(&password)
 		_, err = accountFile.Write([]byte("{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}"))

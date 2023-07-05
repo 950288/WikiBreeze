@@ -64,14 +64,18 @@
         </div>
       </div>
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().exitCode().run()">
-        ExitCode
+        ExitCodeBlock
       </button>
-      <button id="button" class="button is-success " v-if="mounted" @click="setLink()">
-        SetLink
-      </button>
-      <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().unsetLink().run()">
-        UnsetLink
-      </button>
+      <div class="button setLink" id="buttons-toggle">
+        <div class="buttons-wrap">
+          <button id="button" class="button is-success " v-if="mounted" @click="setLink()">
+            SetLink
+          </button>
+          <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().unsetLink().run()">
+            UnsetLink
+          </button>
+        </div>
+      </div>
       <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().setHardBreak().run()">
         Break
       </button>
@@ -239,7 +243,7 @@ let costum = props.renderConfigJson;
 Heading.configure({
   levels: costum.otherConfigurations ? costum.otherConfigurations.headingLevels : [1, 2, 3],
 })
-// console.log(costum)
+
 const Code = code.extend({
 })
 Link.configure({
@@ -378,7 +382,6 @@ function setLink() {
 }
 </script>
 <style scoped lang="scss">
-
 html #button,
 html #buttons-toggle {
   --buttons-height: 2.5rem;
@@ -388,12 +391,14 @@ html #buttons-toggle {
   }
 
 }
+
 .main {
   background-color: var(--has-background-lightest-grey);
   padding: 0.3em;
   border-radius: 4px;
   margin: 0 0 0 0;
-  .reminder{
+
+  .reminder {
     margin-bottom: .3em;
   }
 }
@@ -567,17 +572,18 @@ html #buttons-toggle {
   width: 8.5em;
 }
 
-#buttons-toggle.textAlign:hover {
+#buttons-toggle.setLink {
+  width: 7em;
+}
+
+#buttons-toggle.CodeBlock:hover ,
+#buttons-toggle.textAlign:hover,
+#buttons-toggle.Heading:hover,
+#buttons-toggle.setLink:hover
+ {
   z-index: 2;
 }
 
-#buttons-toggle.CodeBlock:hover {
-  z-index: 2;
-}
-
-#buttons-toggle.Heading:hover {
-  z-index: 2;
-}
 
 @media (max-width: 1350px) {
   #buttons-toggle.Heading {
@@ -591,6 +597,9 @@ html #buttons-toggle {
   #buttons-toggle.CodeBlock {
     width: 7em;
   }
+  #buttons-toggle.setLink {
+  width: 5.5em;
+}
 }
 
 

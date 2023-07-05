@@ -88,8 +88,6 @@ function destory() {
     }
 }
 const handleUploadImage = async (e: any) => {
-    console.log(e.target)
-    console.log(e.target.files)
     file.value = e.target.files
 }
 function checkFileName(fileName: string) {
@@ -110,19 +108,21 @@ onMounted(() => {
                 null);
             return
         }
-
-        console.log(file.value[0])
-        console.log(file.value[0].name)
-        console.log(file.value[0].size)
-        console.log(file.value[0].type)
         const fd = new FormData()
         if (!checkFileType(file.value[0].type)) return
+        if (file.value[0].size > 10485760) {
+            notify(
+                1500,      // 0 means the notification will not be destoryed automatically after recall()
+                'uploads',
+                '[file-too-large] File is larger than 10485760 bytes !',
+                'info',
+                null);
+            destory()
+            return
+        }
         if (!checkFileName(file.value[0].name)) {
-            console.log("rename file")
+            console.log("files name contain special character, rename file to timestamp")
             var renamedFile = new File([file.value[0]],`${new Date().getTime().toString()}.${file.value[0].name.split('.').pop()}`,{type:file.value[0].type});
-            console.log(renamedFile)
-            console.log(renamedFile.name)
-            console.log(renamedFile.type)
             fd.append("file", renamedFile);
         } else {
             fd.append('file', file.value[0])
@@ -145,8 +145,7 @@ onMounted(() => {
                 }).get().json();
                 watch(fileURL, (val) => {
                     if (val && val.location) {
-                        console.log("upload " + file.value[0].name + "successful");
-                        console.log("URL:" + val.location)
+                        console.log("upload " + file.value[0].name + " successful\nURL:" + val.location);
                         if (props.recall)
                             props.recall.value = val.location;
                         resolve({ success: true, notify: "upload successful!"})

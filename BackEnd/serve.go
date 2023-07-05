@@ -39,7 +39,7 @@ func main() {
 		http.Handle("/", http.FileServer(http.Dir("../Wikibreeze")))
 	}
 	fmt.Println("")
-	utils.PrintSuccess("WikiBreeze(v1.1.0-alpha) started on port " + strconv.Itoa(port) + " successfully")
+	utils.PrintSuccess("WikiBreeze(v1.1.0-beta) started on port " + strconv.Itoa(port) + " successfully")
 	fmt.Println("Local:\t\t", utils.Cyanf("http://localhost:"+strconv.Itoa(port)+"/"))
 
 	//Get local ip
