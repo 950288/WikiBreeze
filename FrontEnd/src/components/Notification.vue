@@ -34,7 +34,7 @@ const props = defineProps({
         default: null
     },
     count: {
-        type: Number,
+        type: String,
         default: 0
     }
 })
@@ -64,11 +64,9 @@ onMounted(() => {
 })
 
 function destory(duration: number = 2500) {
-    // console.log('translate' + '.notification' + props.count)
     setTimeout(() => {
         trsY.value = 100;
         setTimeout(() => {
-            // console.log('destory' + '.notification' + props.count)
             const notification = document.querySelector('.notification' + props.count)?.parentElement
             if (notification) {
                 notification.remove()
@@ -85,6 +83,8 @@ function destory(duration: number = 2500) {
     width: 60%;
     left: 50%;
     transition: all .2s ease;
+    z-index: 101;
+
 
     .body {
         height: 60px;
@@ -99,6 +99,7 @@ function destory(duration: number = 2500) {
             font-size: 2em;
             line-height: 60px;
             text-align: center;
+            overflow: hidden;
         }
     }
 }

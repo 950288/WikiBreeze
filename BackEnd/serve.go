@@ -12,24 +12,18 @@ import (
 )
 
 func main() {
-	config, err := utils.ReadConfig()
-	if err != nil {
-		log.Fatal(err)
-	}
-	RenderConfigString, err := utils.ReadEditorConfig()
-	if err != nil {
-		log.Fatal(err)
-	}
+	config := utils.ReadConfig()
 
-	port := utils.ScanPort(config.Port)
+	RenderConfigString := utils.ReadEditorConfig()
+
+	port := utils.ScanPort(config["port"].(string))
 
 	// Get the list of file directories to be edit
-	// using [fileName+"?"content] as key
-	dirs, dataMapByte, err := utils.ScanFiles(config.ScanDir, config.FileTypes)
-	if err != nil {
-		log.Fatal(err)
-	}
+	// using [fileName+"?"+content] as key
+	dirs, dataMapByte := utils.ScanFiles(config["scanDirectory"].(string), config["fileType"].([]interface{}))
 
+	fmt.Println()
+	utils.ReadUploadConfig_HandleUpload(config)
 	http.HandleFunc("/list", utils.HandlerFetchContentList(dataMapByte))
 	http.HandleFunc("/getdata", utils.HandlerGetContent(utils.StoreDir))
 	http.HandleFunc("/savedata", utils.HandlerSaveContent(utils.StoreDir, dirs))
@@ -45,7 +39,7 @@ func main() {
 		http.Handle("/", http.FileServer(http.Dir("../Wikibreeze")))
 	}
 	fmt.Println("")
-	utils.PrintSuccess("WikiBreeze(v0.9.3) started on port " + strconv.Itoa(port) + " successfully")
+	utils.PrintSuccess("WikiBreeze(v1.1.0-beta) started on port " + strconv.Itoa(port) + " successfully")
 	fmt.Println("Local:\t\t", utils.Cyanf("http://localhost:"+strconv.Itoa(port)+"/"))
 
 	//Get local ip
@@ -55,7 +49,7 @@ func main() {
 
 	color.Magenta("Press CTRL+C to quit")
 
-	err = http.ListenAndServe(":"+strconv.Itoa(port), nil)
+	err := http.ListenAndServe(":"+strconv.Itoa(port), nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 		return
