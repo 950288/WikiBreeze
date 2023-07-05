@@ -419,7 +419,7 @@ func GetAccount() (string, string) {
 		if err != nil {
 			log.Fatal(fmt.Errorf("error creating account.json: %w", err))
 		}
-		//imput username and password
+		//input username and password
 		PrintInfo("please input your iGEM username:")
 		var username string
 		fmt.Scanln(&username)
@@ -453,6 +453,7 @@ func ReadUploadConfig_HandleUpload(config map[string]interface{}) {
 	uploadImage, ok := config["uploadImage"]
 	if ok {
 		upload, ok := uploadImage.(bool)
+		fmt.Println("you have enabled upload image feature, to disable it, set 'uploadImage' to false in WikibreezeData/config/config.json")
 		if !ok {
 			PrintErr("uploadImage should be bool type(e.g. \"uploadImage\": true)")
 		} else if upload {
@@ -465,10 +466,10 @@ func ReadUploadConfig_HandleUpload(config map[string]interface{}) {
 				http.HandleFunc("/WikiBreezeUpload/", HandlerUploadImage(cookie, requestUrl))
 			}
 		} else {
-			fmt.Println("upload image is not enabled, to enable it, set 'uploadImage' to true in WikibreezeData/config/editorConfig.json")
+			fmt.Println("upload image is not enabled, to enable it, set 'uploadImage' to true in WikibreezeData/config/config.json")
 		}
 	} else {
-		PrintInfo("\nto enable upload image, you should update WikibreezeData/config/editorConfig.json with following:")
+		PrintInfo("\nto enable upload image, you should update WikibreezeData/config/config.json with following:")
 		fmt.Println(Cyanf("\"uploadImage\": true"))
 	}
 }
