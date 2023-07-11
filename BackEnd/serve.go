@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-
 	"github.com/fatih/color"
 )
 
