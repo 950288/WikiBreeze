@@ -1,6 +1,6 @@
-// This file is the template for config.json.
-// It is not intended for manual editing.
-// Edit WikibreezeData/config/config.json instead.
+// This file is the template for config.json
+// It is not intended for manual editing
+// Edit WikibreezeData/config/config.json instead
 {
 	// Directory containing the page to be modified (e.g. "D:/github/web/src/pages")
 	"scanDirectory": "../",

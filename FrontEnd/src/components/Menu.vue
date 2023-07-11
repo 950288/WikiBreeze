@@ -23,7 +23,6 @@
 <script setup lang="ts">
 import type { Ref } from "vue";
 import { ref, computed, onMounted, watch } from "vue";
-import type { NavItem } from "@/interface";
 import ThemeButton from "@/components/ThemeButton.vue";
 import { router } from "@/main";
 import { useWindowScroll } from "@vueuse/core";

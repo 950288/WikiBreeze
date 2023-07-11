@@ -1,6 +1,6 @@
 import { createApp, h, render, createVNode, ref } from "vue";
 import App from "./App.vue";
-import { createRouter, createWebHashHistory, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import notification from "@/components/Notification.vue";
 import input from "@/components/Input.vue";
 
@@ -9,13 +9,11 @@ import Editor from "@/views/editor.vue";
 
 import { useColorMode } from "@vueuse/core";
 export const routes = [
-  { "name":"Home", path: "/", component: Home, "props": true},
-  { "name":"Editor", path: "/editor", component: Editor }
+  { "name": "Home", path: "/", component: Home, "props": true },
+  { "name": "Editor", path: "/editor", component: Editor }
 ];
 export const router = createRouter({
-  // history: createWebHistory(),
   history: createWebHashHistory(),
-  // 404 => home page
   routes: routes,
 });
 // import { useColorMode } from "@vueuse/core";
@@ -26,9 +24,9 @@ const app = createApp(App);
 app.use(router);
 
 let notifyCount = 0;  // Define the global Vue property $notify
-app.config.globalProperties.$notify = (duration: Number, title:string ,msg: string, type: string, recall: Promise<{ success: boolean, notify: string | undefined }>) => {
+app.config.globalProperties.$notify = (duration: Number, title: string, msg: string, type: string, recall: Promise<{ success: boolean, notify: string | undefined }>) => {
   const notificationInstance = h(<any>notification, {
-    duration:duration,
+    duration: duration,
     msg,
     title,
     type,
@@ -49,7 +47,7 @@ app.config.globalProperties.$input = (
   upload: boolean
 ) => {
   let recall = ref();
-  const inputInstance = h(<any>input ,{
+  const inputInstance = h(<any>input, {
     title,
     uploadEnable: upload,
     count: inputCount++,

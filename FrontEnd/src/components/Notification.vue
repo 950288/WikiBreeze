@@ -53,7 +53,7 @@ onMounted(() => {
             } else {
                 // console.log('Notify')
             }
-            if(value.success){
+            if (value.success) {
                 notifyType.value = "success"
             } else {
                 notifyType.value = "danger"
@@ -106,6 +106,7 @@ function destory(duration: number = 2500) {
 
 .info {
     background-color: #ffe08a;
+
     * {
         color: rgba(0, 0, 0, 1);
     }
@@ -113,6 +114,7 @@ function destory(duration: number = 2500) {
 
 .success {
     background-color: #48c78e;
+
     * {
         color: #fff;
     }
@@ -121,6 +123,7 @@ function destory(duration: number = 2500) {
 
 .danger {
     background-color: #f14668;
+
     * {
         color: #fff;
     }

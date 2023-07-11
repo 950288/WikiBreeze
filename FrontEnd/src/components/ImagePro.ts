@@ -1,5 +1,4 @@
-import { mergeAttributes, Node, findParentNodeClosestToPos,NodeView } from '@tiptap/core'
-import { Editor, type NodeViewRenderer } from '@tiptap/vue-3'
+import { Node, findParentNodeClosestToPos } from '@tiptap/core'
 
 /**
  * @name imagePro
@@ -40,7 +39,7 @@ export default Node.create({
     // return ['image-pro', { 'data-gapcursor': 'ImageProCursor' }, 0]
     return ['image-pro', 0]
   },
-  
+
   addAttributes() {
     return {
       class: {
@@ -57,7 +56,7 @@ export default Node.create({
           return false
         }
         const image = editor.schema.nodes.image.createChecked(
-          { 
+          {
             src: url
           }
         )
@@ -65,8 +64,8 @@ export default Node.create({
         const tableNote = editor.schema.nodes.paragraph.createChecked(
           {
             class: "paragraph"
-          } 
-          , 
+          }
+          ,
           [
             editor.schema.text('Edit your image note here')
           ]
@@ -74,7 +73,7 @@ export default Node.create({
         console.log(JSON.stringify(image))
         const imagePro = editor.schema.nodes.imagePro.createChecked(
           { class: "imagePro" }
-          , 
+          ,
           [
             image,
             tableNote
@@ -93,7 +92,7 @@ export default Node.create({
         }
         return false
       },
-      
+
     }
   },
 })

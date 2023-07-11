@@ -2,6 +2,7 @@
   "name": "wikibreeze",
   "version": "v1.1.0-beta",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",

@@ -10,19 +10,20 @@ export const requestUrl = ref(process.env.NODE_ENV === 'development' ? "http://l
 </script>
 
 <template>
-  <Menu  :routes="routes" />
+  <Menu :routes="routes" />
   <router-view />
 </template>
 
 <style lang="scss">
-
 @import "@/style/index.scss";
+
 // @include set-color-mode(light);
 * {
   margin: 0;
   padding: 0;
   // background-color: var(--has-background-success);
 }
+
 :root {
   background-color: var(--has-background-white);
 }

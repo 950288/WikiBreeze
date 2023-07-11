@@ -91,11 +91,11 @@ const handleUploadImage = async (e: any) => {
     file.value = e.target.files
 }
 function checkFileName(fileName: string) {
-  const reg = /^[\w\d_\-.]+$/;
-  if (!reg.test(fileName)) {
-    return false;  
-  }
-  return true;
+    const reg = /^[\w\d_\-.]+$/;
+    if (!reg.test(fileName)) {
+        return false;
+    }
+    return true;
 }
 onMounted(() => {
     upload.value = () => {
@@ -122,7 +122,7 @@ onMounted(() => {
         }
         if (!checkFileName(file.value[0].name)) {
             console.log("files name contain special character, rename file to timestamp")
-            var renamedFile = new File([file.value[0]],`${new Date().getTime().toString()}.${file.value[0].name.split('.').pop()}`,{type:file.value[0].type});
+            var renamedFile = new File([file.value[0]], `${new Date().getTime().toString()}.${file.value[0].name.split('.').pop()}`, { type: file.value[0].type });
             fd.append("file", renamedFile);
         } else {
             fd.append('file', file.value[0])
@@ -148,15 +148,15 @@ onMounted(() => {
                         console.log("upload " + file.value[0].name + " successful\nURL:" + val.location);
                         if (props.recall)
                             props.recall.value = val.location;
-                        resolve({ success: true, notify: "upload successful !"})
+                        resolve({ success: true, notify: "upload successful !" })
                     } else {
                         console.log(val)
-                        resolve({ success: false, notify: val})
+                        resolve({ success: false, notify: val })
                     }
                 })
                 watch(uploadError, (val) => {
                     console.log("upload failed :" + uploadError)
-                    resolve({ success: false, notify: val})
+                    resolve({ success: false, notify: val })
                 })
             })
         );

@@ -1,4 +1,4 @@
-import { mergeAttributes, Node, findParentNodeClosestToPos } from '@tiptap/core'
+import { Node, findParentNodeClosestToPos } from '@tiptap/core'
 import { createTable } from '@tiptap/extension-table'
 
 

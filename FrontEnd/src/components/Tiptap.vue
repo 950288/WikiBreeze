@@ -576,11 +576,10 @@ html #buttons-toggle {
   width: 7em;
 }
 
-#buttons-toggle.CodeBlock:hover ,
+#buttons-toggle.CodeBlock:hover,
 #buttons-toggle.textAlign:hover,
 #buttons-toggle.Heading:hover,
-#buttons-toggle.setLink:hover
- {
+#buttons-toggle.setLink:hover {
   z-index: 2;
 }
 
@@ -597,9 +596,10 @@ html #buttons-toggle {
   #buttons-toggle.CodeBlock {
     width: 7em;
   }
+
   #buttons-toggle.setLink {
-  width: 5.5em;
-}
+    width: 5.5em;
+  }
 }
 
 

@@ -1,6 +1,7 @@
 {
     "name": "wikibreeze",
     "version": "v1.1.0-beta",
+    "type": "module",
     "scripts": {
         "prepare": "node -v",
         "build": "rimraf ./Wikibreeze && npm run build:backend && npm run build:frontend",
