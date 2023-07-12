@@ -32,29 +32,11 @@
 </template>
 <script lang="ts" setup>
 import { ref, onMounted, createVNode, render, h, watch } from 'vue'
-import notification from "@/components/Notification.vue";
 import { useFetch } from '@vueuse/core';
 import { requestUrl } from '@/App.vue';
+import { router, useNotifyStore } from "@/main";
+const notifyStore = useNotifyStore();
 
-
-let notifyCount = 95028;
-
-const notify = (duration: Number, title: string, msg: string, type: string, recall: Promise<{ success: boolean, notify: string | undefined }> | any) => {
-    const notificationInstance = h(<any>notification, {
-        duration: duration,
-        msg,
-        title,
-        type,
-        promise: recall,
-        count: `${(notifyCount++).toString()}uploads`,
-    });
-    // Render the notification component
-    const vnode = createVNode(notificationInstance);
-    // Mount the VNode to an element outside of the app root
-    const container = document.createElement('div');
-    document.body.appendChild(container);
-    render(vnode, container);
-};
 const upload = ref(() => { })
 
 const url = ref("")
@@ -100,7 +82,7 @@ function checkFileName(fileName: string) {
 onMounted(() => {
     upload.value = () => {
         if (!file.value) {
-            notify(
+            notifyStore.notify(
                 1500,      // 0 means the notification will not be destoryed automatically after recall()
                 'uploads',
                 'No file selected !',
@@ -111,7 +93,7 @@ onMounted(() => {
         const fd = new FormData()
         if (!checkFileType(file.value[0].type)) return
         if (file.value[0].size > 10485760) {
-            notify(
+            notifyStore.notify(
                 1500,      // 0 means the notification will not be destoryed automatically after recall()
                 'uploads',
                 '[file-too-large] File is larger than 10485760 bytes !',
@@ -130,7 +112,7 @@ onMounted(() => {
 
         fd.append('directory', "WikiBreezeUpload/" + history.state.index + "/" + history.state.content)
 
-        notify(
+        notifyStore.notify(
             0,      // 0 means the notification will not be destoryed automatically after recall()
             'uploads',
             'Uploading ' + file.value[0].name + '...',
@@ -168,7 +150,7 @@ const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/svg+xml"];
 
 function checkFileType(file: string) {
     if (!allowedTypes.includes(file)) {
-        notify(
+        notifyStore.notify(
             1500,      // 0 means the notification will not be destoryed automatically after recall()
             'Tpye error',
             'Only PNG, JPG, JPEG and SVG images are allowed !',

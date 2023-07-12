@@ -34,8 +34,8 @@ const props = defineProps({
         default: null
     },
     count: {
-        type: String,
-        default: ""
+        type: Number,
+        default: 0
     }
 })
 

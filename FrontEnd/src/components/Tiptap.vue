@@ -72,7 +72,7 @@
             SetLink
           </button>
           <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().unsetLink().run()">
-            UnsetLink
+            Unset
           </button>
         </div>
       </div>
@@ -219,9 +219,10 @@ import python from 'highlight.js/lib/languages/python'
 import { lowlight } from 'lowlight'
 import { generateHTML } from '@tiptap/html'
 import Gapcursor from '@tiptap/extension-gapcursor'
-import { onMounted, ref, getCurrentInstance, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
+import { useInputStore } from "@/main";
 
-const app = <any>getCurrentInstance();
+const inputStore = useInputStore();
 
 lowlight.registerLanguage('html', html)
 lowlight.registerLanguage('css', css)
@@ -354,16 +355,17 @@ function save() {
   emit('save', editor.value.getJSON(), html);
 }
 function setImageURL() {
-  let recall = app?.proxy.$input(
+  let recall = inputStore.input(
     "Set image",
-    props.uploadEnable
+    props.uploadEnable,
+
   );
   watch(recall, (val) => {
     editor.value.chain().focus().setImage({ src: val }).run()
   })
 }
 function setImageProURL() {
-  let recall = app?.proxy.$input(
+  let recall = inputStore.input(
     "Set image",
     props.uploadEnable
   );
@@ -372,7 +374,7 @@ function setImageProURL() {
   })
 }
 function setLink() {
-  let recall = app?.proxy.$input(
+  let recall = inputStore.input(
     "Set Link",
     false
   );

@@ -2,8 +2,7 @@
     <div class="content is-large">
         <br>
         <tiptap v-if="contenetJson && renderConfigJson" @save="save" :contenetjson="contenetJson"
-            :renderConfigJson="renderConfigJson"
-            :uploadEnable="uploadEnable" />
+            :renderConfigJson="renderConfigJson" :uploadEnable="uploadEnable" />
         <progress v-if="!(contenetJson && renderConfigJson) && !error" class="progress is-large is-info"
             max="100">Loading</progress>
         <br>
@@ -21,33 +20,32 @@ import { useFetch } from "@vueuse/core";
 import Tiptap from '@/components/Tiptap.vue'
 import { ref, watch, onMounted, getCurrentInstance } from "vue";
 import { requestUrl } from "@/App.vue";
-import { router } from "@/main";
-
+import { router, useNotifyStore } from "@/main";
 const contenetJson = ref<JSON>();
 const renderConfigJson = ref<JSON>();
 const uploadEnable = ref<boolean>(false);
-const app = <any>getCurrentInstance();
+const notifyStore = useNotifyStore();
 let error = ref<string>();
 
 // this function is used to adapt old version
 function replaceJson(data: { content: [any]; type: string; }) {
-  if (data.type === 'note') {
-    data.type = 'paragraph';
-  }
-  if (data.type === 'imageX') {
-    data.type = 'image';
-  }
-  if (data.type === 'ImagePro') {
-    data.type = 'imagePro';
-  }
-  if (data.type === 'TablePro') {
-    data.type = 'tablePro';
-  }
-  for (let key in data.content) {   
-    if (typeof data.content[key] === 'object') {
-      replaceJson(data.content[key]);
+    if (data.type === 'note') {
+        data.type = 'paragraph';
     }
-  }
+    if (data.type === 'imageX') {
+        data.type = 'image';
+    }
+    if (data.type === 'ImagePro') {
+        data.type = 'imagePro';
+    }
+    if (data.type === 'TablePro') {
+        data.type = 'tablePro';
+    }
+    for (let key in data.content) {
+        if (typeof data.content[key] === 'object') {
+            replaceJson(data.content[key]);
+        }
+    }
 }
 
 onMounted(() => {
@@ -107,7 +105,7 @@ onMounted(() => {
             console.log("upload not enabled!");
         }
     });
-    watch( uploadError , (val) => {
+    watch(uploadError, (val) => {
         console.log("upload not enabled:" + val);
     });
 });
@@ -132,13 +130,12 @@ function save(contentjson: JSON, contenthtml: string) {
         body: RequestBody,
         headers: {
             'Content-Type': 'application/json',
-            'Content-Length':  RequestBody.length.toString(),
+            'Content-Length': RequestBody.length.toString(),
             'Connection': 'close'
         }
     }).get().json();
-        
-    console.log(app)
-    app?.proxy.$notify(
+
+    notifyStore.notify(
         0,      // 0 means the notification will not be destoryed automatically after recall()
         'save',
         'saving...',
@@ -159,7 +156,7 @@ function save(contentjson: JSON, contenthtml: string) {
             watch(saveError, (val) => {
                 console.log("saved failed!");
                 resolve({ success: false, notify: val ? "saved failed: " + val : "saved failed!" });
-            }   );
+            });
         })
     );
 }
@@ -168,8 +165,8 @@ function save(contentjson: JSON, contenthtml: string) {
 .message {
     background: var(--is-warning-gb);
 
-    .message-body * {
-        // color: #000;
-    }
+    // .message-body * {
+    //     // color: #000;
+    // }
 }
 </style>
