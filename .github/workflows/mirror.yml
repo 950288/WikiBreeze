@@ -1,0 +1,38 @@
+name: Mirror
+
+# Dependabot PRs do not have the same access to secrets.
+on:
+  push:
+    branches:
+      - "**"
+      - "!dependabot/**"
+  delete:
+    branches:
+      - "**"
+      - "!dependabot/**"
+
+jobs:
+  igem-gitlab:
+    name: iGEM GitLab
+
+    # If this job is running more than once on the same branch,
+    # cancel the older job.
+    # https://docs.github.com/en/actions/using-jobs/using-concurrency
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+      cancel-in-progress: true
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # all branches and tags
+
+      - name: Mirror repository
+        # A fork of pixta-dev/repository-mirroring-action with updated dependencies.
+        uses: genoswitch/repository-mirroring-action@a76d61cd1d28ee9e2ab5b6b19cc825736f02b38d
+        with:
+          target_repo_url: git@gitlab.igem.org:2023/software-tools/zjut-china.git
+          ssh_private_key: ${{ secrets.GITLAB_SSH_KEY }}
