@@ -46,19 +46,19 @@
             CodeBlock
           </button>
           <button id="button" class="button is-success " v-if="mounted"
-            @click="editor.chain().focus().updateAttributes('codeBlock', { language: 'python' }).run()">
+            @click="editor.chain().focus().toggleCodeBlock().updateAttributes('codeBlock', { language: 'python' }).run()">
             python
           </button>
           <button id="button" class="button is-success " v-if="mounted"
-            @click="editor.chain().focus().updateAttributes('codeBlock', { language: 'css' }).run()">
+            @click="editor.chain().focus().toggleCodeBlock().updateAttributes('codeBlock', { language: 'css' }).run()">
             css
           </button>
           <button id="button" class="button is-success " v-if="mounted"
-            @click="editor.chain().focus().updateAttributes('codeBlock', { language: 'html' }).run()">
+            @click="editor.chain().focus().toggleCodeBlock().updateAttributes('codeBlock', { language: 'html' }).run()">
             html
           </button>
           <button id="button" class="button is-success " v-if="mounted"
-            @click="editor.chain().focus().updateAttributes('codeBlock', { language: 'js' }).run()">
+            @click="editor.chain().focus().toggleCodeBlock().updateAttributes('codeBlock', { language: 'js' }).run()">
             js
           </button>
         </div>
@@ -356,7 +356,7 @@ function save() {
 }
 function setImageURL() {
   let recall = inputStore.input(
-    "Set image",
+    "Insert image",
     props.uploadEnable,
 
   );
@@ -366,7 +366,7 @@ function setImageURL() {
 }
 function setImageProURL() {
   let recall = inputStore.input(
-    "Set image",
+    "Insert image",
     props.uploadEnable
   );
   watch(recall, (val) => {
@@ -375,7 +375,7 @@ function setImageProURL() {
 }
 function setLink() {
   let recall = inputStore.input(
-    "Set Link",
+    "Insert Link",
     false
   );
   watch(recall, (val) => {
