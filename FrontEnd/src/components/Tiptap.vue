@@ -251,11 +251,6 @@ Link.configure({
   autolink: true,
 })
 const Paragraphs = Paragraph.extend({
-  addAttributes() {
-    return {
-      class: { default: null },
-    }
-  },
   renderHTML({ HTMLAttributes }) {
     return ['p', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
   }
@@ -291,12 +286,7 @@ const extensions = [
   Heading,
   Bulletlist,
   Listitem,
-  Image.configure({
-    HTMLAttributes: {
-      class: 'image',
-      draggable: false,
-    },
-  }),
+  Image,
   ImagePro,
   Link,
   HardBreak,
