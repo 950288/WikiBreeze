@@ -8,7 +8,7 @@
       }"></div>
       <li v-for="(route, index) in routes" :key="route.name" :class="`nav-item`" :style="{
         display: `${router.currentRoute.value.name == 'Home' && route.name != 'Home' ? 'none' : ''}`,
-      }" @mouseenter="handleMouseEnter(route.name, index)" @mouseleave="handleMouseLeave(index)" ref="pages">
+      }" @mouseenter="handleMouseEnter(route.name, index)" @mouseleave="handleMouseLeave()" ref="pages">
         <router-link :to="route.path" class="nav-link">{{
           route.name
         }}</router-link>
@@ -88,7 +88,7 @@ function handleMouseEnter(item: string, pageindex: number) {
   indicator_W.value = pages.value[pageindex]["offsetWidth"];
 }
 
-function handleMouseLeave(pageindex: number) {
+function handleMouseLeave() {
   if (typeof router.currentRoute.value.name == "string") {
     currentItem.value = router.currentRoute.value.name;
     // console.log(currentItem.value);

@@ -1,10 +1,10 @@
 <template>
     <div class="Input">
-        <div class="background" @click="destory()"></div>
+        <div class="background" @click="destroy()"></div>
         <div class="body">
             <div class="heading">
                 <p>{{ props.title }}</p>
-                <div class="close"><button @click="destory()">
+                <div class="close"><button @click="destroy()">
                         <img src="/src/assets/close.svg" alt="">
                     </button></div>
             </div>
@@ -31,10 +31,10 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { ref, onMounted, createVNode, render, h, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useFetch } from '@vueuse/core';
 import { requestUrl } from '@/App.vue';
-import { router, useNotifyStore } from "@/main";
+import { useNotifyStore } from "@/main";
 const notifyStore = useNotifyStore();
 
 const upload = ref(() => { })
@@ -59,11 +59,11 @@ const props = defineProps({
     }
 })
 function confirm() {
-    destory()
+    destroy()
     if (props.recall)
         props.recall.value = url.value;
 }
-function destory() {
+function destroy() {
     const notification = document.querySelector('.Input')?.parentElement
     if (notification) {
         notification.remove()
@@ -99,7 +99,7 @@ onMounted(() => {
                 '[file-too-large] File is larger than 10485760 bytes !',
                 'info',
                 null);
-            destory()
+            destroy()
             return
         }
         if (!checkFileName(file.value[0].name)) {
@@ -142,7 +142,7 @@ onMounted(() => {
                 })
             })
         );
-        destory()
+        destroy()
         return
     }
 })

@@ -185,14 +185,13 @@
 </template>
   
 <script setup lang="ts">
-import { mergeAttributes } from '@tiptap/core'
-import { useEditor, EditorContent, findParentNodeClosestToPos } from '@tiptap/vue-3'
+import { useEditor, EditorContent, type Extensions } from '@tiptap/vue-3'
 import Document from '@tiptap/extension-document'
-import Paragraph from './Note'
+import Paragraphs from './Note'
 import Italic from '@tiptap/extension-italic'
 import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
-import code from '@tiptap/extension-code'
+import Code from '@tiptap/extension-code'
 import codeBlock from '@tiptap/extension-code-block-lowlight'
 import Text from '@tiptap/extension-text'
 import Bold from '@tiptap/extension-bold'
@@ -219,7 +218,7 @@ import python from 'highlight.js/lib/languages/python'
 import { lowlight } from 'lowlight'
 import { generateHTML } from '@tiptap/html'
 import Gapcursor from '@tiptap/extension-gapcursor'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch, type Ref } from 'vue'
 import { useInputStore } from "@/main";
 
 const inputStore = useInputStore();
@@ -237,23 +236,15 @@ const state = ref({
   content: history.state.content
 })
 
-const props = defineProps(['contenetjson', "renderConfigJson", "uploadEnable"])
+const props = defineProps(['contentJson', "renderConfigJson", "uploadEnable"])
 
 const mounted = ref(false);
 let costum = props.renderConfigJson;
 Heading.configure({
   levels: costum.otherConfigurations ? costum.otherConfigurations.headingLevels : [1, 2, 3],
 })
-
-const Code = code.extend({
-})
 Link.configure({
   autolink: true,
-})
-const Paragraphs = Paragraph.extend({
-  renderHTML({ HTMLAttributes }) {
-    return ['p', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
-  }
 })
 History.configure({
   depth: 100,
@@ -271,7 +262,11 @@ let CodeBlock = codeBlock.extend({
 
 const extensions = [
   Document,
-  Paragraphs,
+  Paragraphs.configure({
+    HTMLAttributes: {
+      class: 'my-custom-class',
+    },
+  }),
   Text,
   Bold,
   Italic,
@@ -302,27 +297,40 @@ const extensions = [
   History,
   Gapcursor
 ]
-let extensions_costum: any = extensions.slice();
+console.log(TablePro)
 
-extensions_costum.forEach((extension: any, index: number) => {
-  if (costum[extension.name]) {
-    if (costum[extension.name].tag || costum[extension.name].HTMLAttributes) {
-      extension = extension.extend({
-        addAttributes() {
-          return costum[extension.name].HTMLAttributes
-        },
-        renderHTML({ HTMLAttributes }: any) {
-          return [costum[extension.name].tag, mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
-        },
+let extensions_costum: Extensions = [];
+
+extensions.forEach((extension, index) => {
+  console.log(extension.type)
+  if (costum[extension.name] && extension.type == "node") {
+    let newExtension = costum[extension.name].tag ? extension.extend({
+      renderHTML({ HTMLAttributes }: any) {
+        const val:any = (this as any).parent?.({ HTMLAttributes });
+        if (val && val[0])
+          val[0] = costum[extension.name].tag
+        return val
+      }
+    }) : extension.extend()
+
+    if (costum[extension.name].HTMLAttributes && newExtension.options) {
+      newExtension.configure({
+        HTMLAttributes: costum[extension.name].HTMLAttributes,
       })
+
+      newExtension.options.HTMLAttributes = JSON.parse(JSON.stringify(costum[extension.name].HTMLAttributes))
     }
-    extensions_costum[index] = extension
+    extensions_costum[index] = newExtension
+  } else if (costum[extension.name] && extension.type == "Mark") {
+    extensions_costum[index] = extension.extend()
+  } else {
+    extensions_costum[index] = extension.extend()
   }
 })
 
-const editor: any = useEditor({
+const editor: Ref = useEditor({
   extensions: extensions,
-  content: props.contenetjson,
+  content: props.contentJson,
   autofocus: true,
   editable: true,
   injectCSS: false,
@@ -501,8 +509,6 @@ html #buttons-toggle {
 
     }
 
-
-
     .button:first-child::after {
       content: '';
       height: 1.5em;
@@ -543,7 +549,6 @@ html #buttons-toggle {
       opacity: 1;
     }
   }
-
 
   .button:first-child {
     img {
@@ -593,7 +598,6 @@ html #buttons-toggle {
     width: 5.5em;
   }
 }
-
 
 button:hover {
   opacity: 1;

@@ -24,6 +24,10 @@ export const requestUrl = ref(process.env.NODE_ENV === 'development' ? "http://l
   // background-color: var(--has-background-success);
 }
 
+html.dark {
+  color-scheme: dark;
+}
+
 :root {
   background-color: var(--has-background-white);
 }

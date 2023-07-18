@@ -1,9 +1,9 @@
 <template>
     <div class="content is-large">
         <br>
-        <tiptap v-if="contenetJson && renderConfigJson" @save="save" :contenetjson="contenetJson"
+        <tiptap v-if="contentJson && renderConfigJson" @save="save" :contentJson="contentJson"
             :renderConfigJson="renderConfigJson" :uploadEnable="uploadEnable" />
-        <progress v-if="!(contenetJson && renderConfigJson) && !error" class="progress is-large is-info"
+        <progress v-if="!(contentJson && renderConfigJson) && !error" class="progress is-large is-info"
             max="100">Loading</progress>
         <br>
         <article v-if="error" class="message is-warning is-large">
@@ -21,7 +21,7 @@ import Tiptap from '@/components/Tiptap.vue'
 import { ref, watch, onMounted, getCurrentInstance } from "vue";
 import { requestUrl } from "@/App.vue";
 import { router, useNotifyStore } from "@/main";
-const contenetJson = ref<JSON>();
+const contentJson = ref<JSON>();
 const renderConfigJson = ref<JSON>();
 const uploadEnable = ref<boolean>(false);
 const notifyStore = useNotifyStore();
@@ -55,7 +55,7 @@ onMounted(() => {
         })
         return
     }
-    let { data: PageDate, error: getnodeError } = useFetch(requestUrl.value + "/getdata", {
+    let { data: PageDate, error: getNodeError } = useFetch(requestUrl.value + "/getdata", {
         method: 'POST',
         body: JSON.stringify({
             page: history.state.index,
@@ -69,9 +69,9 @@ onMounted(() => {
         let content = val;
         replaceJson(content)
         console.log(content);
-        contenetJson.value = content;
+        contentJson.value = content;
     });
-    watch(getnodeError, (val) => {
+    watch(getNodeError, (val) => {
         error.value = val;
     });
     let { data: renderData, error: getRenderDataError } = useFetch(requestUrl.value + "/getEditorConfig", {
@@ -111,7 +111,7 @@ onMounted(() => {
 });
 
 let debounceDelay: boolean = false;
-function save(contentjson: JSON, contenthtml: string) {
+function save(contentJson: JSON, contentHtml: string) {
     if (debounceDelay) return;
     debounceDelay = true;
     setTimeout(() => {
@@ -121,8 +121,8 @@ function save(contentjson: JSON, contenthtml: string) {
     let RequestBody = JSON.stringify({
         page: history.state.index,
         content: history.state.content,
-        Contentjson: contentjson,
-        Contenthtml: contenthtml
+        Contentjson: contentJson,
+        Contenthtml: contentHtml
     });
     let timeout = RequestBody.length * 0.75 + 10000;
     let { data: saveReturnMsg, error: saveError } = useFetch(requestUrl.value + "/savedata", {
@@ -136,7 +136,7 @@ function save(contentjson: JSON, contenthtml: string) {
     }).get().json();
 
     notifyStore.notify(
-        0,      // 0 means the notification will not be destoryed automatically after recall()
+        0,      // 0 means the notification will not be destroyed automatically after recall()
         'save',
         'saving...',
         'info',

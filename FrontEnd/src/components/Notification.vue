@@ -44,7 +44,7 @@ const duration = props.duration
 onMounted(() => {
     // console.log(props.count)
     if (duration != 0) {
-        destory(duration)
+        destroy(duration)
     } else {
         props.promise?.then((value) => {
             // console.log(value)
@@ -58,12 +58,12 @@ onMounted(() => {
             } else {
                 notifyType.value = "danger"
             }
-            destory()
+            destroy()
         })
     }
 })
 
-function destory(duration: number = 2500) {
+function destroy(duration: number = 2500) {
     setTimeout(() => {
         trsY.value = 100;
         setTimeout(() => {

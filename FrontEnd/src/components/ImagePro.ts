@@ -6,7 +6,7 @@ import { Node, findParentNodeClosestToPos } from '@tiptap/core'
   * note into the editor. The note is displayed below the image and can be
   * used to provide context or additional information about the image.
   * @example
-  * insertimagePro()
+  * insertImagePro()
  */
 
 declare module '@tiptap/core' {
@@ -36,7 +36,6 @@ export default Node.create({
   },
 
   renderHTML() {
-    // return ['image-pro', { 'data-gapcursor': 'ImageProCursor' }, 0]
     return ['image-pro', 0]
   },
 
@@ -50,7 +49,7 @@ export default Node.create({
 
   addCommands() {
     return {
-      insertImagePro: (url) => ({ commands, editor, tr }) => {
+      insertImagePro: (url) => ({ editor, tr }) => {
         console.log(url)
         if (!url) {
           return false
@@ -83,7 +82,7 @@ export default Node.create({
         editor.view.dispatch(tr)
         return true
       },
-      deleteImagePro: () => ({ commands, editor, tr }) => {
+      deleteImagePro: () => ({ editor, tr }) => {
         const { $from } = tr.selection
         const imagePro = findParentNodeClosestToPos($from, (node) => node.type === editor.schema.nodes.imagePro)
         if (imagePro) {
