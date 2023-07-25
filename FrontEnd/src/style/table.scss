@@ -58,15 +58,14 @@
     padding: 0;
     margin-top: 1em;
     margin-bottom: 1em;
-    
+
     table , table:not(:last-child){
         margin-bottom: 0;
     }
-    p.tableNote ,table-pro > p{
-        // font-weight: 600;
-        // margin-top: -.6em;
-        margin-top: 0.2em;
-        margin-bottom: 0.3em;
-        text-align: center;
-    }
+}
+
+table-pro > p{
+    margin-top: 0.2em;
+    margin-bottom: 0.3em;
+    text-align: center;
 }

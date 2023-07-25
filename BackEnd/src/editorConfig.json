@@ -6,7 +6,7 @@
         "HTMLAttributes": {
             "class":"image"
         },
-        "tag": "p"
+        "tag": "img"
     },
     "otherConfigurations":{
         "headingLevels": [1,2,3,4],

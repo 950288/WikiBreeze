@@ -271,6 +271,7 @@ function checkFileType(file: string) {
                     color: #000;
                     height: 30px;
                     padding-left: 10px;
+                    background: #cfcfcf;
                 }
             }
         }

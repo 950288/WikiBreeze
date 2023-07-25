@@ -12,5 +12,5 @@
 	"fileType":[".html",".vue"],
 
 	// Uploads image
-	"uploadImage": true
+	"uploadImage": false
 }

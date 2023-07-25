@@ -297,18 +297,17 @@ const extensions = [
   History,
   Gapcursor
 ]
-console.log(TablePro)
 
 let extensions_costum: Extensions = [];
 
 extensions.forEach((extension, index) => {
-  console.log(extension.type)
   if (costum[extension.name] && extension.type == "node") {
     let newExtension = costum[extension.name].tag ? extension.extend({
       renderHTML({ HTMLAttributes }: any) {
         const val:any = (this as any).parent?.({ HTMLAttributes });
-        if (val && val[0])
+        if (val && val[0]) {
           val[0] = costum[extension.name].tag
+        }
         return val
       }
     }) : extension.extend()
