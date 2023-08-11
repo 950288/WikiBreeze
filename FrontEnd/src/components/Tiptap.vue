@@ -342,13 +342,18 @@ onMounted(() => {
       e.preventDefault();
       save();
     }
+    if (e.ctrlKey && (e.key == 'Z')) {
+      e.preventDefault();
+      editor.value.chain().focus().undo().run()
+    }
+    if (e.ctrlKey && (e.key == 'Y')) {
+      e.preventDefault();
+      editor.value.chain().focus().redo().run()
+    }
   });
 })
 function save() {
   let html = generateHTML(editor.value.getJSON(), extensions_costum)
-  // if (costum.otherConfigurations.citation == "true") {
-  //   html = html.replace(/<sup>\[(\d)\]<\/sup>/g, '<citation><sup>[<a  href="https://www.w3schools.com">$1</a>]</sup></citation>')
-  // }
   emit('save', editor.value.getJSON(), html);
 }
 function setImageURL() {
