@@ -20,12 +20,12 @@
             <div v-if="uploadEnable">
                 <div class="upload">
                     <p>{{ 'Or upload the image(png jpeg jpg svg)' }}</p>
-                    <input type="file" @change="handleUploadImage" accept="image/png, image/jpeg, image/jpg, image/svg" />
+                    <input type="file" @change="handleUploadImage" accept="image/*" />
                 </div>
             </div>
             <div class="confirm" v-if="uploadEnable">
                 <button class="button is-primary" @click="upload()">{{ "upload" }}</button>
-                <!-- <button class="button is-danger" @click="destory()">{{ "cancel" }}</button> -->
+                <!-- <button class="button is-danger" @click="destroy()">{{ "cancel" }}</button> -->
             </div>
         </div>
     </div>
@@ -35,6 +35,7 @@ import { ref, onMounted, watch } from 'vue'
 import { useFetch } from '@vueuse/core';
 import { requestUrl } from '@/App.vue';
 import { useNotifyStore } from "@/main";
+import CryptoJS from 'crypto-js';
 const notifyStore = useNotifyStore();
 
 const upload = ref(() => { })
@@ -48,7 +49,7 @@ const props = defineProps({
     },
     uploadEnable: {
         type: Boolean,
-        // default: falses
+        // default: false
     },
     count: {
         type: Number,
@@ -72,18 +73,23 @@ function destroy() {
 const handleUploadImage = async (e: any) => {
     file.value = e.target.files
 }
-function checkFileName(fileName: string) {
-    const reg = /^[\w\d_\-.]+$/;
-    if (!reg.test(fileName)) {
-        return false;
-    }
-    return true;
+
+function getHash(file: File) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+            const data = e.target.result;
+            resolve(CryptoJS.SHA1(CryptoJS.lib.WordArray.create(data)).toString());
+        };
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+    });
 }
 onMounted(() => {
-    upload.value = () => {
+    upload.value = async () => {
         if (!file.value) {
             notifyStore.notify(
-                1500,      // 0 means the notification will not be destoryed automatically after recall()
+                1500,      // 0 means the notification will not be destroyed automatically after recall()
                 'uploads',
                 'No file selected !',
                 'info',
@@ -94,7 +100,7 @@ onMounted(() => {
         if (!checkFileType(file.value[0].type)) return
         if (file.value[0].size > 10485760) {
             notifyStore.notify(
-                1500,      // 0 means the notification will not be destoryed automatically after recall()
+                1500,      // 0 means the notification will not be destroyed automatically after recall()
                 'uploads',
                 '[file-too-large] File is larger than 10485760 bytes !',
                 'info',
@@ -102,18 +108,16 @@ onMounted(() => {
             destroy()
             return
         }
-        if (!checkFileName(file.value[0].name)) {
-            console.log("files name contain special character, rename file to timestamp")
-            var renamedFile = new File([file.value[0]], `${new Date().getTime().toString()}.${file.value[0].name.split('.').pop()}`, { type: file.value[0].type });
-            fd.append("file", renamedFile);
-        } else {
-            fd.append('file', file.value[0])
-        }
 
+        console.log(file.value[0])
+        const hash = await getHash(file.value[0])
+        console.log("rename file to " + hash)
+        var renamedFile = new File([file.value[0]], `${hash}.${file.value[0].name.split('.').pop()}`, { type: file.value[0].type });
+        fd.append("file", renamedFile);
         fd.append('directory', "WikiBreezeUpload/" + history.state.index + "/" + history.state.content)
 
         notifyStore.notify(
-            0,      // 0 means the notification will not be destoryed automatically after recall()
+            0,      // 0 means the notification will not be destroyed automatically after recall()
             'uploads',
             'Uploading ' + file.value[0].name + '...',
             'info',
@@ -151,8 +155,8 @@ const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/svg+xml"];
 function checkFileType(file: string) {
     if (!allowedTypes.includes(file)) {
         notifyStore.notify(
-            1500,      // 0 means the notification will not be destoryed automatically after recall()
-            'Tpye error',
+            1500,      // 0 means the notification will not be destroyed automatically after recall()
+            'Type error',
             'Only PNG, JPG, JPEG and SVG images are allowed !',
             'info',
             null);

@@ -14,7 +14,10 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
+
+	"golang.org/x/term"
 
 	"github.com/fatih/color"
 )
@@ -424,8 +427,12 @@ func GetAccount() (string, string) {
 		var username string
 		fmt.Scanln(&username)
 		PrintInfo("please input your iGEM password:")
-		var password string
-		fmt.Scanln(&password)
+		var passwordByte []byte
+		passwordByte, err = term.ReadPassword(int(syscall.Stdin))
+		if err != nil {
+			log.Fatal(fmt.Errorf("error reading password: %w", err))
+		}
+		password := string(passwordByte)
 		_, err = accountFile.Write([]byte("{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}"))
 		if err != nil {
 			log.Fatal(fmt.Errorf("error writing to account.json: %w", err))
