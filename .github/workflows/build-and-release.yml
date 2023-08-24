@@ -8,7 +8,7 @@ on:
       - '**/README.md'
       - '**/README_zh.md'
 env:
-  TAG: v1.1.0-beta.2
+  TAG: v1.1.0-beta.3
 jobs:
   build:
     runs-on: ubuntu-latest
