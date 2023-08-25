@@ -460,23 +460,23 @@ func ReadUploadConfig_HandleUpload(config map[string]interface{}) {
 	uploadImage, ok := config["uploadImage"]
 	if ok {
 		upload, ok := uploadImage.(bool)
-		fmt.Println("you have enabled upload image feature, to disable it, set 'uploadImage' to false in WikibreezeData/config/config.json")
 		if !ok {
 			PrintErr("uploadImage should be bool type(e.g. \"uploadImage\": true)")
 		} else if upload {
 			username, password := GetAccount()
 			cookie, requestUrl, err := GetCookie(username, password)
 			if err != nil {
-				PrintErr("error to login:" + err.Error())
+				PrintErr("error to login: " + err.Error())
+				PrintInfo("upload image is not enabled")
 			} else {
 				fmt.Println("upload link:", requestUrl)
 				http.HandleFunc("/WikiBreezeUpload/", HandlerUploadImage(cookie, requestUrl))
 			}
 		} else {
-			fmt.Println("upload image is not enabled, to enable it, set 'uploadImage' to true in WikibreezeData/config/config.json")
+			PrintInfo("upload image is not enabled, to enable it, set 'uploadImage' to true in WikibreezeData/config/config.json")
 		}
 	} else {
-		PrintInfo("\nto enable upload image, you should update WikibreezeData/config/config.json with following:")
+		PrintInfo("\nupload image is not enabled, to enable it, you should update WikibreezeData/config/config.json with following:")
 		fmt.Println(Cyanf("\"uploadImage\": true"))
 	}
 }
