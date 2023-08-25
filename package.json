@@ -1,6 +1,6 @@
 {
     "name": "wikibreeze",
-    "version": "v1.1.0-beta.3",
+    "version": "v1.1.0-beta.4",
     "type": "module",
     "scripts": {
         "prepare": "node -v",
