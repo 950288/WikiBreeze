@@ -89,7 +89,7 @@ onMounted(() => {
     upload.value = async () => {
         if (!file.value) {
             notifyStore.notify(
-                1500,      // 0 means the notification will not be destroyed automatically after recall()
+                1500,
                 'uploads',
                 'No file selected !',
                 'info',
@@ -100,7 +100,7 @@ onMounted(() => {
         if (!checkFileType(file.value[0].type)) return
         if (file.value[0].size > 10485760) {
             notifyStore.notify(
-                1500,      // 0 means the notification will not be destroyed automatically after recall()
+                1500,
                 'uploads',
                 '[file-too-large] File is larger than 10485760 bytes !',
                 'info',
@@ -108,8 +108,6 @@ onMounted(() => {
             destroy()
             return
         }
-
-        console.log(file.value[0])
         const hash = await getHash(file.value[0])
         console.log("rename file to " + hash)
         var renamedFile = new File([file.value[0]], `${hash}.${file.value[0].name.split('.').pop()}`, { type: file.value[0].type });
