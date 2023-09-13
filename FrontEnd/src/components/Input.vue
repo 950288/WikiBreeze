@@ -182,6 +182,7 @@ function checkFileType(file: string) {
         height: 100%;
         background-color: rgba(0, 0, 0, 0.2);
         backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
     }
 
     .body {

@@ -185,14 +185,14 @@
 </template>
   
 <script setup lang="ts">
-import { useEditor, EditorContent, type Extensions } from '@tiptap/vue-3'
+import { useEditor, EditorContent, mergeAttributes, type Extensions } from '@tiptap/vue-3'
 import Document from '@tiptap/extension-document'
 import Paragraphs from './Note'
 import Italic from '@tiptap/extension-italic'
 import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
 import Code from '@tiptap/extension-code'
-import codeBlock from '@tiptap/extension-code-block-lowlight'
+import CodeBlock from '@tiptap/extension-code-block-lowlight'
 import Text from '@tiptap/extension-text'
 import Bold from '@tiptap/extension-bold'
 import Underline from '@tiptap/extension-underline'
@@ -208,8 +208,8 @@ import ImagePro from './ImagePro'
 import Table from '@tiptap/extension-table'
 import TextAlign from '@tiptap/extension-text-align'
 import TableRow from '@tiptap/extension-table-row'
-import tableHeader from '@tiptap/extension-table-header'
-import tableCell from '@tiptap/extension-table-cell'
+import TableHeader from '@tiptap/extension-table-header'
+import TableCell from '@tiptap/extension-table-cell'
 import History from '@tiptap/extension-history'
 import css from 'highlight.js/lib/languages/css'
 import js from 'highlight.js/lib/languages/javascript'
@@ -230,100 +230,84 @@ lowlight.registerLanguage('python', python)
 
 
 const emit = defineEmits(['save'])
+const cache = new WeakMap()
 const TableToogle = ref(false)
+const mounted = ref(false);
 const state = ref({
   index: history.state.index,
   content: history.state.content
 })
 
 const props = defineProps(['contentJson', "renderConfigJson", "uploadEnable"])
-
-const mounted = ref(false);
 let costum = props.renderConfigJson;
-Heading.configure({
-  levels: costum.otherConfigurations ? costum.otherConfigurations.headingLevels : [1, 2, 3],
-})
-Link.configure({
-  autolink: true,
-})
-History.configure({
-  depth: 100,
-  newGroupDelay: 500,
-})
-const TableHeader = tableHeader.extend({
-  content: 'paragraph+',
-})
-const TableCell = tableCell.extend({
-  content: 'paragraph+',
-})
-let CodeBlock = codeBlock.extend({
-  isolating: true,
-})
+
 
 const extensions = [
   Document,
-  Paragraphs.configure({
-    HTMLAttributes: {
-      class: 'my-custom-class',
-    },
-  }),
+  Paragraphs,
   Text,
   Bold,
   Italic,
   Subscript,
   Superscript,
   Code,
-  CodeBlock.configure({
+  CodeBlock.extend({
+    isolating: true,
+  }).configure({
     defaultLanguage: null,
     lowlight,
   }),
   Underline,
-  Heading,
+  Heading.configure({
+    levels: costum.otherConfigurations ? costum.otherConfigurations.headingLevels : [1, 2, 3],
+  }),
   Bulletlist,
   Listitem,
   Image,
   ImagePro,
-  Link,
+  Link.configure({
+    autolink: true,
+  }),
   HardBreak,
   TextAlign.configure({
     types: ['heading', 'paragraph'],
   }),
   Table,
-  TablePro,
+  TableCell.extend({
+    content: 'paragraph+',
+  }),
   TableRow,
-  TableHeader,
-  TableCell,
+  TablePro,
+  TableHeader.extend({
+    content: 'paragraph+',
+  }),
   Strike,
-  History,
+  History.configure({
+    depth: 100,
+    newGroupDelay: 500,
+  }),
   Gapcursor
 ]
 
 let extensions_costum: Extensions = [];
 
 extensions.forEach((extension, index) => {
-  if (costum[extension.name] && extension.type == "node") {
-    let newExtension = costum[extension.name].tag ? extension.extend({
+  if (costum[extension.name] && (extension.type == "node" || extension.type == "mark")) {
+    extensions_costum[index] = deepClone(extension).extend({
       renderHTML({ HTMLAttributes }: any) {
-        const val:any = (this as any).parent?.({ HTMLAttributes });
+        const val: any = (this as any).parent?.({ HTMLAttributes });
         if (val && val[0]) {
           val[0] = costum[extension.name].tag
         }
+        if (val && val[1] && costum[extension.name].HTMLAttributes) {
+          val[1] = mergeAttributes(extension.options.HTMLAttributes, costum[extension.name].HTMLAttributes)
+        }
         return val
-      }
-    }) : extension.extend()
+      },
+    })
 
-    if (costum[extension.name].HTMLAttributes && newExtension.options) {
-      newExtension.configure({
-        HTMLAttributes: costum[extension.name].HTMLAttributes,
-      })
-
-      newExtension.options.HTMLAttributes = JSON.parse(JSON.stringify(costum[extension.name].HTMLAttributes))
-    }
-    extensions_costum[index] = newExtension
-  } else if (costum[extension.name] && extension.type == "Mark") {
-    extensions_costum[index] = extension.extend()
   } else {
-    extensions_costum[index] = extension.extend()
+    extensions_costum[index] = extension
   }
 })
 
@@ -383,6 +367,25 @@ function setLink() {
   watch(recall, (val) => {
     editor.value.chain().focus().setLink({ href: val, target: '_blank' }).run()
   })
+}
+
+function deepClone(value: Object) {
+  if (typeof value !== 'object' || value === null) {
+    return value;
+  }
+  const cached = cache.get(value);
+  if (cached) {
+    return cached;
+  }
+  const result = Array.isArray(value) ? [] : {} as any;
+  Object.setPrototypeOf(result, Object.getPrototypeOf(value));
+  cache.set(value, result);
+  for (const key in value) {
+    if (value.hasOwnProperty(key)) {
+      result[key] = deepClone((value as any)[key]);
+    }
+  }
+  return result;
 }
 </script>
 <style scoped lang="scss">
@@ -612,28 +615,5 @@ button * {
 }
 </style>
 <style lang="scss">
-code {
-  font-size: 1.1rem;
-  padding: 0.15em;
-  border-radius: 0.15em;
-  background-color: rgba(#616161, 0.1);
-  color: var(--has-text-dark-grey);
-  box-decoration-break: clone;
-}
-
-.ProseMirror pre code {
-  font-size: 1.1rem;
-}
-
-sup {
-  vertical-align: top;
-}
-
-sub {
-  vertical-align: sub;
-}
-
-a {
-  color: var(--has-text-link);
-}
+@import "../style/ProseMirror.scss";
 </style>
