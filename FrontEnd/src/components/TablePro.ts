@@ -14,10 +14,10 @@ import { createTable } from '@tiptap/extension-table'
  * table with 3 rows, 3 columns, and no header row
  * @renderHTML
  * <table-pro>
- *   <p>edit your table note</p>
  *   <table>
  *      ****
  *   </table>
+ *   <p>add table note here</p>
  * </table-pro>
  */
 
@@ -62,8 +62,6 @@ export default Node.create({
     return {
       insertTablePro: ({ rows = 2, cols = 2, withHeaderRow = true } = {}) => ({ commands, editor, tr }) => {
         const table = createTable(editor.schema, rows, cols, withHeaderRow)
-        // use createChecked to create a table node without checking the schema
-        // const noteNode = editor.schema.nodes.paragraph.createChecked(null, [
 
         const noteNode = editor.schema.nodes.paragraph.createChecked(
           { class: "tableNote" }

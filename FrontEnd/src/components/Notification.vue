@@ -42,16 +42,13 @@ const props = defineProps({
 const msg = ref(props.msg)
 const duration = props.duration
 onMounted(() => {
-    // console.log(props.count)
     if (duration != 0) {
         destroy(duration)
     } else {
         props.promise?.then((value) => {
-            // console.log(value)
             if (value.notify) {
                 msg.value = value.notify
             } else {
-                // console.log('Notify')
             }
             if (value.success) {
                 notifyType.value = "success"

@@ -5,10 +5,10 @@
         <div class="box" v-for="(page, index) in data">
             <h2>{{ index }}</h2>
             <div class="buttons">
-                <button v-for="content in page" class="button is-primary is-outlined" @click="editcontent(index.toString(), content)">
-                    {{content}}
+                <button v-for="content in page" class="button is-primary is-outlined"
+                    @click="editcontent(index.toString(), content)">
+                    {{ content }}
                 </button>
-                <!-- <button class="button is-primary is-outlined">About_2</button> -->
             </div>
         </div>
         <article v-if="error" class="message is-warning is-large">
@@ -18,14 +18,10 @@
             </div>
         </article>
         <progress v-if="!data && !error" class="progress is-large is-info" max="100">Loading</progress>
-        <!-- <div>
-            {{ data }}<br>
-        </div> -->
     </div>
 </template>
 <script setup lang="ts">
 import { useFetch } from "@vueuse/core";
-import { ref, watch } from "vue";
 import { router } from "@/main";
 import { requestUrl } from "@/App.vue";
 let { data, error } = useFetch(requestUrl.value + "/list").get().json();
@@ -49,7 +45,7 @@ function editcontent(index: string, content: string) {
     border: 1px solid var(--has-background-light-grey);
     position: relative;
     margin-bottom: 15px;
-        
+
 
     h2 {
         display: block;
@@ -59,7 +55,7 @@ function editcontent(index: string, content: string) {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        
+
     }
 
     .buttons {

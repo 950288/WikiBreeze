@@ -14,101 +14,97 @@
       <button id="button" class="button is-success" v-if="mounted" @click="editor.chain().focus().toggleBold().run()">
         Bold
       </button>
-      <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleItalic().run()">
+      <button id="button" class="button is-success" v-if="mounted" @click="editor.chain().focus().toggleItalic().run()">
         <em>Italic</em>
       </button>
-      <button id="button" class="button is-success " v-if="mounted"
+      <button id="button" class="button is-success" v-if="mounted"
         @click="editor.chain().focus().toggleSuperscript().run()">
         <sup>Sup</sup>
       </button>
-      <button id="button" class="button is-success " v-if="mounted"
+      <button id="button" class="button is-success" v-if="mounted"
         @click="editor.chain().focus().toggleSubscript().run()">
         <sub>Sub</sub>
       </button>
-      <button id="button" class="button is-success " v-if="mounted"
+      <button id="button" class="button is-success" v-if="mounted"
         @click="editor.chain().focus().toggleUnderline().run()">
         <u>Underline</u>
       </button>
-      <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleStrike().run()">
+      <button id="button" class="button is-success" v-if="mounted" @click="editor.chain().focus().toggleStrike().run()">
         <s>Strike</s>
       </button>
-      <button id="button" class="button is-success " v-if="mounted"
+      <button id="button" class="button is-success" v-if="mounted"
         @click="editor.chain().focus().toggleBulletList().run()">
         List
       </button>
-      <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().toggleCode().run()">
+      <button id="button" class="button is-success" v-if="mounted" @click="editor.chain().focus().toggleCode().run()">
         Code
       </button>
       <div class="button CodeBlock" id="buttons-toggle">
         <div class="buttons-wrap">
-          <button id="button" class="button is-success " v-if="mounted"
+          <button id="button" class="button is-success" v-if="mounted"
             @click="editor.chain().focus().toggleCodeBlock().run()">
             CodeBlock
           </button>
-          <button id="button" class="button is-success " v-if="mounted"
+          <button id="button" class="button is-success" v-if="mounted"
             @click="editor.chain().focus().toggleCodeBlock().updateAttributes('codeBlock', { language: 'python' }).run()">
             python
           </button>
-          <button id="button" class="button is-success " v-if="mounted"
+          <button id="button" class="button is-success" v-if="mounted"
             @click="editor.chain().focus().toggleCodeBlock().updateAttributes('codeBlock', { language: 'css' }).run()">
             css
           </button>
-          <button id="button" class="button is-success " v-if="mounted"
+          <button id="button" class="button is-success" v-if="mounted"
             @click="editor.chain().focus().toggleCodeBlock().updateAttributes('codeBlock', { language: 'html' }).run()">
             html
           </button>
-          <button id="button" class="button is-success " v-if="mounted"
+          <button id="button" class="button is-success" v-if="mounted"
             @click="editor.chain().focus().toggleCodeBlock().updateAttributes('codeBlock', { language: 'js' }).run()">
             js
           </button>
         </div>
       </div>
-      <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().exitCode().run()">
+      <button id="button" class="button is-success" v-if="mounted" @click="editor.chain().focus().exitCode().run()">
         ExitCodeBlock
       </button>
       <div class="button setLink" id="buttons-toggle">
         <div class="buttons-wrap">
-          <button id="button" class="button is-success " v-if="mounted" @click="setLink()">
+          <button id="button" class="button is-success" v-if="mounted" @click="setLink()">
             SetLink
           </button>
-          <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().unsetLink().run()">
+          <button id="button" class="button is-success" v-if="mounted" @click="editor.chain().focus().unsetLink().run()">
             Unset
           </button>
         </div>
       </div>
-      <button id="button" class="button is-success " v-if="mounted" @click="editor.chain().focus().setHardBreak().run()">
+      <button id="button" class="button is-success" v-if="mounted" @click="editor.chain().focus().setHardBreak().run()">
         Break
       </button>
-      <button id="button" class="button is-success "
+      <button id="button" class="button is-success"
         v-if="mounted && !(costum.otherConfigurations.imagePro == 'true' && costum.otherConfigurations.imageMustContainNote == 'true')"
         @click="setImageURL()">
         Image
       </button>
-      <button id="button" class="button is-success " v-if="mounted && costum.otherConfigurations.imagePro == 'true'"
+      <button id="button" class="button is-success" v-if="mounted && costum.otherConfigurations.imagePro == 'true'"
         @click="(_$event: any) => setImageProURL()">
         ImagePro
       </button>
       <div class="button textAlign" id="buttons-toggle">
         <div class="buttons-wrap">
-          <button id="button" class="button is-success " v-if="mounted">
+          <button id="button" class="button is-success" v-if="mounted">
             Align
           </button>
-          <button id="button" class="button is-success " v-if="mounted"
+          <button id="button" class="button is-success" v-if="mounted"
             @click="editor.chain().focus().setTextAlign('left').run()">
             Left
           </button>
-          <button id="button" class="button is-success " v-if="mounted"
+          <button id="button" class="button is-success" v-if="mounted"
             @click="editor.chain().focus().setTextAlign('right').run()">
             Right
           </button>
-          <button id="button" class="button is-success " v-if="mounted"
+          <button id="button" class="button is-success" v-if="mounted"
             @click="editor.chain().focus().setTextAlign('center').run()">
             Center
           </button>
-          <!-- <button id="button" class="button is-success " v-if="mounted"
-            @click="editor.chain().focus().setTextAlign('justify').run()">
-            Justify
-          </button> -->
         </div>
       </div>
       <button id="button" class="button is-info Table" v-if="mounted" @click="TableToogle = TableToogle ? false : true">

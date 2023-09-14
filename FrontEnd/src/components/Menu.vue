@@ -36,8 +36,6 @@ const props = defineProps({
   },
 });
 
-// console.log(props.routes);
-
 const indicator_X = ref<number>(0);
 const indicator_W = ref<number>(0);
 const drift_X = ref<number>(0);

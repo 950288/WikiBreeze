@@ -58,7 +58,7 @@ export default Node.create({
           }
           ,
           [
-            editor.schema.text('Edit your image note here')
+            editor.schema.text('Edit image note here')
           ]
         )
         console.log(JSON.stringify(image))

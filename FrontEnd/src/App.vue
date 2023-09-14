@@ -17,11 +17,9 @@ export const requestUrl = ref(process.env.NODE_ENV === 'development' ? "http://l
 <style lang="scss">
 @import "@/style/index.scss";
 
-// @include set-color-mode(light);
 * {
   margin: 0;
   padding: 0;
-  // background-color: var(--has-background-success);
 }
 
 html.dark {

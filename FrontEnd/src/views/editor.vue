@@ -164,9 +164,5 @@ function save(contentJson: JSON, contentHtml: string) {
 <style lang="scss" scoped>
 .message {
     background: var(--is-warning-gb);
-
-    // .message-body * {
-    //     // color: #000;
-    // }
 }
 </style>
