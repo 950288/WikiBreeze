@@ -296,11 +296,13 @@ extensions.forEach((extension, index) => {
     extensions_costum[index] = deepClone(extension).extend({
       renderHTML({ HTMLAttributes }: any) {
         const val: any = (this as any).parent?.({ HTMLAttributes });
-        if (val && val[0]) {
+        if (val) {
           val[0] = costum[extension.name].tag
         }
-        if (val && val[1] && costum[extension.name].HTMLAttributes) {
-          val[1] = mergeAttributes(extension.options.HTMLAttributes, costum[extension.name].HTMLAttributes)
+        if (val && costum[extension.name].HTMLAttributes) {
+          if ((typeof val[1]) == "number")
+            val[2] = val[1]
+          val[1] = mergeAttributes(HTMLAttributes, costum[extension.name].HTMLAttributes)
         }
         return val
       },
@@ -337,7 +339,9 @@ onMounted(() => {
   });
 })
 function save() {
+  // console.log(generateHTML(editor.value.getJSON(), extensions))
   let html = generateHTML(editor.value.getJSON(), extensions_costum)
+  // console.log(html)
   emit('save', editor.value.getJSON(), html);
 }
 function setImageURL() {

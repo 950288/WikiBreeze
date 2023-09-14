@@ -4,7 +4,7 @@
 {
     "image": {
         "HTMLAttributes": {
-            "class":"image"
+            "alt":"WikiBreeze Image"
         },
         "tag": "img"
     },

@@ -39,14 +39,6 @@ export default Node.create({
     return ['image-pro', 0]
   },
 
-  addAttributes() {
-    return {
-      class: {
-        default: 'imagePro',
-      },
-    }
-  },
-
   addCommands() {
     return {
       insertImagePro: (url) => ({ editor, tr }) => {
