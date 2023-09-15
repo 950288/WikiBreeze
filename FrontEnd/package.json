@@ -42,7 +42,6 @@
     "@tiptap/extension-text-align": "^2.1.8",
     "@tiptap/extension-underline": "^2.1.8",
     "@tiptap/html": "^2.1.8",
-    "@tiptap/starter-kit": "^2.1.8",
     "@tiptap/vue-3": "^2.1.8",
     "@vueuse/core": "^10.4.1",
     "bulma": "^0.9.4",

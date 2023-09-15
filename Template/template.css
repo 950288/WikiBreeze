@@ -3,10 +3,10 @@ body {
 }
 
 main {
+  background-color: aliceblue;
   max-width: 800px;
   margin: 0 auto;
   padding: 1rem;
-  background-color: aliceblue;
 }
 
 h1 {
@@ -90,10 +90,10 @@ image-pro > p,
 table-pro > p {
   text-align: center;
 }
-img p,
 table p {
-  margin-top: .2em;
   margin-bottom: .2em;
+  margin-top: .2em;
+  text-align: left;
 }
 
 
@@ -108,16 +108,17 @@ li {
 
 code {
   background: #0D0D0D;
-  padding: 0.2rem 0.4rem;
+  padding: .05em 0.3em;
+  border-radius: .3em;
+  line-height: 1.3em;
   font-size: 0.9rem;
-  line-height: 1.3rem;
   color: #fff;
 }
 
 pre {
   background: #0D0D0D;
-  padding: 1rem;
   overflow-x: auto;
+  padding: 1rem;
 }
 
 th,
