@@ -1,5 +1,9 @@
 <template>
-  <button id="button" class="button is-success" @click="themeMode = themeMode === 'dark' ? 'light' : 'dark'">
+  <button
+    id="button"
+    class="button is-success"
+    @click="themeMode = themeMode === 'dark' ? 'light' : 'dark'"
+  >
     {{ themeMode }}
   </button>
 </template>
@@ -10,9 +14,7 @@ import { themeMode } from "@/main";
 #button {
   display: flex;
   align-items: center;
-  /* Vertically center the button element */
   justify-content: center;
-  /* Horizontally center the button element */
   height: 100%;
   position: relative;
   color: var(--has-text-success);

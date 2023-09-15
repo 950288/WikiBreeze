@@ -12,5 +12,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
   },
-  "endOfLine": "auto",
+  rules: {
+    "vue/multi-word-component-names": "off",
+  },
 };

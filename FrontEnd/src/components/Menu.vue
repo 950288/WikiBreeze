@@ -2,13 +2,28 @@
   <nav :class="`menu ${float}`">
     <div :class="`ribbon  ${float}`"></div>
     <ul class="nav-items">
-      <li :class="`indicator`" :style="{
-        left: `${indicator_X + drift_X}px`,
-        width: `${indicator_W - drift_W}px`,
-      }"></li>
-      <li v-for="(route, index) in routes" :key="route.name" :class="`nav-item`" :style="{
-        display: `${router.currentRoute.value.name == 'Home' && route.name != 'Home' ? 'none' : ''}`,
-      }" @mouseenter="handleMouseEnter(route.name, index)" @mouseleave="handleMouseLeave()" ref="pages">
+      <li
+        :class="`indicator`"
+        :style="{
+          left: `${indicator_X + drift_X}px`,
+          width: `${indicator_W - drift_W}px`,
+        }"
+      ></li>
+      <li
+        v-for="(route, index) in routes"
+        :key="route.name"
+        :class="`nav-item`"
+        :style="{
+          display: `${
+            router.currentRoute.value.name == 'Home' && route.name != 'Home'
+              ? 'none'
+              : ''
+          }`,
+        }"
+        @mouseenter="handleMouseEnter(route.name, index)"
+        @mouseleave="handleMouseLeave()"
+        ref="pages"
+      >
         <router-link :to="route.path" class="nav-link">{{
           route.name
         }}</router-link>
@@ -27,7 +42,7 @@ import ThemeButton from "@/components/ThemeButton.vue";
 import { router } from "@/main";
 import { useWindowScroll } from "@vueuse/core";
 const pages = ref([]);
-const { x, y } = useWindowScroll();
+const { y } = useWindowScroll();
 const float = ref<string>("");
 const props = defineProps({
   routes: {
@@ -42,7 +57,7 @@ const drift_X = ref<number>(0);
 const drift_W = ref<number>(0);
 const current_pg_index = computed(() => {
   return props.routes.findIndex(
-    (route) => route.name === router.currentRoute.value.name
+    (route) => route.name === router.currentRoute.value.name,
   );
 });
 function back_position() {
@@ -119,7 +134,11 @@ function handleMouseLeave() {
     height: 60px;
     width: 100%;
     left: 0;
-    transition: width 0.2s ease, height 0.2s ease, top 0.2s ease, left 0.2s ease;
+    transition:
+      width 0.2s ease,
+      height 0.2s ease,
+      top 0.2s ease,
+      left 0.2s ease;
   }
 
   .ribbon.float {
@@ -181,7 +200,9 @@ function handleMouseLeave() {
   background-color: rgb(70, 70, 70);
   border-radius: 5px;
   transform: translateX(0);
-  transition: left 0.2s ease, width 0.2s ease;
+  transition:
+    left 0.2s ease,
+    width 0.2s ease;
   animation: none 1s ease 0 1 normal;
 }
 </style>

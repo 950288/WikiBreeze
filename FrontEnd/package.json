@@ -10,10 +10,11 @@
     "test:unit": "vitest --environment jsdom --root src/",
     "build-only": "vite build  --outDir ../Wikibreeze",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix"
   },
   "dependencies": {
     "@babel/types": "^7.22.17",
+    "@types/node": "^20.6.0",
     "@jridgewell/sourcemap-codec": "^1.4.15",
     "@tiptap/core": "^2.1.8",
     "@tiptap/extension-bold": "^2.1.8",
@@ -58,7 +59,6 @@
     "@tsconfig/node18": "^18.2.2",
     "@types/crypto-js": "^4.1.2",
     "@types/jsdom": "^21.1.2",
-    "@types/node": "^20.6.0",
     "@vitejs/plugin-vue": "^4.3.4",
     "@vitejs/plugin-vue-jsx": "^3.0.2",
     "@vue/eslint-config-prettier": "^8.0.0",

@@ -1,242 +1,447 @@
 <template>
   <div class="main content">
-    <h3 class="reminder">You are editing <u>{{ state.content }}</u> on <u>{{ state.index }}</u> page.</h3>
-    <div class="buttons">
+    <h3 class="reminder">
+      You are editing <u>{{ state.content }}</u> on
+      <u>{{ state.index }}</u> page.
+    </h3>
+    <div class="buttons" v-if="mounted">
       <div class="button Heading" id="buttons-toggle">
         <div class="buttons-wrap">
-          <button v-for="(item) in costum.otherConfigurations ? costum.otherConfigurations.headingLevels : [1, 2, 3]"
-            id="button" class="button is-success" v-if="mounted"
-            @click="editor.chain().focus().toggleHeading({ level: item }).run()">
+          <button
+            v-for="item in costum.otherConfigurations
+              ? costum.otherConfigurations.headingLevels
+              : [1, 2, 3]"
+            :key="item"
+            id="button"
+            class="button is-success"
+            @click="editor.chain().focus().toggleHeading({ level: item }).run()"
+          >
             H{{ item }}
           </button>
         </div>
       </div>
-      <button id="button" class="button is-success" v-if="mounted" @click="editor.chain().focus().toggleBold().run()">
+      <button
+        id="button"
+        class="button is-success"
+        @click="editor.chain().focus().toggleBold().run()"
+      >
         Bold
       </button>
-      <button id="button" class="button is-success" v-if="mounted" @click="editor.chain().focus().toggleItalic().run()">
+      <button
+        id="button"
+        class="button is-success"
+        @click="editor.chain().focus().toggleItalic().run()"
+      >
         <em>Italic</em>
       </button>
-      <button id="button" class="button is-success" v-if="mounted"
-        @click="editor.chain().focus().toggleSuperscript().run()">
+      <button
+        id="button"
+        class="button is-success"
+        @click="editor.chain().focus().toggleSuperscript().run()"
+      >
         <sup>Sup</sup>
       </button>
-      <button id="button" class="button is-success" v-if="mounted"
-        @click="editor.chain().focus().toggleSubscript().run()">
+      <button
+        id="button"
+        class="button is-success"
+        @click="editor.chain().focus().toggleSubscript().run()"
+      >
         <sub>Sub</sub>
       </button>
-      <button id="button" class="button is-success" v-if="mounted"
-        @click="editor.chain().focus().toggleUnderline().run()">
+      <button
+        id="button"
+        class="button is-success"
+        @click="editor.chain().focus().toggleUnderline().run()"
+      >
         <u>Underline</u>
       </button>
-      <button id="button" class="button is-success" v-if="mounted" @click="editor.chain().focus().toggleStrike().run()">
+      <button
+        id="button"
+        class="button is-success"
+        @click="editor.chain().focus().toggleStrike().run()"
+      >
         <s>Strike</s>
       </button>
-      <button id="button" class="button is-success" v-if="mounted"
-        @click="editor.chain().focus().toggleBulletList().run()">
+      <button
+        id="button"
+        class="button is-success"
+        @click="editor.chain().focus().toggleBulletList().run()"
+      >
         List
       </button>
-      <button id="button" class="button is-success" v-if="mounted" @click="editor.chain().focus().toggleCode().run()">
+      <button
+        id="button"
+        class="button is-success"
+        @click="editor.chain().focus().toggleCode().run()"
+      >
         Code
       </button>
       <div class="button CodeBlock" id="buttons-toggle">
         <div class="buttons-wrap">
-          <button id="button" class="button is-success" v-if="mounted"
-            @click="editor.chain().focus().toggleCodeBlock().run()">
+          <button
+            id="button"
+            class="button is-success"
+            @click="editor.chain().focus().toggleCodeBlock().run()"
+          >
             CodeBlock
           </button>
-          <button id="button" class="button is-success" v-if="mounted"
-            @click="editor.chain().focus().toggleCodeBlock().updateAttributes('codeBlock', { language: 'python' }).run()">
+          <button
+            id="button"
+            class="button is-success"
+            @click="
+              editor
+                .chain()
+                .focus()
+                .toggleCodeBlock()
+                .updateAttributes('codeBlock', { language: 'python' })
+                .run()
+            "
+          >
             python
           </button>
-          <button id="button" class="button is-success" v-if="mounted"
-            @click="editor.chain().focus().toggleCodeBlock().updateAttributes('codeBlock', { language: 'css' }).run()">
+          <button
+            id="button"
+            class="button is-success"
+            @click="
+              editor
+                .chain()
+                .focus()
+                .toggleCodeBlock()
+                .updateAttributes('codeBlock', { language: 'css' })
+                .run()
+            "
+          >
             css
           </button>
-          <button id="button" class="button is-success" v-if="mounted"
-            @click="editor.chain().focus().toggleCodeBlock().updateAttributes('codeBlock', { language: 'html' }).run()">
+          <button
+            id="button"
+            class="button is-success"
+            @click="
+              editor
+                .chain()
+                .focus()
+                .toggleCodeBlock()
+                .updateAttributes('codeBlock', { language: 'html' })
+                .run()
+            "
+          >
             html
           </button>
-          <button id="button" class="button is-success" v-if="mounted"
-            @click="editor.chain().focus().toggleCodeBlock().updateAttributes('codeBlock', { language: 'js' }).run()">
+          <button
+            id="button"
+            class="button is-success"
+            @click="
+              editor
+                .chain()
+                .focus()
+                .toggleCodeBlock()
+                .updateAttributes('codeBlock', { language: 'js' })
+                .run()
+            "
+          >
             js
           </button>
         </div>
       </div>
-      <button id="button" class="button is-success" v-if="mounted" @click="editor.chain().focus().exitCode().run()">
+      <button
+        id="button"
+        class="button is-success"
+        @click="editor.chain().focus().exitCode().run()"
+      >
         ExitCodeBlock
       </button>
       <div class="button setLink" id="buttons-toggle">
         <div class="buttons-wrap">
-          <button id="button" class="button is-success" v-if="mounted" @click="setLink()">
+          <button id="button" class="button is-success" @click="setLink()">
             SetLink
           </button>
-          <button id="button" class="button is-success" v-if="mounted" @click="editor.chain().focus().unsetLink().run()">
+          <button
+            id="button"
+            class="button is-success"
+            @click="editor.chain().focus().unsetLink().run()"
+          >
             Unset
           </button>
         </div>
       </div>
-      <button id="button" class="button is-success" v-if="mounted" @click="editor.chain().focus().setHardBreak().run()">
+      <button
+        id="button"
+        class="button is-success"
+        @click="editor.chain().focus().setHardBreak().run()"
+      >
         Break
       </button>
-      <button id="button" class="button is-success"
-        v-if="mounted && !(costum.otherConfigurations.imagePro == 'true' && costum.otherConfigurations.imageMustContainNote == 'true')"
-        @click="setImageURL()">
+      <button
+        id="button"
+        class="button is-success"
+        v-if="
+          mounted &&
+          !(
+            costum.otherConfigurations.imagePro == 'true' &&
+            costum.otherConfigurations.imageMustContainNote == 'true'
+          )
+        "
+        @click="setImageURL()"
+      >
         Image
       </button>
-      <button id="button" class="button is-success" v-if="mounted && costum.otherConfigurations.imagePro == 'true'"
-        @click="(_$event: any) => setImageProURL()">
+      <button
+        id="button"
+        class="button is-success"
+        v-if="mounted && costum.otherConfigurations.imagePro == 'true'"
+        @click="(_$event: any) => setImageProURL()"
+      >
         ImagePro
       </button>
       <div class="button textAlign" id="buttons-toggle">
         <div class="buttons-wrap">
-          <button id="button" class="button is-success" v-if="mounted">
-            Align
-          </button>
-          <button id="button" class="button is-success" v-if="mounted"
-            @click="editor.chain().focus().setTextAlign('left').run()">
+          <button id="button" class="button is-success">Align</button>
+          <button
+            id="button"
+            class="button is-success"
+            @click="editor.chain().focus().setTextAlign('left').run()"
+          >
             Left
           </button>
-          <button id="button" class="button is-success" v-if="mounted"
-            @click="editor.chain().focus().setTextAlign('right').run()">
+          <button
+            id="button"
+            class="button is-success"
+            @click="editor.chain().focus().setTextAlign('right').run()"
+          >
             Right
           </button>
-          <button id="button" class="button is-success" v-if="mounted"
-            @click="editor.chain().focus().setTextAlign('center').run()">
+          <button
+            id="button"
+            class="button is-success"
+            @click="editor.chain().focus().setTextAlign('center').run()"
+          >
             Center
           </button>
         </div>
       </div>
-      <button id="button" class="button is-info Table" v-if="mounted" @click="TableToogle = TableToogle ? false : true">
-        <p>Table</p><img :class="{ imghover: TableToogle }" src="@/assets/angle.svg" />
+      <button
+        id="button"
+        class="button is-info Table"
+        @click="TableToogle = TableToogle ? false : true"
+      >
+        <p>Table</p>
+        <img :class="{ imghover: TableToogle }" src="@/assets/angle.svg" />
       </button>
-      <button id="button" class="button is-info "
-        v-if="mounted && TableToogle && !(costum.otherConfigurations.tablePro == 'true' && costum.otherConfigurations.tableMustContainNote == 'true')"
-        @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()">
+      <button
+        id="button"
+        class="button is-info"
+        v-if="
+          mounted &&
+          TableToogle &&
+          !(
+            costum.otherConfigurations.tablePro == 'true' &&
+            costum.otherConfigurations.tableMustContainNote == 'true'
+          )
+        "
+        @click="
+          editor
+            .chain()
+            .focus()
+            .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+            .run()
+        "
+      >
         addTable
       </button>
-      <button id="button" class="button is-info "
-        v-if="mounted && TableToogle && costum.otherConfigurations.tablePro == 'true'"
-        @click="editor.chain().focus().insertTablePro({ rows: 3, cols: 3, withHeaderRow: true }).run()">
+      <button
+        id="button"
+        class="button is-info"
+        v-if="
+          mounted &&
+          TableToogle &&
+          costum.otherConfigurations.tablePro == 'true'
+        "
+        @click="
+          editor
+            .chain()
+            .focus()
+            .insertTablePro({ rows: 3, cols: 3, withHeaderRow: true })
+            .run()
+        "
+      >
         TablePro
       </button>
-      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
-        @click="editor.chain().focus().addColumnBefore().run()">
+      <button
+        id="button"
+        class="button is-info"
+        v-if="mounted && TableToogle"
+        @click="editor.chain().focus().addColumnBefore().run()"
+      >
         addColBefore
       </button>
-      <button id="button" class="button is-info " v-if="mounted && TableToogle"
-        @click="editor.chain().focus().addColumnAfter().run()">
+      <button
+        id="button"
+        class="button is-info"
+        v-if="mounted && TableToogle"
+        @click="editor.chain().focus().addColumnAfter().run()"
+      >
         addColAfter
       </button>
-      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
-        @click="editor.chain().focus().deleteColumn().run()">
+      <button
+        id="button"
+        class="button is-info"
+        v-if="mounted && TableToogle"
+        @click="editor.chain().focus().deleteColumn().run()"
+      >
         delCol
       </button>
-      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
-        @click="editor.chain().focus().addRowBefore().run()">
+      <button
+        id="button"
+        class="button is-info"
+        v-if="mounted && TableToogle"
+        @click="editor.chain().focus().addRowBefore().run()"
+      >
         addRowBefore
       </button>
-      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
-        @click="editor.chain().focus().addRowAfter().run()">
+      <button
+        id="button"
+        class="button is-info"
+        v-if="mounted && TableToogle"
+        @click="editor.chain().focus().addRowAfter().run()"
+      >
         addRowAfter
       </button>
-      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
-        @click="editor.chain().focus().deleteRow().run()">
+      <button
+        id="button"
+        class="button is-info"
+        v-if="mounted && TableToogle"
+        @click="editor.chain().focus().deleteRow().run()"
+      >
         delRow
       </button>
-      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
-        @click="editor.chain().focus().mergeCells().run()">
+      <button
+        id="button"
+        class="button is-info"
+        v-if="mounted && TableToogle"
+        @click="editor.chain().focus().mergeCells().run()"
+      >
         mergeCells
       </button>
-      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
-        @click="editor.chain().focus().splitCell().run()">
+      <button
+        id="button"
+        class="button is-info"
+        v-if="mounted && TableToogle"
+        @click="editor.chain().focus().splitCell().run()"
+      >
         splitCell
       </button>
-      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
-        @click="editor.chain().focus().toggleHeaderCell().run()">
+      <button
+        id="button"
+        class="button is-info"
+        v-if="mounted && TableToogle"
+        @click="editor.chain().focus().toggleHeaderCell().run()"
+      >
         setHeader
       </button>
-      <button id="button" class="button is-info  " v-if="mounted && TableToogle"
-        @click="editor.chain().focus().fixTables().run()">
+      <button
+        id="button"
+        class="button is-info"
+        v-if="mounted && TableToogle"
+        @click="editor.chain().focus().fixTables().run()"
+      >
         fixTables
       </button>
-      <button id="button" class="button is-warning " v-if="mounted" @click="editor.chain().focus().undo().run()">
+      <button
+        id="button"
+        class="button is-warning"
+        @click="editor.chain().focus().undo().run()"
+      >
         undo⬅️
       </button>
-      <button id="button" class="button is-warning " v-if="mounted" @click="editor.chain().focus().redo().run()">
+      <button
+        id="button"
+        class="button is-warning"
+        @click="editor.chain().focus().redo().run()"
+      >
         redo➡️
       </button>
-      <button id="button" class="button is-warning " v-if="mounted" @click="editor.chain().focus().unsetAllMarks().run()">
+      <button
+        id="button"
+        class="button is-warning"
+        @click="editor.chain().focus().unsetAllMarks().run()"
+      >
         RemoveMark
       </button>
-      <button id="button" class="button is-warning " v-if="mounted" @click="editor.chain().focus().clearContent().run()">
+      <button
+        id="button"
+        class="button is-warning"
+        @click="editor.chain().focus().clearContent().run()"
+      >
         RemoveAll
       </button>
       <button id="button" class="button is-link" @click="save">save</button>
     </div>
     <editor-content :editor="editor" class="edit" />
-    <br>
+    <br />
     <div class="block">Press CTRL+S to save !</div>
   </div>
 </template>
-  
+
 <script setup lang="ts">
-import { useEditor, EditorContent, mergeAttributes, type Extensions } from '@tiptap/vue-3'
-import Document from '@tiptap/extension-document'
-import Paragraphs from './Note'
-import Italic from '@tiptap/extension-italic'
-import Subscript from '@tiptap/extension-subscript'
-import Superscript from '@tiptap/extension-superscript'
-import Code from '@tiptap/extension-code'
-import CodeBlock from '@tiptap/extension-code-block-lowlight'
-import Text from '@tiptap/extension-text'
-import Bold from '@tiptap/extension-bold'
-import Underline from '@tiptap/extension-underline'
-import Heading from '@tiptap/extension-heading'
-import Bulletlist from '@tiptap/extension-bullet-list'
-import Listitem from '@tiptap/extension-list-item'
-import Image from '@tiptap/extension-image'
-import Link from '@tiptap/extension-link'
-import Strike from '@tiptap/extension-strike'
-import HardBreak from '@tiptap/extension-hard-break'
-import TablePro from './TablePro'
-import ImagePro from './ImagePro'
-import Table from '@tiptap/extension-table'
-import TextAlign from '@tiptap/extension-text-align'
-import TableRow from '@tiptap/extension-table-row'
-import TableHeader from '@tiptap/extension-table-header'
-import TableCell from '@tiptap/extension-table-cell'
-import History from '@tiptap/extension-history'
-import css from 'highlight.js/lib/languages/css'
-import js from 'highlight.js/lib/languages/javascript'
-import html from 'highlight.js/lib/languages/xml'
-import python from 'highlight.js/lib/languages/python'
-import { lowlight } from 'lowlight'
-import { generateHTML } from '@tiptap/html'
-import Gapcursor from '@tiptap/extension-gapcursor'
-import { onMounted, ref, watch, type Ref } from 'vue'
+import {
+  useEditor,
+  EditorContent,
+  mergeAttributes,
+  type Extensions,
+} from "@tiptap/vue-3";
+import Document from "@tiptap/extension-document";
+import Paragraphs from "./Note";
+import Italic from "@tiptap/extension-italic";
+import Subscript from "@tiptap/extension-subscript";
+import Superscript from "@tiptap/extension-superscript";
+import Code from "@tiptap/extension-code";
+import CodeBlock from "@tiptap/extension-code-block-lowlight";
+import Text from "@tiptap/extension-text";
+import Bold from "@tiptap/extension-bold";
+import Underline from "@tiptap/extension-underline";
+import Heading from "@tiptap/extension-heading";
+import Bulletlist from "@tiptap/extension-bullet-list";
+import Listitem from "@tiptap/extension-list-item";
+import Image from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
+import Strike from "@tiptap/extension-strike";
+import HardBreak from "@tiptap/extension-hard-break";
+import TablePro from "./TablePro";
+import ImagePro from "./ImagePro";
+import Table from "@tiptap/extension-table";
+import TextAlign from "@tiptap/extension-text-align";
+import TableRow from "@tiptap/extension-table-row";
+import TableHeader from "@tiptap/extension-table-header";
+import TableCell from "@tiptap/extension-table-cell";
+import History from "@tiptap/extension-history";
+import css from "highlight.js/lib/languages/css";
+import js from "highlight.js/lib/languages/javascript";
+import html from "highlight.js/lib/languages/xml";
+import python from "highlight.js/lib/languages/python";
+import { lowlight } from "lowlight";
+import { generateHTML } from "@tiptap/html";
+import Gapcursor from "@tiptap/extension-gapcursor";
+import { onMounted, ref, watch, type Ref } from "vue";
 import { useInputStore } from "@/main";
 
 const inputStore = useInputStore();
 
-lowlight.registerLanguage('html', html)
-lowlight.registerLanguage('css', css)
-lowlight.registerLanguage('js', js)
-lowlight.registerLanguage('python', python)
+lowlight.registerLanguage("html", html);
+lowlight.registerLanguage("css", css);
+lowlight.registerLanguage("js", js);
+lowlight.registerLanguage("python", python);
 
-
-const emit = defineEmits(['save'])
-const cache = new WeakMap()
-const TableToogle = ref(false)
+const emit = defineEmits(["save"]);
+const cache = new WeakMap();
+const TableToogle = ref(false);
 const mounted = ref(false);
 const state = ref({
   index: history.state.index,
-  content: history.state.content
-})
+  content: history.state.content,
+});
 
-const props = defineProps(['contentJson', "renderConfigJson", "uploadEnable"])
+const props = defineProps(["contentJson", "renderConfigJson", "uploadEnable"]);
 let costum = props.renderConfigJson;
-
 
 const extensions = [
   Document,
@@ -255,7 +460,9 @@ const extensions = [
   }),
   Underline,
   Heading.configure({
-    levels: costum.otherConfigurations ? costum.otherConfigurations.headingLevels : [1, 2, 3],
+    levels: costum.otherConfigurations
+      ? costum.otherConfigurations.headingLevels
+      : [1, 2, 3],
   }),
   Bulletlist,
   Listitem,
@@ -266,48 +473,52 @@ const extensions = [
   }),
   HardBreak,
   TextAlign.configure({
-    types: ['heading', 'paragraph'],
+    types: ["heading", "paragraph"],
   }),
   Table,
   TableCell.extend({
-    content: 'paragraph+',
+    content: "paragraph+",
   }),
   TableRow,
   TablePro,
   TableHeader.extend({
-    content: 'paragraph+',
+    content: "paragraph+",
   }),
   Strike,
   History.configure({
     depth: 100,
     newGroupDelay: 500,
   }),
-  Gapcursor
-]
+  Gapcursor,
+];
 
 let extensions_costum: Extensions = [];
 
 extensions.forEach((extension, index) => {
-  if (costum[extension.name] && (extension.type == "node" || extension.type == "mark")) {
+  if (
+    costum[extension.name] &&
+    (extension.type == "node" || extension.type == "mark")
+  ) {
     extensions_costum[index] = deepClone(extension).extend({
       renderHTML({ HTMLAttributes }: any) {
         const val: any = (this as any).parent?.({ HTMLAttributes });
         if (val) {
-          val[0] = costum[extension.name].tag
+          val[0] = costum[extension.name].tag;
         }
         if (val && costum[extension.name].HTMLAttributes) {
-          if ((typeof val[1]) == "number")
-            val[2] = val[1]
-          val[1] = mergeAttributes(HTMLAttributes, costum[extension.name].HTMLAttributes)
+          if (typeof val[1] == "number") val[2] = val[1];
+          val[1] = mergeAttributes(
+            HTMLAttributes,
+            costum[extension.name].HTMLAttributes,
+          );
         }
-        return val
+        return val;
       },
-    })
-
+    });
   } else {
-    extensions_costum[index] = extension
+    extensions_costum[index] = extension;
   }
-})
+});
 
 const editor: Ref = useEditor({
   extensions: extensions,
@@ -315,72 +526,63 @@ const editor: Ref = useEditor({
   autofocus: true,
   editable: true,
   injectCSS: false,
-})
+});
 
 onMounted(() => {
   mounted.value = true;
-  document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && (e.key == 's' || e.key == 'S')) {
+  document.addEventListener("keydown", (e) => {
+    if (e.ctrlKey && (e.key == "s" || e.key == "S")) {
       e.preventDefault();
       save();
     }
-    if (e.ctrlKey && (e.key == 'Z')) {
+    if (e.ctrlKey && e.key == "Z") {
       e.preventDefault();
-      editor.value.chain().focus().undo().run()
+      editor.value.chain().focus().undo().run();
     }
-    if (e.ctrlKey && (e.key == 'Y')) {
+    if (e.ctrlKey && e.key == "Y") {
       e.preventDefault();
-      editor.value.chain().focus().redo().run()
+      editor.value.chain().focus().redo().run();
     }
   });
-})
+});
 function save() {
   // console.log(generateHTML(editor.value.getJSON(), extensions))
-  let html = generateHTML(editor.value.getJSON(), extensions_costum)
+  let html = generateHTML(editor.value.getJSON(), extensions_costum);
   // console.log(html)
-  emit('save', editor.value.getJSON(), html);
+  emit("save", editor.value.getJSON(), html);
 }
 function setImageURL() {
-  let recall = inputStore.input(
-    "Insert image",
-    props.uploadEnable,
-
-  );
+  let recall = inputStore.input("Insert image", props.uploadEnable);
   watch(recall, (val) => {
-    editor.value.chain().focus().setImage({ src: val }).run()
-  })
+    editor.value.chain().focus().setImage({ src: val }).run();
+  });
 }
 function setImageProURL() {
-  let recall = inputStore.input(
-    "Insert image",
-    props.uploadEnable
-  );
+  let recall = inputStore.input("Insert image", props.uploadEnable);
   watch(recall, (val) => {
-    editor.value.chain().focus().insertImagePro(val).run()
-  })
+    editor.value.chain().focus().insertImagePro(val).run();
+  });
 }
 function setLink() {
-  let recall = inputStore.input(
-    "Insert Link",
-    false
-  );
+  let recall = inputStore.input("Insert Link", false);
   watch(recall, (val) => {
-    editor.value.chain().focus().setLink({ href: val, target: '_blank' }).run()
-  })
+    editor.value.chain().focus().setLink({ href: val, target: "_blank" }).run();
+  });
 }
 
 function deepClone(value: Object) {
-  if (typeof value !== 'object' || value === null) {
+  if (typeof value !== "object" || value === null) {
     return value;
   }
   const cached = cache.get(value);
   if (cached) {
     return cached;
   }
-  const result = Array.isArray(value) ? [] : {} as any;
+  const result = Array.isArray(value) ? [] : ({} as any);
   Object.setPrototypeOf(result, Object.getPrototypeOf(value));
   cache.set(value, result);
   for (const key in value) {
+    // eslint-disable-next-line no-prototype-builtins
     if (value.hasOwnProperty(key)) {
       result[key] = deepClone((value as any)[key]);
     }
@@ -396,7 +598,6 @@ html #buttons-toggle {
   @media (max-width: 1350px) {
     --buttons-height: 1.7rem;
   }
-
 }
 
 .main {
@@ -406,7 +607,7 @@ html #buttons-toggle {
   margin: 0 0 0 0;
 
   .reminder {
-    margin-bottom: .3em;
+    margin-bottom: 0.3em;
   }
 }
 
@@ -455,7 +656,7 @@ html #buttons-toggle {
 
     @media (max-width: 1350px) {
       p {
-        padding-right: .2rem;
+        padding-right: 0.2rem;
       }
     }
 
@@ -498,7 +699,6 @@ html #buttons-toggle {
     opacity: 1;
     width: 100%;
 
-
     #button {
       margin: 0;
       transition: ease 0.2s;
@@ -513,21 +713,20 @@ html #buttons-toggle {
 
     #button:first-child {
       padding-right: 1.9em;
-
     }
 
     .button:first-child::after {
-      content: '';
+      content: "";
       height: 1.5em;
       width: 1.5em;
       transform: rotate(0deg);
       transition: transform 0.5s ease;
-      margin-left: .5em;
+      margin-left: 0.5em;
       display: block;
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      right: .5rem;
+      right: 0.5rem;
       background: url(@/assets/angle.svg);
     }
 
@@ -537,7 +736,7 @@ html #buttons-toggle {
       }
 
       .button:first-child::after {
-        right: .2rem;
+        right: 0.2rem;
       }
     }
 
@@ -586,7 +785,6 @@ html #buttons-toggle {
 #buttons-toggle.setLink:hover {
   z-index: 2;
 }
-
 
 @media (max-width: 1350px) {
   #buttons-toggle.Heading {
