@@ -38,7 +38,7 @@ Server started on port 5001
 
 4. The HTML source code after editing and saving will be automatically inserted into the relative position of the page. At the same time, the WikibreezeData folder will be generated to store the information of the edited page.
 
-5. Add `Wikibreeze/` directory into .gitignore file.  
+5. Add `Wikibreeze/` directory into .gitignore file(Note: the auto generated `WikibreezeData/` is used for store your pages content and configuration, so it is very important and must be track by git and synced with your repository).
 
 6. We also provide a configuration file WikibreezeData/config/config.json, which will be automatically generated upon the first run of the application. It allows you to customize certain parameters such as the directory containing the pages to be modified, the port to be used, and the file types. The default values for these parameters can be seen in the example configuration file below:
 ```
@@ -54,7 +54,7 @@ Server started on port 5001
 }
 ```
 
-7. see [Features](https://github.com/950288/WikiBreeze/wiki/Wikibreeze-Editor-Features) for more detailed usage.
+1. see [Features](https://github.com/950288/WikiBreeze/wiki/Wikibreeze-Editor-Features) for more detailed usage.
 
 
 ## Project Building Guide 🧑‍💻 
