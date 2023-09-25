@@ -101,6 +101,7 @@ function destroy(duration: number = 2500) {
       line-height: 60px;
       text-align: center;
       overflow: hidden;
+      font-family: system-ui;
     }
   }
 }
