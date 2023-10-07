@@ -176,8 +176,8 @@ function save(contentJson: JSON, contentHtml: string) {
       }, timeout);
       watch(saveReturnMsg, (val) => {
         if (val && val.success == "true") {
-          console.log("saved success!");
-          resolve({ success: true, notify: "saved successful !" });
+          console.log("saved successfully !");
+          resolve({ success: true, notify: "saved successfully !" });
         } else {
           console.log("saved failed!");
           resolve({

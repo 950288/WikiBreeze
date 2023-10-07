@@ -144,14 +144,14 @@ onMounted(() => {
         watch(fileURL, (val) => {
           if (val && val.location) {
             console.log(
-              "upload " +
+              "Uploaded " +
                 file.value[0].name +
                 " successful\nURL:" +
                 val.location,
             );
             // eslint-disable-next-line vue/no-mutating-props
             if (props.recall) props.recall.value = val.location;
-            resolve({ success: true, notify: "upload successful !" });
+            resolve({ success: true, notify: "Upload successful !" });
           } else {
             console.log(val);
             resolve({ success: false, notify: val });
