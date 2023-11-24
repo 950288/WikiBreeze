@@ -15,7 +15,6 @@
         },
         {
             "attrs": {
-                "class": null,
                 "textAlign": "left"
             },
             "content": [
@@ -36,9 +35,6 @@
             "type": "paragraph"
         },
         {
-            "attrs": {
-                "class": "imagePro"
-            },
             "content": [
                 {
                     "attrs": {
@@ -49,6 +45,9 @@
                     "type": "image"
                 },
                 {
+                    "attrs": {
+                        "textAlign": "left"
+                    },
                     "content": [
                         {
                             "marks": [
@@ -88,7 +87,6 @@
                     "content": [
                         {
                             "attrs": {
-                                "class": null,
                                 "textAlign": "left"
                             },
                             "content": [
@@ -106,7 +104,6 @@
                     "content": [
                         {
                             "attrs": {
-                                "class": null,
                                 "textAlign": "left"
                             },
                             "content": [
@@ -124,7 +121,6 @@
                     "content": [
                         {
                             "attrs": {
-                                "class": null,
                                 "textAlign": "left"
                             },
                             "content": [
@@ -147,6 +143,27 @@
             },
             "content": [
                 {
+                    "attrs": {
+                        "textAlign": "left"
+                    },
+                    "content": [
+                        {
+                            "marks": [
+                                {
+                                    "type": "bold"
+                                }
+                            ],
+                            "text": "Table 1.",
+                            "type": "text"
+                        },
+                        {
+                            "text": " Also works well for table with note",
+                            "type": "text"
+                        }
+                    ],
+                    "type": "paragraph"
+                },
+                {
                     "content": [
                         {
                             "content": [
@@ -159,7 +176,6 @@
                                     "content": [
                                         {
                                             "attrs": {
-                                                "class": null,
                                                 "textAlign": "center"
                                             },
                                             "content": [
@@ -182,7 +198,6 @@
                                     "content": [
                                         {
                                             "attrs": {
-                                                "class": null,
                                                 "textAlign": "center"
                                             },
                                             "content": [
@@ -205,7 +220,6 @@
                                     "content": [
                                         {
                                             "attrs": {
-                                                "class": null,
                                                 "textAlign": "center"
                                             },
                                             "content": [
@@ -233,7 +247,6 @@
                                     "content": [
                                         {
                                             "attrs": {
-                                                "class": null,
                                                 "textAlign": "center"
                                             },
                                             "content": [
@@ -256,7 +269,6 @@
                                     "content": [
                                         {
                                             "attrs": {
-                                                "class": null,
                                                 "textAlign": "center"
                                             },
                                             "content": [
@@ -279,7 +291,6 @@
                                     "content": [
                                         {
                                             "attrs": {
-                                                "class": null,
                                                 "textAlign": "center"
                                             },
                                             "content": [
@@ -307,7 +318,6 @@
                                     "content": [
                                         {
                                             "attrs": {
-                                                "class": null,
                                                 "textAlign": "center"
                                             },
                                             "content": [
@@ -330,15 +340,8 @@
                                     "content": [
                                         {
                                             "attrs": {
-                                                "class": null,
-                                                "textAlign": "center"
+                                                "textAlign": "left"
                                             },
-                                            "content": [
-                                                {
-                                                    "text": "Francisco Chang",
-                                                    "type": "text"
-                                                }
-                                            ],
                                             "type": "paragraph"
                                         }
                                     ],
@@ -353,7 +356,6 @@
                                     "content": [
                                         {
                                             "attrs": {
-                                                "class": null,
                                                 "textAlign": "center"
                                             },
                                             "content": [
@@ -372,28 +374,6 @@
                         }
                     ],
                     "type": "table"
-                },
-                {
-                    "attrs": {
-                        "class": "tableNote",
-                        "textAlign": "left"
-                    },
-                    "content": [
-                        {
-                            "marks": [
-                                {
-                                    "type": "bold"
-                                }
-                            ],
-                            "text": "Table 1.",
-                            "type": "text"
-                        },
-                        {
-                            "text": " Also wokrs well for table with note",
-                            "type": "text"
-                        }
-                    ],
-                    "type": "paragraph"
                 }
             ],
             "type": "tablePro"
@@ -412,7 +392,6 @@
         },
         {
             "attrs": {
-                "class": null,
                 "textAlign": "left"
             },
             "content": [

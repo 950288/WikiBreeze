@@ -51,6 +51,13 @@ function replaceJson(data: { content: [any]; type: string }) {
   if (data.type === "TablePro") {
     data.type = "tablePro";
   }
+  if (data.type === "tablePro") {
+    if ((data.content.length as any) == 2 && data.content[0] == "table") {
+      let temp = data.content[0];
+      data.content[0] = (data.content as any)[1];
+      (data.content as any)[1] = temp;
+    }
+  }
   for (let key in data.content) {
     if (typeof data.content[key] === "object") {
       replaceJson(data.content[key]);

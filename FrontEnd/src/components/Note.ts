@@ -32,7 +32,7 @@ export default Paragraph.extend({
         }
         if (
           tablePro &&
-          typeof tablePro.node.content.content[1]?.content.content[0]?.text ==
+          typeof tablePro.node.content.content[0]?.content.content[0]?.text ==
             "undefined"
         ) {
           console.log("delete TablePro");

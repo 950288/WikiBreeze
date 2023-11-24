@@ -13,10 +13,10 @@ import { createTable } from "@tiptap/extension-table";
  * table with 3 rows, 3 columns, and no header row
  * @renderHTML
  * <table-pro>
+ *   <p>add table note here</p>
  *   <table>
  *      ****
  *   </table>
- *   <p>add table note here</p>
  * </table-pro>
  */
 
@@ -34,7 +34,7 @@ export default Node.create({
 
   group: "block",
 
-  content: "table paragraph",
+  content: "paragraph",
 
   defining: false,
 
@@ -72,7 +72,7 @@ export default Node.create({
 
           const tableWithNoteNode = editor.schema.nodes.tablePro.createChecked(
             {},
-            [table, noteNode],
+            [noteNode, table],
           );
           tr.insert(tr.selection.from - 1, tableWithNoteNode);
           return true;
