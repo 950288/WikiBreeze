@@ -28,4 +28,4 @@ logs
 testPage.html
 
 node_modules
-BackEnd/account.json
+account.json
