@@ -34,7 +34,7 @@ export default Node.create({
 
   group: "block",
 
-  content: "paragraph",
+  content: "paragraph table",
 
   defining: false,
 
@@ -59,12 +59,12 @@ export default Node.create({
       insertTablePro:
         ({ rows = 2, cols = 2, withHeaderRow = true } = {}) =>
         ({ editor, tr }) => {
-          const table = createTable(editor.schema, rows, cols, withHeaderRow);
-
           const noteNode = editor.schema.nodes.paragraph.createChecked(
             { class: "tableNote" },
             [editor.schema.text("add table note here")],
           );
+
+          const table = createTable(editor.schema, rows, cols, withHeaderRow);
 
           if (!noteNode) {
             return false;
