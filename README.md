@@ -105,5 +105,5 @@ The front-end WebEditor sends HTTP requests to the back-end to retrieve and upda
 -  ✔️ customize the HTML 🗽
 -  v1.0.0
 -  auto git commit
--  upload image to iGEM server
+-  upload image to iGEM server (See details [here](https://github.com/950288/WikiBreeze/releases/tag/v1.1.0-beta))
 -  ......
